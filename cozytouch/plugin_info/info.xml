@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<info>
+    <id>cozytouch</id>
+    <name>CozyTouch</name>
+    <description>Plugin pour piloter les radiateurs connectés CozyTouch</description>
+    <icon>icon jeedom-thermo-chaud</icon>
+    <licence>AGPL</licence>
+    <author>geoblack</author>
+    <installation>Aucune</installation>
+    <require>1.212.0</require>
+    <category>wellness</category>
+</info>
+

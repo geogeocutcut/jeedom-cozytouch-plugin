@@ -1,0 +1,50 @@
+== Configuration du plugin
+
+Une fois le plugin installé, il vous faut renseigner vos informations de connexion Cozytouch : 
+
+image::../images/cozytouch_screenshot2.PNG[]
+
+* *Nom d'utilisateur* : nom d'utilisateur de votre compte Cozytouch
+* *Mot de passe* : mot de passe de votre compte Cozytouch
+* *Synchroniser* : permet de synchroniser Jeedom avec votre compte Cozytouch pour découvrir automatiquement les pièces où sont vos radiateur Cozytouch. A faire après avoir sauvegardé les paramètres précedent.
+
+== Recupération des informations de connexion
+
+Les radiateurs Cozytouch ne sont pas pilotable directement. 
+En effet, le protocole permettant d'envoyer directement des commandes au radiateur est le IO Home Control (protocole fermé)
+Toutefois, Cozytouch offre la possibilité de passer par un bridge pour pouvoir controler ces radiateurs.
+Une application sur smartphone a été développer. Celle-ci envoie les commandes à un serveur Cozytouch.
+Ensuite, le bridge va requeter ce serveur Cozytouch pour connaitre les commandes qu'il doit envoyer aux radiateurs.
+
+Pour intégrer vos radiateurs dans jeedom, vous devez posséder le bridge Cozytouch et un compte créé à travers l'application sur smartphone.
+Ensuite, avec l'application Cozytouch sur smartphone, vous devez avoir créé l'ensemble de vos radiateurs et les avoir associés au bridge
+
+Une ces identifiants créés, il ne vous reste plus qu'a les renseigner dans la configuration du plugin et à cliquer sur synchroniser.
+Jeedom va alors créer tous vos équipements précédemment créés dans l'application sur smartphone
+
+== Configuration des équipements
+
+La configuration des équipements Cozytouch est accessible à partir du menu plugin : 
+
+image::../images/cozytouch_screenshot3.PNG[]
+
+Voilà à quoi ressemble la page du plugin Cozytouch (ici avec déjà 1 équipement) : 
+
+image::../images/cozytouch_screenshot4.PNG[]
+
+[TIP]
+Comme à beaucoup d'endroits sur Jeedom, placer la souris tout à gauche permet de faire apparaître un menu d'accès rapide (vous pouvez à partir de votre profil le laisser toujours visible).
+
+[NOTE]
+Jeedom creer un équipement par pièce initialement créée dans l'application Cozytouch sur smartphone.
+
+Une fois que vous cliquez sur un équipement vous obtenez : 
+
+image::../images/cozytouch_screenshot5.PNG[]
+
+== Widget
+
+Voici le widget sur le dashboard: 
+
+image::../images/cozytouch_screenshot6.PNG[]
+

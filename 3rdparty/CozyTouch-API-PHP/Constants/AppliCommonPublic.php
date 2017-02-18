@@ -16,7 +16,6 @@ class CozyTouchDeviceInfo
     const CTDI_PLACEOID = "placeOID";
     const CTDI_TYPEDEVICE = "uiClass";
     const CTDI_REFERENCE = "referenceURL";
-	const CTDI_OBJECT = "object";
 }
 
 class CozyTouchDeviceStateInfo

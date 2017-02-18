@@ -1,0 +1,5 @@
+= Cozytouch
+
+Plugin permettant de piloter les radiateurs Cozytouch à travers le bridge Cozytouch
+
+include::configuration.asciidoc[]

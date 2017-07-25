@@ -1,0 +1,8 @@
+{
+	"id" : "cozytouch",
+	"name" : "CozyTouch",
+	"licence" : "AGPL",
+	"author" : "geoblack",
+	"require" : "2.4",
+	"category" : "wellness"
+}

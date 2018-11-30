@@ -4,3 +4,11 @@ Plugin permettant de piloter les radiateurs Cozytouch à travers le bridge Cozyt
 
 include::configuration.asciidoc[]
 
+'''
+
+include::faq.asciidoc[]
+
+'''
+
+include::changelog.asciidoc[]
+

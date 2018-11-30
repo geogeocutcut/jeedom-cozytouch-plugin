@@ -12,28 +12,28 @@ image::../images/cozytouch_screenshot2.PNG[]
 
 Les radiateurs Cozytouch ne sont pas pilotables directement. 
 En effet, le protocole permettant d'envoyer directement des commandes au radiateur est le IO Home Control (protocole fermé).
-Toutefois, Cozytouch offre la possibilité de passer par un bridge pour pouvoir contrôler ces radiateurs.
-Une application sur smartphone a été développée. Celle-ci envoie les commandes à un serveur Cozytouch.
-Ensuite, le bridge va requêter ce serveur Cozytouch pour connaître les commandes qu'il doit envoyer aux radiateurs.
+Toutefois, Cozytouch offre la possibilité de passer par un bridge pour pouvoir contràŽler ces radiateurs.
+Une application sur smartphone a été développée. Celle-ci envoie les commandes à  un serveur Cozytouch.
+Ensuite, le bridge va requàªter ce serveur Cozytouch pour connaitre les commandes qu'il doit envoyer aux radiateurs.
 
-Pour intégrer vos radiateurs dans jeedom, vous devez posséder le bridge Cozytouch et un compte créé à travers l'application sur smartphone.
+Pour intégrer vos radiateurs dans jeedom, vous devez posséder le bridge Cozytouch et un compte créé à  travers l'application sur smartphone.
 Ensuite, avec l'application Cozytouch sur smartphone, vous devez avoir créé l'ensemble de vos radiateurs et les avoir associés au bridge
 
-Une fois ces identifiants créés, il ne vous reste plus qu'à les renseigner dans la configuration du plugin et à cliquer sur synchroniser.
+Une fois ces identifiants créés, il ne vous reste plus qu'à  les renseigner dans la configuration du plugin et à  cliquer sur synchroniser.
 Jeedom va alors créer tous vos équipements précédemment créés dans l'application sur smartphone.
 
 == Configuration des équipements
 
-La configuration des équipements Cozytouch est accessible à partir du menu Plugins : 
+La configuration des équipements Cozytouch est accessible à  partir du menu Plugins : 
 
 image::../images/cozytouch_screenshot3.PNG[]
 
-Voilà à quoi ressemble la page du plugin Cozytouch (ici avec déjà 1 équipement) : 
+Voilà  à  quoi ressemble la page du plugin Cozytouch (ici avec déjà  1 équipement) : 
 
 image::../images/cozytouch_screenshot4.PNG[]
 
 [TIP]
-Comme à beaucoup d'endroits sur Jeedom, placer la souris tout à gauche permet de faire apparaître un menu d'accès rapide (vous pouvez à partir de votre profil le laisser toujours visible).
+Comme à  beaucoup d'endroits sur Jeedom, placer la souris tout à  gauche permet de faire apparaitre un menu d'accès rapide (vous pouvez à  partir de votre profil le laisser toujours visible).
 
 [NOTE]
 Jeedom va générer un équipement par pièce initialement créée dans l'application Cozytouch sur smartphone.

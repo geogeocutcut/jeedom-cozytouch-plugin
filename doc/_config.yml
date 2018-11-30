@@ -18,7 +18,7 @@ exclude:
 plugins:
 - jekyll-seo-tag
 title: "Documentation Jeedom"
-description: "Ceci est la documentation, lier à la solution domotique Jeedom."
+description: "Ceci est la documentation, lier Ã  la solution domotique Jeedom."
 author: "Jeedom"
 image: https://www.jeedom.com/site/logo.png
 twitter:

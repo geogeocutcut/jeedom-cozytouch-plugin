@@ -39,28 +39,28 @@ if (!class_exists('CozyTouchStateCommand')) {
 
 class cozytouch extends eqLogic {
     /******************************* Attributs *******************************/ 
-    /* Ajouter ici toutes vos variables propre Ã  votre classe */
+    /* Ajouter ici toutes vos variables propre ?� votre classe */
 
 	private static $_client = null;
 	
     /***************************** Methode static ****************************/ 
 
     /*
-    // Fonction exÃ©cutÃ©e automatiquement toutes les minutes par Jeedom
+    // Fonction ex??cut??e automatiquement toutes les minutes par Jeedom
     public static function cron() {
 
     }
     */
 
     /*
-    // Fonction exÃ©cutÃ©e automatiquement toutes les heures par Jeedom
+    // Fonction ex??cut??e automatiquement toutes les heures par Jeedom
     public static function cronHourly() {
 
     }
     */
 
     /*
-    // Fonction exÃ©cutÃ©e automatiquement tous les jours par Jeedom
+    // Fonction ex??cut??e automatiquement tous les jours par Jeedom
     public static function cronDayly() {
 
     }
@@ -69,21 +69,21 @@ class cozytouch extends eqLogic {
     /*************************** Methode d'instance **************************/ 
  
 
-    /************************** Pile de mise Ã  jour **************************/ 
+    /************************** Pile de mise ?� jour **************************/ 
     
     /* fonction permettant d'initialiser la pile 
      * plugin: le nom de votre plugin
-     * action: l'action qui sera utilisÃ© dans le fichier ajax du pulgin 
-     * callback: fonction appelÃ© cotÃ© client(JS) pour mettre Ã  jour l'affichage 
+     * action: l'action qui sera utilis?? dans le fichier ajax du pulgin 
+     * callback: fonction appel?? cot?? client(JS) pour mettre ?� jour l'affichage 
      */ 
     public function initStackData() {
         nodejs::pushUpdate('cozytouch::initStackDataEqLogic', array('plugin' => 'cozytouch', 'action' => 'saveStack', 'callback' => 'displayEqLogic'));
     }
     
-    /* fonnction permettant d'envoyer un nouvel Ã©quipement pour sauvegarde et affichage, 
-     * les donnÃ©es sont envoyÃ© au client(JS) pour Ãªtre traitÃ© de maniÃ¨re asynchrone
-     * EntrÃ©e: 
-     *      - $params: variable contenant les paramÃ¨tres eqLogic
+    /* fonnction permettant d'envoyer un nouvel ??quipement pour sauvegarde et affichage, 
+     * les donn??es sont envoy?? au client(JS) pour ??tre trait?? de mani?�re asynchrone
+     * Entr??e: 
+     *      - $params: variable contenant les param?�tres eqLogic
      */
     public function stackData($params) {
         if(is_object($params)) {
@@ -108,11 +108,17 @@ class cozytouch extends eqLogic {
 		$resp = $client->getSetup();
 	    $places = $resp->getData();
 		
+		// 1 check place = object existe with oid (configuration)
+		// 		sinon check place = object exist with the name
+		// then update (name && oid) or create 
+
+		// 2 check device = eqLogic existe  
+
 		foreach ($places as $place) {
 
 			$eqLogic = eqLogic::byLogicalId($place->getVar('oid'), 'cozytouch');
 			if (!is_object($eqLogic)) {
-				log::add('cozytouch', 'info', 'Equipement non existant : creation en cours');
+				log::add('cozytouch', 'info', 'Place '.$place->getVar('oid').' non existante : creation en cours');
 				$eqLogic = new cozytouch();
 				$eqLogic->setEqType_name('cozytouch');
 				$eqLogic->setIsEnable(1);
@@ -129,7 +135,7 @@ class cozytouch extends eqLogic {
 			$devices = $place->getDevices();
 			$i=0;
 			foreach ($devices as $device) {
-				log::add('cozytouch', 'info', 'Boucle device création commandes');
+				log::add('cozytouch', 'info', 'Cr�ation des commandes pour '.$device->getVar(CozyTouchDeviceInfo::CTDI_URL));
 				$i+=1;
 				$order=($i)*20;
 				$deviceURL = $device->getURL();
@@ -138,7 +144,14 @@ class cozytouch extends eqLogic {
 					continue;
 				}
 				$list_devices[$deviceURL] = $deviceURLShort;
-				
+				$deviceType = $device->getVar(CozyTouchDeviceInfo::CTDI_TYPEDEVICE);
+				switch ($deviceType)
+				{
+					case CozyTouchDeviceToDisplay::$CTDTD_HEATINGSYSTEM:
+						break;
+					case CozyTouchDeviceToDisplay::$CTDTD_WATERHEATINGSYSTEM:
+						break;
+				}
 
 				//Device URL
 				self::createCommand($eqLogic,'deviceURL_' . $i,'info','string',__('device URL', __FILE__) . ' ' . $i,0,$deviceURLShort,999);
@@ -162,7 +175,7 @@ class cozytouch extends eqLogic {
 				self::createCommand($eqLogic,$deviceURLShort.'_core:EcoRoomTemperatureState','info','numeric',__('Delta Eco', __FILE__) . ' ' . $i,0,'',999);
 				
 				//core:DerogatedTargetTemperatureState
-				self::createCommand($eqLogic,$deviceURLShort.'_core:DerogatedTargetTemperatureState','info','numeric',__('Dérogation', __FILE__) . ' ' . $i,1,'',$order+5);
+				self::createCommand($eqLogic,$deviceURLShort.'_core:DerogatedTargetTemperatureState','info','numeric',__('D�rogation', __FILE__) . ' ' . $i,1,'',$order+5);
 
 				//io:EffectiveTemperatureSetpointState
 				self::createCommand($eqLogic,$deviceURLShort.'_io:EffectiveTemperatureSetpointState','info','numeric',__('Effective', __FILE__) . ' ' . $i,1,'',$order+6);
@@ -172,10 +185,10 @@ class cozytouch extends eqLogic {
 				
 				
 				//#2 : core:TemperatureState
-				self::createCommand($eqLogic,$deviceURLShort.'_core:TemperatureState','info','numeric',__('Température', __FILE__) . ' ' . $i,1,'',$order+7);
+				self::createCommand($eqLogic,$deviceURLShort.'_core:TemperatureState','info','numeric',__('Temp�rature', __FILE__) . ' ' . $i,1,'',$order+7);
 
 				//#4 : core:OccupancyState
-				self::createCommand($eqLogic,$deviceURLShort.'_core:OccupancyState','info','binary',__('Présence', __FILE__) . ' ' . $i,1,'',$order+8,'presence','presence',1);
+				self::createCommand($eqLogic,$deviceURLShort.'_core:OccupancyState','info','binary',__('Pr�sence', __FILE__) . ' ' . $i,1,'',$order+8,'presence','presence',1);
 
 				//#5 : core:ElectricEnergyConsumptionState
 				self::createCommand($eqLogic,$deviceURLShort.'_core:ElectricEnergyConsumptionState','info','string',__('Consommation', __FILE__) . ' ' . $i,1,'',$order+9);
@@ -202,8 +215,8 @@ class cozytouch extends eqLogic {
 			self::createCommand($eqLogic,'cancelForcedHeatingLvl','action','other',__('Reset Mode', __FILE__),1,'',110);
 				
 			
-			// Température
-			//self::createCommand($eqLogic,'setTargetTemperature','action','other',__('Consigne T°', __FILE__),1,'',106);
+			// Temp�rature
+			//self::createCommand($eqLogic,'setTargetTemperature','action','other',__('Consigne T�', __FILE__),1,'',106);
 			
 			$eqLogic->setConfiguration('devices_list', $list_devices);
 			$eqLogic->save();
@@ -494,16 +507,16 @@ class cozytouch extends eqLogic {
 			);
 		$this->genericApplyCommand($cmds);
 	}
-    /* fonction appelÃ© pour la sauvegarde asynchrone
-     * EntrÃ©e: 
-     *      - $params: variable contenant les paramÃ¨tres eqLogic
+    /* fonction appel?? pour la sauvegarde asynchrone
+     * Entr??e: 
+     *      - $params: variable contenant les param?�tres eqLogic
      */
     public function saveStack($params) {
-        // inserer ici le traitement pour sauvegarde de vos donnÃ©es en asynchrone
+        // inserer ici le traitement pour sauvegarde de vos donn??es en asynchrone
         
     }
 
-    /* fonction appelÃ© avant le dÃ©but de la sÃ©quence de sauvegarde */
+    /* fonction appel?? avant le d??but de la s??quence de sauvegarde */
     public function preSave() {
     	if ($this->getConfiguration('order_max') === '') {
     		$this->setConfiguration('order_max', 28);
@@ -513,31 +526,31 @@ class cozytouch extends eqLogic {
     	}
     }
 
-    /* fonction appelÃ© pendant la sÃ©quence de sauvegarde avant l'insertion 
-     * dans la base de donnÃ©es pour une mise Ã  jour d'une entrÃ©e */
+    /* fonction appel?? pendant la s??quence de sauvegarde avant l'insertion 
+     * dans la base de donn??es pour une mise ?� jour d'une entr??e */
     public function preUpdate() {
         
     }
 
-    /* fonction appelÃ© pendant la sÃ©quence de sauvegarde aprÃ¨s l'insertion 
-     * dans la base de donnÃ©es pour une mise Ã  jour d'une entrÃ©e */
+    /* fonction appel?? pendant la s??quence de sauvegarde apr?�s l'insertion 
+     * dans la base de donn??es pour une mise ?� jour d'une entr??e */
     public function postUpdate() {
         
     }
 
-    /* fonction appelÃ© pendant la sÃ©quence de sauvegarde avant l'insertion 
-     * dans la base de donnÃ©es pour une nouvelle entrÃ©e */
+    /* fonction appel?? pendant la s??quence de sauvegarde avant l'insertion 
+     * dans la base de donn??es pour une nouvelle entr??e */
     public function preInsert() {
 
     }
 
-    /* fonction appelÃ© pendant la sÃ©quence de sauvegarde aprÃ¨s l'insertion 
-     * dans la base de donnÃ©es pour une nouvelle entrÃ©e */
+    /* fonction appel?? pendant la s??quence de sauvegarde apr?�s l'insertion 
+     * dans la base de donn??es pour une nouvelle entr??e */
     public function postInsert() {
         
     }
 
-    /* fonction appelÃ© aprÃ¨s la fin de la sÃ©quence de sauvegarde */
+    /* fonction appel?? apr?�s la fin de la s??quence de sauvegarde */
     public function postSave() {
 
 		log::add('cozytouch', 'info', 'creation ou update thermostat');
@@ -555,7 +568,7 @@ class cozytouch extends eqLogic {
     	$order->setSubType('numeric');
     	$order->setIsHistorized(1);
     	$order->setLogicalId('order');
-    	$order->setUnite('°C');
+    	$order->setUnite('�C');
     	$order->setConfiguration('maxValue', $this->getConfiguration('order_max'));
     	$order->setConfiguration('minValue', $this->getConfiguration('order_min'));
     	$order->setOrder(1);
@@ -571,7 +584,7 @@ class cozytouch extends eqLogic {
     	$thermostat->setConfiguration('minValue', $this->getConfiguration('order_min'));
     	$thermostat->setType('action');
     	$thermostat->setSubType('slider');
-    	$thermostat->setUnite('°C');
+    	$thermostat->setUnite('�C');
     	$thermostat->setLogicalId('cozytouchThermostat');
     	$thermostat->setTemplate('dashboard', 'thermostat');
     	$thermostat->setTemplate('mobile', 'thermostat');
@@ -582,12 +595,12 @@ class cozytouch extends eqLogic {
 
     }
 
-    /* fonction appelÃ© avant l'effacement d'une entrÃ©e */
+    /* fonction appel?? avant l'effacement d'une entr??e */
     public function preRemove() {
         
     }
 
-    /* fonnction appelÃ© aprÃ¨s l'effacement d'une entrÃ©e */
+    /* fonnction appel?? apr?�s l'effacement d'une entr??e */
     public function postRemove() {
         
     }
@@ -900,13 +913,13 @@ class cozytouch extends eqLogic {
 
 class cozytouchCmd extends cmd {
     /******************************* Attributs *******************************/ 
-    /* Ajouter ici toutes vos variables propre Ã  votre classe */
+    /* Ajouter ici toutes vos variables propre ?� votre classe */
 
     /***************************** Methode static ****************************/ 
 
     /*************************** Methode d'instance **************************/ 
 
-    /* Non obligatoire permet de demander de ne pas supprimer les commandes mÃªme si elles ne sont pas dans la nouvelle configuration de l'Ã©quipement envoyÃ© en JS
+    /* Non obligatoire permet de demander de ne pas supprimer les commandes m??me si elles ne sont pas dans la nouvelle configuration de l'??quipement envoy?? en JS
     public function dontRemoveCmd() {
         return true;
     }

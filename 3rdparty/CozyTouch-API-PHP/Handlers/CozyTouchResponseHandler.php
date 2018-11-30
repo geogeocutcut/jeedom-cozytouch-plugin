@@ -74,7 +74,10 @@ class CozyTouchResponseHandler {
 		
 		foreach($this->decodedBody->setup->devices as $device) 
 		{
-			if(in_array(substr($device->deviceURL, -2, 2),CozyTouchDeviceToDisplay::$CTDTD_SUFFIXE) && in_array($device->uiClass,CozyTouchDeviceToDisplay::$CTDTD_CLASS))
+			// #1 = new device
+			// #other = sensor
+			// 		Search device
+			if(in_array($device->uiClass,CozyTouchDeviceToDisplay::$CTDTD_CLASS))
 			{
 				$deviceClss = new CozyTouchDevice(array());
 				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_OID, $device->oid);
@@ -82,18 +85,17 @@ class CozyTouchResponseHandler {
 				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_URL, $device->deviceURL);
 				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_TYPEDEVICE, $device->uiClass);
 				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_SENSORS, array());
+				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_CONTROLLERNAME,$device->controllableName);
 				foreach ($device->states as $state)
 				{
-					if (in_array($state->name,CozyTouchDeviceStateName::$CTDS1_NAME)
-							|| in_array($state->name,CozyTouchDeviceStateName::$CTDS2_NAME)
-							|| in_array($state->name,CozyTouchDeviceStateName::$CTDS4_NAME)
-							|| in_array($state->name,CozyTouchDeviceStateName::$CTDS5_NAME))
+					if (in_array($state->name,CozyTouchDeviceStateName::$DEVICE_STATENAME[$device->uiClass]))
 					{
 						$vartmp = $deviceClss->getVar(CozyTouchDeviceInfo::CTDI_STATES);
 						$vartmp[] = $state;
 						$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_STATES,$vartmp);
 					}
 				}
+
 				if(substr($device->deviceURL, -1, 1)=="1")
 				{
 					$devices[explode("#",$device->deviceURL)[0]]=$deviceClss;
@@ -129,22 +131,22 @@ class CozyTouchResponseHandler {
 	
 		foreach($this->decodedBody->devices as $device) 
 		{
-			if(in_array(substr($device->deviceURL, -2, 2),CozyTouchDeviceToDisplay::$CTDTD_SUFFIXE))
-			{
+			// if(in_array(substr($device->deviceURL, -2, 2),CozyTouchDeviceToDisplay::$CTDTD_SUFFIXE))
+			// {
 				$deviceClss = new CozyTouchDevice(array());
 				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_URL, $device->deviceURL);
 				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_SENSORS, array());
 				foreach ($device->states as $state)
 				{
-					if (in_array($state->name,CozyTouchDeviceStateName::$CTDS1_NAME)
-							|| in_array($state->name,CozyTouchDeviceStateName::$CTDS2_NAME)
-							|| in_array($state->name,CozyTouchDeviceStateName::$CTDS4_NAME)
-							|| in_array($state->name,CozyTouchDeviceStateName::$CTDS5_NAME))
-					{
+					// if (in_array($state->name,CozyTouchDeviceStateName::$CTDS1_NAME)
+					// 		|| in_array($state->name,CozyTouchDeviceStateName::$CTDS2_NAME)
+					// 		|| in_array($state->name,CozyTouchDeviceStateName::$CTDS4_NAME)
+					// 		|| in_array($state->name,CozyTouchDeviceStateName::$CTDS5_NAME))
+					// {
 						$vartmp = $deviceClss->getVar(CozyTouchDeviceInfo::CTDI_STATES);
 						$vartmp[] = $state;
 						$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_STATES,$vartmp);
-					}
+					// }
 				}
 				if(substr($device->deviceURL, -1, 1)=="1")
 				{
@@ -160,7 +162,7 @@ class CozyTouchResponseHandler {
 						$devices[explode("#",$device->deviceURL)[0]]->setVar(CozyTouchDeviceInfo::CTDI_SENSORS, $sensors);
 					}
 				}
-			}
+			//}
 		}
 		$this->dataCollection = $devices;
 	}

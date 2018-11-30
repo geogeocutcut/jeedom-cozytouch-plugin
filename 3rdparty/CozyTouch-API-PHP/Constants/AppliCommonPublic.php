@@ -17,6 +17,7 @@ class CozyTouchDeviceInfo
     const CTDI_TYPEDEVICE = "uiClass";
     const CTDI_REFERENCE = "referenceURL";
 	const CTDI_OBJECT = "object";
+	const CTDI_CONTROLLERNAME = "controllerName";
 }
 
 class CozyTouchDeviceStateInfo
@@ -27,12 +28,46 @@ class CozyTouchDeviceStateInfo
 
 class CozyTouchDeviceToDisplay
 {
-	public static $CTDTD_CLASS = ["HeatingSystem","TemperatureSensor","OccupancySensor","ElectricitySensor"];
-	public static $CTDTD_SUFFIXE = ["#1","#2","#4","#5"];
+	public static $CTDTD_HEATINGSYSTEM = "HeatingSystem";
+	public static $CTDTD_WATERHEATINGSYSTEM = "WaterHeatingSystem";
+	public static $CTDTD_TEMPERATURESENSOR = "TemperatureSensor";
+	public static $CTDTD_OCCUPANCYSENSOR = "OccupancySensor";
+	public static $CTDTD_ELECTRICITYSENSOR = "ElectricitySensor";
+
+	public static $CTDTD_CLASS = [CTDTD_HEATINGSYSTEM,CTDTD_WATERHEATINGSYSTEM,CTDTD_TEMPERATURESENSOR,CTDTD_OCCUPANCYSENSOR,CTDTD_ELECTRICITYSENSOR];
+	//public static $CTDTD_SUFFIXE = ["#1","#2","#4","#5"];
 }
 
 class CozyTouchDeviceStateName
 {
+	public static $DEVICE_STATENAME = array(
+		CTDTD_HEATINGSYSTEM=>[
+			"core:NameState",
+			"core:OperatingModeState",
+			"core:OnOffState",
+			"io:TargetHeatingLevelState",
+			"core:TargetTemperatureState",
+			"core:ComfortRoomTemperatureState",
+			"core:EcoRoomTemperatureState",
+			"core:DerogatedTargetTemperatureState",
+			"io:EffectiveTemperatureSetpointState",
+			"io:TemperatureProbeCalibrationOffsetState"],
+		CTDTD_WATERHEATINGSYSTEM=>[
+			"core:NameState",
+			"core:TemperatureState",
+			"core:BoostModeDurationState",
+			"core:WaterConsumptionState",
+			"io:HeatPumpOperatingTimeState",
+			"io:DHWModeState",
+			"core:TargetTemperatureState",
+			"core:ManufacturerNameState"],
+		CTDTD_TEMPERATURESENSOR=>[
+			"core:TemperatureState"],
+		CTDTD_OCCUPANCYSENSOR=>[
+			"core:OccupancyState"],
+		CTDTD_ELECTRICITYSENSOR=>[
+			"core:ElectricEnergyConsumptionState"],
+	);
 	public static $CTDS1_NAME = [
 		"core:NameState",
 		"core:OperatingModeState",
@@ -65,7 +100,6 @@ class CozyTouchDeviceSensorInfo
 class CozyTouchDeviceActions
 {
 	const CTPC_SETMODE = "setOperatingMode"; // parameters : standby / basic / internal / external / auto
-	
 	const CTPC_SETTARGETTEMP = "setTargetTemperature"; //parameters : 18
 	const CTPC_SETDEROGTEMP = "setDerogatedTargetTemperature"; //parameters : 18
 	const CTPC_SETCOMTEMP = "setComfortTemperature"; //parameters : 18
@@ -81,7 +115,6 @@ class CozyTouchDeviceActions
 	const CTPC_RSHCOMTEMP = "refreshComfortTemperature"; //parameters : 18
 	const CTPC_RSHECOTEMP = "refreshEcoTemperature"; //parameters : 3,5  // => 18-3,5
 	const CTPC_RSHEFFTEMP = "refreshEffectiveTemperatureSetpoint"; //parameters : 3,5  // => 18-3,5
-	
 	const CTPC_RSHHEATINGLVL = "refreshHeatingLevel"; //parameters : eco, comfort
 	
 	
@@ -182,13 +215,13 @@ class CozyTouchDeviceActions
 	}] */
 }
 
-class CozyTouchPlaceDeviceState
-{
-	// core:OperatingModeState 
-	// core:TargetTemperatureState
-	const CTPDS_STATETEMP = "core:TargetTemperatureState"; //parameters : 18
-	const CTPDS_STATEMODE = "core:OperatingModeState "; // parameters : standby / basic / internal / external / auto
-}
+// class CozyTouchPlaceDeviceState
+// {
+// 	// core:OperatingModeState 
+// 	// core:TargetTemperatureState
+// 	const CTPDS_STATETEMP = "core:TargetTemperatureState"; //parameters : 18
+// 	const CTPDS_STATEMODE = "core:OperatingModeState "; // parameters : standby / basic / internal / external / auto
+// }
 
 
 

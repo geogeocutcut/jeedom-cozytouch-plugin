@@ -35,7 +35,7 @@ try {
         }
         ajax::success($return);
     }
-    // action qui permet d'effectuer la sauvegarde des donéée en asynchrone
+    // action qui permet d'effectuer la sauvegarde des données en asynchrone
     if (init('action') == 'saveStack') {
         $params = init('params');
         ajax::success(cozytouch::saveStack($params));
@@ -48,7 +48,10 @@ try {
 
     throw new Exception(__('Aucune methode correspondante à : ', __FILE__) . init('action'));
     /*     * *********Catch exeption*************** */
-} catch (Exception $e) {
+} 
+catch (Exception $e) {
+    log::add('cozytouch', 'error', 'Error page de configuration : '.$e->getMessage());
+			
     ajax::error(displayExeption($e), $e->getCode());
 }
 ?>

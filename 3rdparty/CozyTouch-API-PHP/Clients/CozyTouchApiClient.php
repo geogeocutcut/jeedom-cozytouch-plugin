@@ -1,4 +1,9 @@
 <?php
+require_once dirname(__FILE__) . '/../../../../../core/php/core.inc.php';
+
+if (!class_exists('CozyTouchServiceDiscovery')) {
+	require_once dirname(__FILE__) . "/../Constants/AppliCommonPublic.php";
+}
 
 if (!class_exists('CozyTouchResponseHandler')) {
 	require_once dirname(__FILE__) . "/../Handlers/CozyTouchResponseHandler.php";
@@ -6,7 +11,6 @@ if (!class_exists('CozyTouchResponseHandler')) {
 
 class CozyTouchApiClient
 {
-	protected $serviceUrl = 'https://ha110-1.overkiz.com/enduser-mobile-web/externalAPI/json/';
 	public $jsessionId ='';
 	
 	
@@ -25,8 +29,6 @@ class CozyTouchApiClient
 			$this->userId=$params['userId'];
 		if(array_key_exists ( 'userPassword', $params )==true)
 			$this->userPassword=$params['userPassword'];
-		if(array_key_exists ( 'serviceUrl', $params )==true)
-			$this->service_url=$params['serviceUrl'];
 		$this->getJSessionId();
 		
 	}
@@ -37,25 +39,27 @@ class CozyTouchApiClient
 				'userPassword' => $this->userPassword
 		);
 		$opts = self::$CURL_OPTS;
-		$curl_response = $this->makeRequest('login','POST',$post_data,TRUE);
+		$curl_response = $this->makeRequest("login",'POST',$post_data,TRUE);
 		
 		preg_match("/JSESSIONID=\\w{32}/u", $curl_response, $jsessionid);
 		
 		$this->jsessionId = implode($jsessionid);
 	}
 	
-	public function makeRequest($path, $method = 'GET', $data = array(),$header = FALSE,$format_JSON=FALSE){
+	public function makeRequest($route, $method = 'GET', $data = array(),$header = FALSE,$format_JSON=FALSE){
 		$ch = curl_init();
 		$opts = self::$CURL_OPTS;
+		$url=CozyTouchServiceDiscovery::Resolve($route);
 		if ($data)
 		{
 			switch ($method)
 			{
 				case 'GET':
-					$path .= '?' . http_build_query($data, NULL, '&');
+					$url=CozyTouchServiceDiscovery::Resolve($route,$data);
 					break;
 					// Method override as we always do a POST.
 				default:
+					$url=CozyTouchServiceDiscovery::Resolve($route);
 					if($format_JSON)
 					{
 						$opts[CURLOPT_POSTFIELDS] = json_encode($data);
@@ -67,7 +71,7 @@ class CozyTouchApiClient
 					break;
 			}
 		}
-		$opts[CURLOPT_URL] = $this->serviceUrl.$path;
+		$opts[CURLOPT_URL] = $url;
 		$opts[CURLOPT_HTTPHEADER][]='Cookie: '.$this->jsessionId;
 		$opts[CURLOPT_HEADER] = $header;
 		curl_setopt_array($ch, $opts);
@@ -81,16 +85,32 @@ class CozyTouchApiClient
 		{
 			//die('Not Authorised');
 		}
-		$curl_response = $this->makeRequest('getSetup','GET');
+		$curl_response = $this->makeRequest('setup','GET');
 		if (!$curl_response)
 		{
 			//die('error occured');
 		}
 		$result_arr = json_decode($curl_response);
-		return new CozyTouchResponseHandler($result_arr);
+
+		return (new CozyTouchResponseHandler($result_arr))->getData('setup');
 		
 	}
+
+	public function applyCommand($post_data=array()) {
+		if($this->jsessionId=='')
+		{
+			//die('Not Authorised');
+		}
+		$curl_response = $this->makeRequest('apply','POST',$post_data,false,true);
+		if (!$curl_response)
+		{
+			//die('error occured');
+		}
+		$result_arr = json_decode($curl_response);
 	
+	}
+
+	/*** */
 	public function getStates($post_data=array()) {
 		if($this->jsessionId=='')
 		{
@@ -105,19 +125,7 @@ class CozyTouchApiClient
 		return new CozyTouchResponseHandler($result_arr);
 	}
 	
-	public function applyCommand($post_data=array()) {
-		if($this->jsessionId=='')
-		{
-			//die('Not Authorised');
-		}
-		$curl_response = $this->makeRequest('apply','POST',$post_data,false,true);
-		if (!$curl_response)
-		{
-			//die('error occured');
-		}
-		$result_arr = json_decode($curl_response);
 	
-	}
 }
 
 ?>

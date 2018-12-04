@@ -235,7 +235,7 @@ class CozyTouchDeviceActions
 	const SET_BASIC = "setBasicMode";
 	const SET_EXTERNAL = "setExternalMode";
 	const SET_INTERNAL = "setInternalMode";
-	const DEVICE_ACTIONS = [
+	const EQLOGIC_ACTIONS = [
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATER=>[
 			self::SET_STANDBY,
 			self::SET_BASIC,

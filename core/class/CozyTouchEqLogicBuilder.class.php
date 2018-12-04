@@ -25,9 +25,25 @@ class CozyTouchEqLogicBuilder
                     $dashboard =$subType=="numeric"?'tile':($subType=="string"?'badge':'');
                     $mobile =$subType=="numeric"?'tile':($subType=="string"?'badge':'');
                     $value =$subType=="numeric"?0:($subType=="string"?'value':0);
-                    self::upsertCommand($eqLogic,$cmdId,$type,$subType,$name,1,$value,$dashboard,$mobile,$i);
+                    self::upsertCommand($eqLogic,$cmdId,$type,$subType,$name,1,$value,$dashboard,$mobile,$i+1);
                 }
-            }
+			}
+			
+			$actions = CozyTouchDeviceActions::EQLOGIC_ACTIONS[$device->getVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME)];
+			if(!empty($actions) && is_array($actions))
+            {
+                for($i=0;$i<count($actions);$i++)
+                {
+                    log::add('cozytouch', 'info', 'action : '.$actions[$i]);
+        
+                    $cmdId = $actions[$i];
+                    $type ="action";
+                    $subType = "other";
+                    $name = __(CozyTouchDeviceActions::ACTION_LABEL[$actions[$i]], __FILE__);
+                    
+                    self::upsertCommand($eqLogic,$cmdId,$type,$subType,$name,1,'');
+                }
+			}
         }
     }
     public static function BuildAtlanticHeatSystem($eqLogic,$device)
@@ -52,7 +68,6 @@ class CozyTouchEqLogicBuilder
     	$order->setUnite('°C');
     	$order->setConfiguration('maxValue', $eqLogic->getConfiguration('order_max'));
         $order->setConfiguration('minValue', $eqLogic->getConfiguration('order_min'));
-    	$order->setIsVisible(1);
     	$order->save();
     	
     	$thermostat = $eqLogic->getCmd(null, 'cozytouchThermostat');
@@ -71,6 +86,7 @@ class CozyTouchEqLogicBuilder
     	$thermostat->setTemplate('mobile', 'thermostat');
     	$thermostat->setIsVisible(1);
 		$thermostat->setValue($order->getId());
+		$thermostat->setOrder(99);
     	$thermostat->save();
     }
 

@@ -1,0 +1,32 @@
+<div class="cmd cmd-widget" data-type="action" data-subtype="slider" data-cmd_id="#id#" data-cmd_uid="#uid#" style="width : 130px;height : 100px;display : block;">
+    <span id="iconCmd#uid#" class="pull-left" style="position : relative;font-size: 5em;height:100px;"></span>
+    <div>
+        <div style="margin-top : 5px;">
+            <input type="text" class="dial" data-role="none" value="#state#" data-min="#minValue#" data-max="#maxValue#" data-width="90" data-height="90" />
+        </div>
+        <div style="position: relative; top: -22px; left : 44px;">
+            #unite#
+        </div>
+    </div>
+    <script>
+        $.include(['plugins/widget/core/template/mobile/cmd.action.slider.thermostat/jquery.kontrol.js'], function() {
+            $(".cmd[data-cmd_uid=#uid#] .dial").dial({
+                fgColor: "#FFFFFF",
+                bgColor: '#cmdColor#',
+                noScroll: true,
+                change: function(v) {
+                    jeedom.cmd.execute({id: '#id#', value: {slider: v}});
+                }
+            });
+            if (parseInt('#state#') > 21) {
+                $('#iconCmd#uid#').append('<i class="icon jeedom-thermo-chaud"></i>');
+            }
+            if (parseInt('#state#') >= 19 && parseInt('#state#') <= 21) {
+                $('#iconCmd#uid#').append('<i class="icon jeedom-thermo-moyen"></i>');
+            }
+            if (parseInt('#state#') < 19) {
+                $('#iconCmd#uid#').append('<i class="icon jeedom-thermo-froid"></i>');
+            }
+        });
+    </script>
+</div>

@@ -235,19 +235,22 @@ class CozyTouchDeviceActions
 	const SET_BASIC = "setBasicMode";
 	const SET_EXTERNAL = "setExternalMode";
 	const SET_INTERNAL = "setInternalMode";
+	const SET_AUTO = "setAutoMode";
 	const EQLOGIC_ACTIONS = [
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATER=>[
 			self::SET_STANDBY,
 			self::SET_BASIC,
 			self::SET_EXTERNAL,
-			self::SET_INTERNAL
+			self::SET_INTERNAL,
+			self::SET_AUTO
 		]
 	];
 	const ACTION_LABEL = [
 		self::SET_STANDBY=>"StandBy",
 		self::SET_BASIC=>"Basic",
 		self::SET_EXTERNAL=>"Externe",
-		self::SET_INTERNAL=>"Interne"
+		self::SET_INTERNAL=>"Interne",
+		self::SET_AUTO=>"Auto"
 	];
 }
 

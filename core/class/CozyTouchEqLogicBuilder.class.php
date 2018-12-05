@@ -87,7 +87,16 @@ class CozyTouchEqLogicBuilder
     	$thermostat->setIsVisible(1);
 		$thermostat->setValue($order->getId());
 		$thermostat->setOrder(99);
-    	$thermostat->save();
+		$thermostat->save();
+		
+
+		
+    	if ($eqLogic->getConfiguration('order_max') === '') {
+    		$eqLogic->setConfiguration('order_max', 28);
+    	}
+    	if ($eqLogic->getConfiguration('order_min') === '') {
+    		$eqLogic->setConfiguration('order_min', 12);
+    	}
     }
 
     public static function BuildAtlanticHotWater($eqLogic,$device)

@@ -1,9 +1,16 @@
 <?php
 class CozyTouchDeviceExecute
 {
-    protected static function genericApplyCommand($device_url,$cmds)
+    public $eqLogic = null;
+
+    public function __construct($eqLogic) 
+    {
+        $this->eqLogic= $eqLogic;
+    }
+    
+    protected function genericApplyCommand($cmds)
 	{
-	
+        $device_url=$this->eqLogic->getConfiguration('device_url');
 		$actions = array();
 
         $action = new CozyTouchAction();
@@ -28,8 +35,8 @@ class CozyTouchDeviceExecute
 		$commandsMsg->label= "Mise a jour du device";
 		$commandsMsg->actions=$actions;
 	
-		$clientApi = $eqLogic->getClient();
-		$post_data = $commandsMsg;//'setOperatingMode'
+		$clientApi = $this->eqLogic->getClient();
+		$post_data = $commandsMsg;
 		$clientApi->applyCommand($post_data);
 	}
 }

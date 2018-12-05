@@ -12,7 +12,7 @@ if (!class_exists('CozyTouchResponseHandler')) {
 class CozyTouchApiClient
 {
 	public $jsessionId ='';
-	
+
 	
 	public static $CURL_OPTS = array(
 			CURLOPT_CONNECTTIMEOUT => 10,
@@ -111,18 +111,18 @@ class CozyTouchApiClient
 	}
 
 	/*** */
-	public function getStates($post_data=array()) {
+	public function getDevices($post_data=array()) {
 		if($this->jsessionId=='')
 		{
 			//die('Not Authorised');
 		}
-		$curl_response = $this->makeRequest('getStates','POST',$post_data,false,true);
+		$curl_response = $this->makeRequest('devices','GET');
 		if (!$curl_response)
 		{
 			//die('error occured');
 		}
 		$result_arr = json_decode($curl_response);
-		return new CozyTouchResponseHandler($result_arr);
+		return (new CozyTouchResponseHandler($result_arr))->getData('devices');
 	}
 	
 	

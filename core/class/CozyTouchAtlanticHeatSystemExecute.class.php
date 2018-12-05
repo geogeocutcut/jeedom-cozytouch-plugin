@@ -3,10 +3,15 @@ require_once dirname(__FILE__) . '/../../../../../core/php/core.inc.php';
 
 class CozyTouchAtlanticHeatSystemExecute extends CozyTouchDeviceExecute
 {
-    public static function execute($cmd,$_options= array())
+	
+	public function __construct($eqLogic) 
+	{
+		parent::__construct($eqLogic);
+	} 
+
+    public function execute($cmd,$_options= array())
     {
-		$eqLogic = $cmd->getEqLogic();
-		$device_url=$eqLogic->getConfiguration('device_url');
+		$device_url=$this->eqLogic->getConfiguration('device_url');
         switch($cmd->getLogicalId())
         {
     		case 'refresh':
@@ -31,11 +36,13 @@ class CozyTouchAtlanticHeatSystemExecute extends CozyTouchDeviceExecute
 
     		case CozyTouchDeviceActions::SET_AUTO:
                 self::setOperationMode($device_url,'auto');
-    			break;
-    		case 'setTargetTemperature':
+				break;
+				
+    		case CozyTouchDeviceActions::SET_TARGETTEMP:
                 self::setTargetTemperature($device_url);
-    			break;
-    		case 'cozytouchThermostat':
+				break;
+				
+    		case CozyTouchDeviceActions::SET_THERMOSTAT:
     			$min = $cmd->getConfiguration('minValue');
     			$max = $cmd->getConfiguration('maxValue');
     			if (!isset($_options['slider']) || $_options['slider'] == '' || !is_numeric(intval($_options['slider']))) {
@@ -47,14 +54,14 @@ class CozyTouchAtlanticHeatSystemExecute extends CozyTouchDeviceExecute
     			if ($_options['slider'] < $min) {
     				$_options['slider'] = $min;
     			}
-    			$eqLogic->getCmd(null, 'order')->event($_options['slider']);
+    			$this->eqLogic->getCmd(null, 'order')->event($_options['slider']);
     			
     			self::setTemperature($device_url,floatval($_options['slider']));
     			break;
         }
     }
 
-    public function setOperationMode(value)
+    public function setOperationMode($value)
 	{
         //$this->cancelHeatingLevel();
         $cmds = array(
@@ -67,7 +74,7 @@ class CozyTouchAtlanticHeatSystemExecute extends CozyTouchDeviceExecute
                     "values"=>null
             )
         );
-        parent::genericApplyCommand($device_url,$cmds);
+        $this->genericApplyCommand($device_url,$cmds);
         
         $cmds = array(
             array(
@@ -75,7 +82,7 @@ class CozyTouchAtlanticHeatSystemExecute extends CozyTouchDeviceExecute
                     "values"=>null
             )
         );
-        parent::genericApplyCommand($device_url,$cmds);
+        $this->genericApplyCommand($device_url,$cmds);
         
         $cmds = array(
             array(
@@ -83,7 +90,7 @@ class CozyTouchAtlanticHeatSystemExecute extends CozyTouchDeviceExecute
                     "values"=>null
             )
         );
-        parent::genericApplyCommand($device_url,$cmds);
+        $this->genericApplyCommand($device_url,$cmds);
     }
     
     public function refreshHeatingLevel($device_url)
@@ -95,7 +102,7 @@ class CozyTouchAtlanticHeatSystemExecute extends CozyTouchDeviceExecute
                     "values"=>null
             )
 		);
-		parent::genericApplyCommand($device_url,$cmds);
+		$this->genericApplyCommand($device_url,$cmds);
 			
 		$cmds = array(
             array(
@@ -103,9 +110,119 @@ class CozyTouchAtlanticHeatSystemExecute extends CozyTouchDeviceExecute
                     "values"=>null
             )
 		);
-		parent::genericApplyCommand($device_url,$cmds);
+		$this->genericApplyCommand($device_url,$cmds);
 	}
 	
+	public function setTargetTemperature($device_url,$value)
+	{
+		log::add('cozytouch', 'info', __('set target temperature ', __FILE__).$value);
+		$cmds = array(
+            array(
+                    "name"=>CozyTouchDeviceActions::CTPC_SETTARGETTEMP,
+                    "values"=>$value
+            ),
+            array(
+                    "name"=>CozyTouchDeviceActions::CTPC_RSHTARGETTEMP,
+                    "values"=>null
+            )
+		);
+        $this->genericApplyCommand($device_url,$cmds);
+		
+		$cmds = array(
+            array(
+                    "name"=>CozyTouchDeviceActions::CTPC_RSHEFFTEMP,
+                    "values"=>null
+            )
+		);
+		$this->genericApplyCommand($device_url,$cmds);
+	}
+	
+	public function setDerogatedTargetTemperature($device_url,$value)
+	{
+		$cmds = array(
+            array(
+                    "name"=>CozyTouchDeviceActions::CTPC_SETDEROGTEMP,
+                    "values"=>$value
+            ),
+            array(
+                    "name"=>CozyTouchDeviceActions::CTPC_RSHDEROGTEMP,
+                    "values"=>null
+            )
+		);
+        $this->genericApplyCommand($device_url,$cmds);
+		
+		$cmds = array(
+            array(
+                    "name"=>CozyTouchDeviceActions::CTPC_RSHEFFTEMP,
+                    "values"=>null
+            )
+		);
+		$this->genericApplyCommand($device_url,$cmds);
+	}
+	
+	public function setComfortTemperature($device_url,$value)
+	{
+		$cmds = array(
+            array(
+                    "name"=>CozyTouchDeviceActions::CTPC_SETCOMTEMP,
+                    "values"=>$value
+            ),
+            array(
+                    "name"=>CozyTouchDeviceActions::CTPC_RSHCOMTEMP,
+                    "values"=>null
+            )
+		);
+        $this->genericApplyCommand($device_url,$cmds);
+	}
+	
+	public function setEcoTemperature($device_url,$value)
+	{
+		$cmds = array(
+            array(
+                    "name"=>CozyTouchDeviceActions::CTPC_SETECOTEMP,
+                    "values"=>$value
+            ),
+            array(
+                    "name"=>CozyTouchDeviceActions::CTPC_RSHECOTEMP,
+                    "values"=>null
+            )
+		);
+        $this->genericApplyCommand($device_url,$cmds);
+		
+    }
+    
+    public function cancelHeatingLevel($device_url,$value='comfort')
+	{
+		$cmds = array(
+            array(
+                    "name"=>CozyTouchDeviceActions::CTPC_CANCELHEATINGLVL,
+                    "values"=>$value
+            ),
+            array(
+                    "name"=>CozyTouchDeviceActions::CTPC_RSHHEATINGLVL,
+                    "values"=>null
+            )
+		);
+		$this->genericApplyCommand($device_url,$cmds);
+	}
+	
+	public function setHeatingLevel($device_url,$value)
+	{
+		$cmds = array(
+            array(
+                    "name"=>CozyTouchDeviceActions::CTPC_SETHEATINGLVL,
+                    "values"=>$value
+            ),
+            array(
+                    "name"=>CozyTouchDeviceActions::CTPC_RSHHEATINGLVL,
+                    "values"=>null
+            )
+        );
+		$this->genericApplyCommand($device_url,$cmds);
+    }
+
+
+
 	public function setTemperature($device_url,$value)
 	{
 		$list_device = $this->getConfiguration('devices_list');
@@ -125,157 +242,24 @@ class CozyTouchAtlanticHeatSystemExecute extends CozyTouchDeviceExecute
 				
 		if($mode=='eco')
 		{
-			parent::setDerogatedTargetTemperature($value);
+			$this->setDerogatedTargetTemperature($value);
 		}
 		else
 		{
-			parent::setTargetTemperature($value);
+			$this->setTargetTemperature($value);
 		}
 	}
 	
-	public function setTargetTemperature($device_url,$value)
-	{
-		log::add('cozytouch', 'info', __('Tmp ', __FILE__).$value);
-		$cmds = array(
-            array(
-                    "name"=>CozyTouchDeviceActions::CTPC_SETTARGETTEMP,
-                    "values"=>$value
-            ),
-            array(
-                    "name"=>CozyTouchDeviceActions::CTPC_RSHTARGETTEMP,
-                    "values"=>null
-            )
-		);
-        parent::genericApplyCommand($device_url,$cmds);
-		
-		$cmds = array(
-            array(
-                    "name"=>CozyTouchDeviceActions::CTPC_RSHEFFTEMP,
-                    "values"=>null
-            )
-		);
-		parent::genericApplyCommand($device_url,$cmds);
-	}
 	
-	public function setDerogatedTargetTemperature($device_url,$value)
-	{
-		$cmds = array(
-            array(
-                    "name"=>CozyTouchDeviceActions::CTPC_SETDEROGTEMP,
-                    "values"=>$value
-            ),
-            array(
-                    "name"=>CozyTouchDeviceActions::CTPC_RSHDEROGTEMP,
-                    "values"=>null
-            )
-		);
-        parent::genericApplyCommand($device_url,$cmds);
-		
-		$cmds = array(
-            array(
-                    "name"=>CozyTouchDeviceActions::CTPC_RSHEFFTEMP,
-                    "values"=>null
-            )
-		);
-		parent::genericApplyCommand($device_url,$cmds);
-	}
-	
-	public function setComfortTemperature($device_url,$value)
-	{
-		$cmds = array(
-            array(
-                    "name"=>CozyTouchDeviceActions::CTPC_SETCOMTEMP,
-                    "values"=>$value
-            ),
-            array(
-                    "name"=>CozyTouchDeviceActions::CTPC_RSHCOMTEMP,
-                    "values"=>null
-            )
-		);
-        parent::genericApplyCommand($device_url,$cmds);
-	}
-	
-	public function setEcoTemperature($device_url,$value)
-	{
-		$cmds = array(
-            array(
-                    "name"=>CozyTouchDeviceActions::CTPC_SETECOTEMP,
-                    "values"=>$value
-            ),
-            array(
-                    "name"=>CozyTouchDeviceActions::CTPC_RSHECOTEMP,
-                    "values"=>null
-            )
-		);
-        parent::genericApplyCommand($device_url,$cmds);
-		
-    }
-    
-    public function cancelHeatingLevel($device_url,$value='comfort')
-	{
-		$cmds = array(
-            array(
-                    "name"=>CozyTouchDeviceActions::CTPC_CANCELHEATINGLVL,
-                    "values"=>$value
-            ),
-            array(
-                    "name"=>CozyTouchDeviceActions::CTPC_RSHHEATINGLVL,
-                    "values"=>null
-            )
-		);
-		parent::genericApplyCommand($device_url,$cmds);
-	}
-	
-	public function setHeatingLevel($device_url,$value)
-	{
-		$cmds = array(
-            array(
-                    "name"=>CozyTouchDeviceActions::CTPC_SETHEATINGLVL,
-                    "values"=>$value
-            ),
-            array(
-                    "name"=>CozyTouchDeviceActions::CTPC_RSHHEATINGLVL,
-                    "values"=>null
-            )
-        );
-		parent::genericApplyCommand($device_url,$cmds);
-    }
     
     
     
-    public static function refresh_all() {
+	public static function refresh_all() 
+	{
     	try {
     		
-    		$devicesCmd=array();
-    		
-    		// construct post data json
-    		$placeEqs = eqLogic::byType('cozytouch',true);
-    		foreach($placeEqs as $placeEq)
-    		{
-    			$placeEq->refreshHeatingLevel();
-    			$list_device = $placeEq->getConfiguration('devices_list');
-    			foreach($list_device as $urlLong => $urlShort)
-    			{
-    				foreach(CozyTouchDeviceToDisplay::$CTDTD_SUFFIXE as $extension)
-    				{
-    					$deviceCmd = new CozyTouchDeviceCommand();
-    					$deviceCmd->deviceURL=$urlShort.$extension;
-    					foreach (self::getListState($extension) as $stateName)
-    					{
-    						$stateCmd = new CozyTouchStateCommand();
-    						$stateCmd->name = $stateName;
-    						$deviceCmd->states[]=$stateCmd;
-    					}
-    					$devicesCmd[]=$deviceCmd;
-    				}
-    			}
-    		}
-    		
     		$clientApi = self::getClient();
-    		
-    		
-    		$post_data = $devicesCmd;
-    		$resp = $clientApi->getStates($post_data);
+    		$resp = $clientApi->getDevices();
 			$devices = $resp->getData();
 			foreach ($devices as $device)
 			{
@@ -283,13 +267,11 @@ class CozyTouchAtlanticHeatSystemExecute extends CozyTouchDeviceExecute
 				// state du device
 				foreach ($device->getStates() as $state)
 				{
-					//echo "  ".$state->name." : ".$state->value."<br>";
-
-					$cmd_array = Cmd::byLogicalId($urlShort."_".$state->name);
+					$cmd_array = Cmd::byLogicalId($urlShort.$state->name);
 					if(is_array($cmd_array) && $cmd_array!=null)
 					{
 						$cmd=$cmd_array[0];
-						if($state->name=='core:OnOffState')
+						if($state->name==CozyTouchStateName::CTSN_ONOFF)
 						{
 							$value = ($state->value=='on');
 						}
@@ -311,13 +293,11 @@ class CozyTouchAtlanticHeatSystemExecute extends CozyTouchDeviceExecute
 					// state du capteur
 					foreach ($sensor->getStates() as $state)
 					{
-						//echo "  ".$state->name." : ".$state->value."<br>";
-
-						$cmd_array = Cmd::byLogicalId($urlShort."_".$state->name);
+						$cmd_array = Cmd::byLogicalId($urlShort.$state->name);
 						if(is_array($cmd_array) && $cmd_array!=null)
 						{
 							$cmd=$cmd_array[0];
-							if($state->name=='core:OccupancyState')
+							if($state->name==CozyTouchStateName::CTSN_OCCUPANCY)
 							{
 								$value = ($state->value=='noPersonInside');
 							}
@@ -334,7 +314,7 @@ class CozyTouchAtlanticHeatSystemExecute extends CozyTouchDeviceExecute
 				}
 			}
 			
-			parent::refresh_thermostat($placeEqs);
+			$this->refresh_thermostat($placeEqs);
 			
     		
         } 
@@ -343,11 +323,11 @@ class CozyTouchAtlanticHeatSystemExecute extends CozyTouchDeviceExecute
     	}
     }
     
-    public function refresh_place() 
+    public function refresh_eqLogic() 
     {
     	try {
 
-    		parent::refreshHeatingLevel();
+    		$this->refreshHeatingLevel();
     		
     		$devicesCmd=array();
     
@@ -440,56 +420,48 @@ class CozyTouchAtlanticHeatSystemExecute extends CozyTouchDeviceExecute
     	}
     }
     
-    public static function refresh_thermostat($placeEqs) 
+    public function refresh_thermostat($eqDevices) 
     {
-    	foreach($placeEqs as $placeEq)
+    	foreach($eqDevices as $eqDevice)
     	{
-    		$list_device = $placeEq->getConfiguration('devices_list');
-    		$mode='';
     		$valuetmp = array();
-    	
-    		foreach($list_device as $urlLong => $urlShort)
-    		{
-    			$cmd_array = Cmd::byLogicalId($urlShort."_io:TargetHeatingLevelState");
-    			if(is_array($cmd_array) && $cmd_array!=null)
-    			{
-    				$cmd=$cmd_array[0];
-    				$mode=$cmd->execCmd();
-    			}
-    				
-    			$cmd_array = Cmd::byLogicalId($urlShort."_core:TargetTemperatureState");
-    			if(is_array($cmd_array) && $cmd_array!=null)
-    			{
-    				$cmd=$cmd_array[0];
-    				$valuetmp['cible']=$cmd->execCmd();
-    			}
-    			
-    			$cmd_array = Cmd::byLogicalId($urlShort."_core:EcoRoomTemperatureState");
-    			if(is_array($cmd_array) && $cmd_array!=null)
-    			{
-    				$cmd=$cmd_array[0];
-    				$valuetmp['eco']=$cmd->execCmd();
-    			}
-    				
-    			$cmd_array = Cmd::byLogicalId($urlShort."_core:DerogatedTargetTemperatureState");
-    			if(is_array($cmd_array) && $cmd_array!=null)
-    			{
-    				$cmd=$cmd_array[0];
-    				$valuetmp['derogation']=$cmd->execCmd();
-    			}
-    				
-    			$cmd_array = Cmd::byLogicalId($urlShort."_io:EffectiveTemperatureSetpointState");
-    			if(is_array($cmd_array) && $cmd_array!=null)
-    			{
-    				$cmd=$cmd_array[0];
-    				$valuetmp['effective']=$cmd->execCmd();
-    			}
-    				
-    			break;
-    		}
+			$urlShort = explode("#",$device->getURL())[0];
+			
+			$cmd_array = Cmd::byLogicalId($urlShort.CozyTouchStateName::CTSN_TARGETHEATLEVEL);
+			if(is_array($cmd_array) && $cmd_array!=null)
+			{
+				$cmd=$cmd_array[0];
+				$mode=$cmd->execCmd();
+			}
+				
+			$cmd_array = Cmd::byLogicalId($urlShort.CozyTouchStateName::CTSN_TARGETEMP);
+			if(is_array($cmd_array) && $cmd_array!=null)
+			{
+				$cmd=$cmd_array[0];
+				$valuetmp['cible']=$cmd->execCmd();
+			}
+			
+			$cmd_array = Cmd::byLogicalId($urlShort.CozyTouchStateName::CTSN_ECOROOMTEMP);
+			if(is_array($cmd_array) && $cmd_array!=null)
+			{
+				$cmd=$cmd_array[0];
+				$valuetmp['eco']=$cmd->execCmd();
+			}
+				
+			$cmd_array = Cmd::byLogicalId($urlShort.CozyTouchStateName::CTSN_DEROGTARGETTEMP);
+			if(is_array($cmd_array) && $cmd_array!=null)
+			{
+				$cmd=$cmd_array[0];
+				$valuetmp['derogation']=$cmd->execCmd();
+			}
+				
+			$cmd_array = Cmd::byLogicalId($urlShort.CozyTouchStateName::CTSN_EFFTEMPSETPOINT);
+			if(is_array($cmd_array) && $cmd_array!=null)
+			{
+				$cmd=$cmd_array[0];
+				$valuetmp['effective']=$cmd->execCmd();
+			}
 
-    		log::add('cozytouch', 'info', __('eq Id ', __FILE__).$placeEq->getId());
-    			
 			$cmd=Cmd::byEqLogicIdAndLogicalId($placeEq->getId(),'order');
     		if (is_object($cmd)) {
     			if($mode=='eco')
@@ -518,6 +490,5 @@ class CozyTouchAtlanticHeatSystemExecute extends CozyTouchDeviceExecute
     		}
     	}
     }
-
 }
 ?>

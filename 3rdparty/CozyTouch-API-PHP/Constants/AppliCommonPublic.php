@@ -236,6 +236,8 @@ class CozyTouchDeviceActions
 	const SET_EXTERNAL = "setExternalMode";
 	const SET_INTERNAL = "setInternalMode";
 	const SET_AUTO = "setAutoMode";
+	const SET_TARGETTEMP ="setTargetTemperature";
+	const SET_THERMOSTAT ='cozytouchThermostat';
 	const EQLOGIC_ACTIONS = [
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATER=>[
 			self::SET_STANDBY,

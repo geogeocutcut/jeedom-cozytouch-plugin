@@ -194,7 +194,7 @@ class CozyTouchResponseHandler {
 				}
 			}
 		}
-		$this->dataCollection = $devices;
+		return $devices;
 	}
 
 

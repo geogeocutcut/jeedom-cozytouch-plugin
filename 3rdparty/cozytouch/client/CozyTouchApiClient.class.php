@@ -2,11 +2,11 @@
 require_once dirname(__FILE__) . '/../../../../../core/php/core.inc.php';
 
 if (!class_exists('CozyTouchServiceDiscovery')) {
-	require_once dirname(__FILE__) . "/../Constants/AppliCommonPublic.php";
+	require_once dirname(__FILE__) . "/../constants/CozyTouchServiceDiscovery.php";
 }
 
 if (!class_exists('CozyTouchResponseHandler')) {
-	require_once dirname(__FILE__) . "/../Handlers/CozyTouchResponseHandler.php";
+	require_once dirname(__FILE__) . "/../handlers/CozyTouchResponseHandler.php";
 }
 
 class CozyTouchApiClient

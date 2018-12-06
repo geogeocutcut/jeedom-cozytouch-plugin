@@ -1,4 +1,8 @@
 <?php
+if (!class_exists('CozyTouchApiClient')) {
+	require_once dirname(__FILE__) . "/../../3rdparty/cozytouch/client/CozyTouchApiClient.class.php";
+}
+
 class CozyTouchManager
 {
     private static $_client = null;
@@ -17,9 +21,14 @@ class CozyTouchManager
 
     public static function syncWithCozyTouch() 
 	{
+	}
+	
+	public static function syncWithCozyTouch2() 
+	{
+		log::add('cozytouch', 'info', 'cron non existant : creation en cours cron');
 		$client = self::getClient();
 		$devices = $client->getSetup();
-		log::add('cozytouch', 'debug', 'Recupération des données ok '); 
+		log::add('cozytouch', 'debug', 'RecupÃ©ration des donnÃ©es ok '); 
 
         foreach ($devices as $device) 
         {

@@ -18,27 +18,8 @@
 
 /******************************* Includes *******************************/ 
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
-if (!class_exists('CozyTouchApiClient')) {
-	require_once dirname(__FILE__) . '/../../3rdparty/CozyTouch-API-PHP/Clients/CozyTouchApiClient.php';
-}
-if (!class_exists('CozyTouchAction')) {
-	require_once dirname(__FILE__) . '/../../3rdparty/CozyTouch-API-PHP/Objects/CozyTouchAction.php';
-}
-if (!class_exists('CozyTouchCommand')) {
-	require_once dirname(__FILE__) . '/../../3rdparty/CozyTouch-API-PHP/Objects/CozyTouchCommand.php';
-}
-if (!class_exists('CozyTouchCommands')) {
-	require_once dirname(__FILE__) . '/../../3rdparty/CozyTouch-API-PHP/Objects/CozyTouchCommands.php';
-}
-if (!class_exists('CozyTouchDeviceCommand')) {
-	require_once dirname(__FILE__) . '/../../3rdparty/CozyTouch-API-PHP/Objects/CozyTouchDeviceCommand.php';
-}
-if (!class_exists('CozyTouchStateCommand')) {
-	require_once dirname(__FILE__) . '/../../3rdparty/CozyTouch-API-PHP/Objects/CozyTouchStateCommand.php';
-}
-if (!class_exists('CozyTouchEqLogicBuilder')) {
-	require_once dirname(__FILE__) . '/CozyTouchEqLogicBuilder.class.php';
-}
+
+
 
 class cozytouch extends eqLogic {
     /******************************* Attributs *******************************/ 

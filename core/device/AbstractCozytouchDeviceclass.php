@@ -1,17 +1,34 @@
 <?php
-if (!class_exists('CozyTouchDeviceStateName')) {
-	require_once dirname(__FILE__) . '/../../3rdparty/CozyTouch-API-PHP/Constants/AppliCommonPublic.php';
-}
-class CozyTouchEqLogicBuilder
+class AbstractCozytouchDevice
 {
-    public static function BuildDefaultDevice($eqLogic,$device)
+    
+    
+    public static function BuildDefaultEqLogic($device)
     {
+        $eqLogic = eqLogic::byLogicalId($device->getVar('oid'), 'cozytouch');
+        if (!is_object($eqLogic)) {
+            log::add('cozytouch', 'info', 'Device '.$device->getVar('oid').' non existant : creation en cours');
+            $eqLogic = new eqLogic();
+            $eqLogic->setEqType_name('cozytouch');
+            $eqLogic->setIsEnable(1);
+            $eqLogic->setName($device->getVar(CozyTouchDeviceInfo::CTDI_LABEL));
+            $eqLogic->setLogicalId($device->getVar(CozyTouchDeviceInfo::CTDI_OID));
+
+            $eqLogic->setConfiguration('type_device', $device->getVar(CozyTouchDeviceInfo::CTDI_TYPEDEVICE));
+            $eqLogic->setConfiguration('device_model', $device->getVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME));
+            $eqLogic->setConfiguration('device_url', $device->getVar(CozyTouchDeviceInfo::CTDI_URL));
+
+            $eqLogic->setCategory('heating', 1);
+            $eqLogic->setIsVisible(1);
+
+            $eqLogic->save();
+        }
         $deviceURL = $device->getURL();
         $deviceURLShort = explode("#",$device->getURL())[0];
         if(!empty($deviceURLShort))
         {
             log::add('cozytouch', 'info', 'State : '.$device->getVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME));
-            $states =CozyTouchDeviceStateName::EQLOGIC_STATENAME[$device->getVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME)];
+            $states = CozyTouchDeviceStateName::EQLOGIC_STATENAME[$device->getVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME)];
             if(!empty($states) && is_array($states))
             {
                 for($i=0;$i<count($states);$i++)
@@ -45,64 +62,8 @@ class CozyTouchEqLogicBuilder
                 }
 			}
         }
-    }
-    public static function BuildAtlanticHeatSystem($eqLogic,$device)
-    {
-        log::add('cozytouch', 'info', 'creation (ou mise à jour) '.$device->getVar(CozyTouchDeviceInfo::CTDI_LABEL));
-        self::BuildDefaultDevice($eqLogic,$device);
-        log::add('cozytouch', 'info', 'creation ou update thermostat');
 
-    	$order = $eqLogic->getCmd(null, 'order');
-
-    	if (!is_object($order)) {
-    		$order = new cozytouchCmd();
-    		$order->setIsVisible(0);
-    	}
-
-    	$order->setEqLogic_id($eqLogic->getId());
-    	$order->setName(__('Consigne', __FILE__));
-    	$order->setType('info');
-    	$order->setSubType('numeric');
-    	$order->setIsHistorized(1);
-    	$order->setLogicalId('order');
-    	$order->setUnite('°C');
-    	$order->setConfiguration('maxValue', $eqLogic->getConfiguration('order_max'));
-        $order->setConfiguration('minValue', $eqLogic->getConfiguration('order_min'));
-    	$order->save();
-    	
-    	$thermostat = $eqLogic->getCmd(null, 'cozytouchThermostat');
-    	if (!is_object($thermostat)) {
-    		$thermostat = new cozytouchCmd();
-    	}
-    	$thermostat->setEqLogic_id($eqLogic->getId());
-    	$thermostat->setName(__('Thermostat', __FILE__));
-    	$thermostat->setConfiguration('maxValue', $eqLogic->getConfiguration('order_max'));
-    	$thermostat->setConfiguration('minValue', $eqLogic->getConfiguration('order_min'));
-    	$thermostat->setType('action');
-    	$thermostat->setSubType('slider');
-    	$thermostat->setUnite('°C');
-    	$thermostat->setLogicalId('cozytouchThermostat');
-    	$thermostat->setTemplate('dashboard', 'thermostat');
-    	$thermostat->setTemplate('mobile', 'thermostat');
-    	$thermostat->setIsVisible(1);
-		$thermostat->setValue($order->getId());
-		$thermostat->setOrder(99);
-		$thermostat->save();
-		
-
-		
-    	if ($eqLogic->getConfiguration('order_max') === '') {
-    		$eqLogic->setConfiguration('order_max', 28);
-    	}
-    	if ($eqLogic->getConfiguration('order_min') === '') {
-    		$eqLogic->setConfiguration('order_min', 12);
-    	}
-    }
-
-    public static function BuildAtlanticHotWater($eqLogic,$device)
-    {
-        log::add('cozytouch', 'info', 'creation (ou mise à jour) '.$device->getVar(CozyTouchDeviceInfo::CTDI_LABEL));
-        self::BuildDefaultDevice($eqLogic,$device);
+        return $eqLogic;
     }
 
     protected static function upsertCommand($eqLogic,$cmdId,$type,$subType,$name,$visible=1,$value='',$dashboard ='',$mobile='',$order=0,$isHistorized=0)
@@ -146,5 +107,38 @@ class CozyTouchEqLogicBuilder
 			$cmd->event($value);
 		}
 	}
+
+    protected static function genericApplyCommand($eqLogic,$cmds)
+	{
+        $device_url = $eqLogic->getConfiguration('device_url');
+		$actions = array();
+
+        $action = new CozyTouchAction();
+        $action->deviceURL = $device_url;
+        
+        foreach($cmds as $cmd)	
+        {
+            $command = new CozyTouchCommand();
+            $command->name=$cmd['name'];
+            if($cmd['values'] != null)
+            {
+                $command->parameters[]=$cmd['values'];
+            }
+
+            $action->commands[]=$command;
+        }
+
+        $actions[]=$action;
+			
+	
+		$commandsMsg = new CozyTouchCommands();
+		$commandsMsg->label= "Mise a jour du device";
+		$commandsMsg->actions=$actions;
+	
+		$clientApi = self::getClient();
+		$post_data = $commandsMsg;
+		$clientApi->applyCommand($post_data);
+	}
 }
+
 ?>

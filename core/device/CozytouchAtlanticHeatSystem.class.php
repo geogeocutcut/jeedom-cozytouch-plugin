@@ -1,15 +1,63 @@
 <?php
 require_once dirname(__FILE__) . '/../../../../../core/php/core.inc.php';
 
-class CozyTouchAtlanticHeatSystemExecute extends CozyTouchDeviceExecute
+class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
 {
 	
-	public function __construct($eqLogic) 
-	{
-		parent::__construct($eqLogic);
-	} 
+	public static function BuildEqLogic($device)
+    {
+        log::add('cozytouch', 'info', 'creation (ou mise à jour) '.$device->getVar(CozyTouchDeviceInfo::CTDI_LABEL));
+		$eqLogic = self::BuildDefaultEqLogic($device);
+		
+        log::add('cozytouch', 'info', 'creation ou update thermostat');
+    	$order = $eqLogic->getCmd(null, 'order');
 
-    public function execute($cmd,$_options= array())
+    	if (!is_object($order)) {
+    		$order = new cozytouchCmd();
+    		$order->setIsVisible(0);
+    	}
+
+    	$order->setEqLogic_id($eqLogic->getId());
+    	$order->setName(__('Consigne', __FILE__));
+    	$order->setType('info');
+    	$order->setSubType('numeric');
+    	$order->setIsHistorized(1);
+    	$order->setLogicalId('order');
+    	$order->setUnite('°C');
+    	$order->setConfiguration('maxValue', $eqLogic->getConfiguration('order_max'));
+        $order->setConfiguration('minValue', $eqLogic->getConfiguration('order_min'));
+    	$order->save();
+    	
+    	$thermostat = $eqLogic->getCmd(null, 'cozytouchThermostat');
+    	if (!is_object($thermostat)) {
+    		$thermostat = new cozytouchCmd();
+    	}
+    	$thermostat->setEqLogic_id($eqLogic->getId());
+    	$thermostat->setName(__('Thermostat', __FILE__));
+    	$thermostat->setConfiguration('maxValue', $eqLogic->getConfiguration('order_max'));
+    	$thermostat->setConfiguration('minValue', $eqLogic->getConfiguration('order_min'));
+    	$thermostat->setType('action');
+    	$thermostat->setSubType('slider');
+    	$thermostat->setUnite('°C');
+    	$thermostat->setLogicalId('cozytouchThermostat');
+    	$thermostat->setTemplate('dashboard', 'thermostat');
+    	$thermostat->setTemplate('mobile', 'thermostat');
+    	$thermostat->setIsVisible(1);
+		$thermostat->setValue($order->getId());
+		$thermostat->setOrder(99);
+		$thermostat->save();
+		
+
+		
+    	if ($eqLogic->getConfiguration('order_max') === '') {
+    		$eqLogic->setConfiguration('order_max', 28);
+    	}
+    	if ($eqLogic->getConfiguration('order_min') === '') {
+    		$eqLogic->setConfiguration('order_min', 12);
+    	}
+	}
+	
+    public static function Execute($cmd,$_options= array())
     {
 		$device_url=$this->eqLogic->getConfiguration('device_url');
         switch($cmd->getLogicalId())

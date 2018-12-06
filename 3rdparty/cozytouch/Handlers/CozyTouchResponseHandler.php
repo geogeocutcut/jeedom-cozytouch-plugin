@@ -270,7 +270,8 @@ class CozyTouchResponseHandler {
 	}
 	
 	// utiliser pour la mise a jour des infos
-	public function buildStatesCollectionFromResponse() {
+	public function buildStatesCollectionFromResponse() 
+	{
 		
 		$devices = array();
 		$sensors = array();

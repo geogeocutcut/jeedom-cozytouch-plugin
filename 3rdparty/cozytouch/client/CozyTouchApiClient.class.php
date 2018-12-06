@@ -96,19 +96,6 @@ class CozyTouchApiClient
 		
 	}
 
-	public function applyCommand($post_data=array()) {
-		if($this->jsessionId=='')
-		{
-			//die('Not Authorised');
-		}
-		$curl_response = $this->makeRequest('apply','POST',$post_data,false,true);
-		if (!$curl_response)
-		{
-			//die('error occured');
-		}
-		$result_arr = json_decode($curl_response);
-	
-	}
 
 	/*** */
 	public function getDevices($post_data=array()) {
@@ -126,6 +113,19 @@ class CozyTouchApiClient
 	}
 	
 	
+	public function applyCommand($post_data=array()) {
+		if($this->jsessionId=='')
+		{
+			//die('Not Authorised');
+		}
+		$curl_response = $this->makeRequest('apply','POST',$post_data,false,true);
+		if (!$curl_response)
+		{
+			//die('error occured');
+		}
+		$result_arr = json_decode($curl_response);
+	
+	}
 }
 
 ?>

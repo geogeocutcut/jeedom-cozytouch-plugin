@@ -2,11 +2,11 @@
 require_once dirname(__FILE__) . '/../../../../../core/php/core.inc.php';
 
 if (!class_exists('CozyTouchServiceDiscovery')) {
-	require_once dirname(__FILE__) . "/../constants/CozyTouchServiceDiscovery.php";
+	require_once dirname(__FILE__) . "/../constants/CozyTouchServiceDiscovery.class.php";
 }
 
 if (!class_exists('CozyTouchResponseHandler')) {
-	require_once dirname(__FILE__) . "/../handlers/CozyTouchResponseHandler.php";
+	require_once dirname(__FILE__) . "/../handlers/CozyTouchResponseHandler.class.php";
 }
 
 class CozyTouchApiClient
@@ -83,15 +83,15 @@ class CozyTouchApiClient
 	public function getSetup() {
 		if($this->jsessionId=='')
 		{
-			//die('Not Authorised');
+			log::add('cozytouch', 'info', 'JSESSIONID vide');
 		}
 		$curl_response = $this->makeRequest('setup','GET');
 		if (!$curl_response)
 		{
-			//die('error occured');
+			log::add('cozytouch', 'info', 'pas de réponse');
 		}
 		$result_arr = json_decode($curl_response);
-
+		log::add('cozytouch', 'info', $result_arr);
 		return (new CozyTouchResponseHandler($result_arr))->getData('setup');
 		
 	}

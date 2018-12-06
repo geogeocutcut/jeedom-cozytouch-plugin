@@ -17,15 +17,10 @@ class CozyTouchManager
 			));
 		}
 		return self::$_client;
-    }
-
-    public static function syncWithCozyTouch() 
-	{
 	}
 	
-	public static function syncWithCozyTouch2() 
+	public static function syncWithCozyTouch() 
 	{
-		log::add('cozytouch', 'info', 'cron non existant : creation en cours cron');
 		$client = self::getClient();
 		$devices = $client->getSetup();
 		log::add('cozytouch', 'debug', 'Recupération des données ok '); 
@@ -53,7 +48,7 @@ class CozyTouchManager
 
 			log::add('cozytouch', 'info', 'cron non existant : creation en cours cron15');
 			$cron = new cron();
-			$cron->setClass('CozyTouchHelper');
+			$cron->setClass('cozytouch');
 			$cron->setFunction('cron15');
 			$cron->setEnable(1);
 			$cron->setDeamon(0);
@@ -61,11 +56,11 @@ class CozyTouchManager
 			$cron->save();
 		}
 		
-		CozyTouchHelper::refresh_all();
+		CozyTouchManager::refresh_all();
 	}
 	
 	public static function cron15() {
-    	CozyTouchHelper::refresh_all();
+    	CozyTouchManager::refresh_all();
 	}
 	
     public static function refresh_all() 
@@ -73,8 +68,7 @@ class CozyTouchManager
     	try {
     		
     		$clientApi = self::getClient();
-    		$resp = $clientApi->getDevices();
-			$devices = $resp->getData();
+    		$devices = $clientApi->getDevices();
 			foreach ($devices as $device)
 			{
 				$urlShort = explode("#",$device->getURL())[0];

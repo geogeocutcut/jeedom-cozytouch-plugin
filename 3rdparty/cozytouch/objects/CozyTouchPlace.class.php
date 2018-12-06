@@ -1,8 +1,6 @@
 <?php
 
-require_once('CozyTouchObject.php');
-
-
+require_once dirname(__FILE__) .'/../constants/CozyTouchConstants.class.php';
 /**
 * Class CozyTouchPlace
 *

@@ -1,14 +1,16 @@
 <?php
 require_once dirname(__FILE__) . '/../../../../../core/php/core.inc.php';
 
+require_once dirname(__FILE__) .'/../constants/CozyTouchConstants.class.php';
+
 if (!class_exists('CozyTouchObject')) {
-	require_once dirname(__FILE__) . "/../Objects/CozyTouchObject.php";
+	require_once dirname(__FILE__) . "/../objects/CozyTouchObject.class.php";
 }
 if (!class_exists('CozyTouchPlace')) {
-	require_once dirname(__FILE__) . "/../Objects/CozyTouchPlace.php";
+	require_once dirname(__FILE__) . "/../objects/CozyTouchPlace.class.php";
 }
 if (!class_exists('CozyTouchDevice')) {
-	require_once dirname(__FILE__) . "/../Objects/CozyTouchDevice.php";
+	require_once dirname(__FILE__) . "/../objects/CozyTouchDevice.class.php";
 }
 /**
  *

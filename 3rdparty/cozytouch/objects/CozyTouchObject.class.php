@@ -1,5 +1,4 @@
 <?php
-require_once dirname(__FILE__) . "/../Constants/AppliCommonPublic.php";
 /**
  * NCozyTouchObject Class
  */

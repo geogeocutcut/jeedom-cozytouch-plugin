@@ -19,7 +19,7 @@
 /******************************* Includes *******************************/ 
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 
-
+require_once dirname(__FILE__) . '/CozyTouchManager.class.php';
 
 class cozytouch extends eqLogic {
     /******************************* Attributs *******************************/ 
@@ -52,7 +52,7 @@ class cozytouch extends eqLogic {
 	
     
     public static function cron15() {
-    	CozyTouchHelper::refresh_all();
+    	CozyTouchManager::refresh_all();
     }
     
     /*************************** Methode d'instance **************************/ 
@@ -81,11 +81,6 @@ class cozytouch extends eqLogic {
         nodejs::pushUpdate('cozytouch::stackDataEqLogic', $paramsArray);
 	}
 	
-	public static function syncWithCozyTouch() 
-	{
-		CozyTouchHelper::syncWithCozyTouch();
-		
-	}
     /* fonction appelée pour la sauvegarde asynchrone
      * Entrée: 
      *      - $params: variable contenant les paramètres eqLogic

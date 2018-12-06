@@ -21,12 +21,12 @@ try {
     include_file('core', 'authentification', 'php');
 
     if (!isConnect('admin')) {
-        throw new Exception(__('401 - Accès non autorisé', __FILE__));
+        throw new Exception(__('401 - AccÃšs non autorisÃ©', __FILE__));
     }
     // action qui permet d'obtenir l'ensemble des eqLogic
     if (init('action') == 'getAll') {
         $eqLogics = eqLogic::byType('cozytouch');
-        // la liste des équipements
+        // la liste des Ã©quipements
         foreach ($eqLogics as $eqLogic) {
             $data['id'] = $eqLogic->getId();
             $data['humanSidebar'] = $eqLogic->getHumanName(true, false);
@@ -35,18 +35,18 @@ try {
         }
         ajax::success($return);
     }
-    // action qui permet d'effectuer la sauvegarde des données en asynchrone
+    // action qui permet d'effectuer la sauvegarde des donnÃ©es en asynchrone
     if (init('action') == 'saveStack') {
         $params = init('params');
         ajax::success(cozytouch::saveStack($params));
     }
   
     if (init('action') == 'syncWithCozyTouch') {
-        cozytouch::syncWithCozyTouch();
+        CozyTouchManager::syncWithCozyTouch();
         ajax::success();
     }
 
-    throw new Exception(__('Aucune methode correspondante à : ', __FILE__) . init('action'));
+    throw new Exception(__('Aucune methode correspondante à  : ', __FILE__) . init('action'));
     /*     * *********Catch exeption*************** */
 } 
 catch (Exception $e) {

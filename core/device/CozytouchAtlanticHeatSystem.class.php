@@ -8,7 +8,7 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
     {
         log::add('cozytouch', 'info', 'creation (ou mise à jour) '.$device->getVar(CozyTouchDeviceInfo::CTDI_LABEL));
 		$eqLogic = self::BuildDefaultEqLogic($device);
-		
+
         log::add('cozytouch', 'info', 'creation ou update thermostat');
     	$order = $eqLogic->getCmd(null, 'order');
 
@@ -109,7 +109,7 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
         }
     }
 
-    public function setOperationMode($value)
+    public static function setOperationMode($value)
 	{
         //$this->cancelHeatingLevel();
         $cmds = array(
@@ -141,7 +141,7 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
         $this->genericApplyCommand($device_url,$cmds);
     }
     
-    public function refreshHeatingLevel($device_url)
+    public static function refreshHeatingLevel($device_url)
 	{
 			
 		$cmds = array(
@@ -161,7 +161,7 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
 		$this->genericApplyCommand($device_url,$cmds);
 	}
 	
-	public function setTargetTemperature($device_url,$value)
+	public static function setTargetTemperature($device_url,$value)
 	{
 		log::add('cozytouch', 'info', __('set target temperature ', __FILE__).$value);
 		$cmds = array(
@@ -185,7 +185,7 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
 		$this->genericApplyCommand($device_url,$cmds);
 	}
 	
-	public function setDerogatedTargetTemperature($device_url,$value)
+	public static function setDerogatedTargetTemperature($device_url,$value)
 	{
 		$cmds = array(
             array(
@@ -208,7 +208,7 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
 		$this->genericApplyCommand($device_url,$cmds);
 	}
 	
-	public function setComfortTemperature($device_url,$value)
+	public static function setComfortTemperature($device_url,$value)
 	{
 		$cmds = array(
             array(
@@ -223,7 +223,7 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
         $this->genericApplyCommand($device_url,$cmds);
 	}
 	
-	public function setEcoTemperature($device_url,$value)
+	public static function setEcoTemperature($device_url,$value)
 	{
 		$cmds = array(
             array(
@@ -239,7 +239,7 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
 		
     }
     
-    public function cancelHeatingLevel($device_url,$value='comfort')
+    public static function cancelHeatingLevel($device_url,$value='comfort')
 	{
 		$cmds = array(
             array(
@@ -254,7 +254,7 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
 		$this->genericApplyCommand($device_url,$cmds);
 	}
 	
-	public function setHeatingLevel($device_url,$value)
+	public static function setHeatingLevel($device_url,$value)
 	{
 		$cmds = array(
             array(
@@ -271,7 +271,7 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
 
 
 
-	public function setTemperature($device_url,$value)
+	public static function setTemperature($device_url,$value)
 	{
 		$list_device = $this->getConfiguration('devices_list');
 		$mode='';
@@ -297,81 +297,10 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
 			$this->setTargetTemperature($value);
 		}
 	}
+    
 	
-	
     
-    
-    
-	public static function refresh_all() 
-	{
-    	try {
-    		
-    		$clientApi = self::getClient();
-    		$resp = $clientApi->getDevices();
-			$devices = $resp->getData();
-			foreach ($devices as $device)
-			{
-				$urlShort = explode("#",$device->getURL())[0];
-				// state du device
-				foreach ($device->getStates() as $state)
-				{
-					$cmd_array = Cmd::byLogicalId($urlShort.$state->name);
-					if(is_array($cmd_array) && $cmd_array!=null)
-					{
-						$cmd=$cmd_array[0];
-						if($state->name==CozyTouchStateName::CTSN_ONOFF)
-						{
-							$value = ($state->value=='on');
-						}
-						else
-						{
-							$value = $state->value;
-						}
-						if (is_object($cmd) && $cmd->execCmd() !== $cmd->formatValue($value)) {
-    						$cmd->setCollectDate('');
-							$cmd->event($value);
-						}
-					}
-				}
-				
-				
-				// Liste des capteurs du device
-				foreach ($device->getSensors() as $sensor)
-				{
-					// state du capteur
-					foreach ($sensor->getStates() as $state)
-					{
-						$cmd_array = Cmd::byLogicalId($urlShort.$state->name);
-						if(is_array($cmd_array) && $cmd_array!=null)
-						{
-							$cmd=$cmd_array[0];
-							if($state->name==CozyTouchStateName::CTSN_OCCUPANCY)
-							{
-								$value = ($state->value=='noPersonInside');
-							}
-							else
-							{
-								$value = $state->value;
-							}
-							if (is_object($cmd) && $cmd->execCmd() !== $cmd->formatValue($value)) {
-    							$cmd->setCollectDate('');
-								$cmd->event($value);
-							}
-						}
-					}
-				}
-			}
-			
-			$this->refresh_thermostat($placeEqs);
-			
-    		
-        } 
-        catch (Exception $e) {
-    
-    	}
-    }
-    
-    public function refresh_eqLogic() 
+    public function refresh() 
     {
     	try {
 

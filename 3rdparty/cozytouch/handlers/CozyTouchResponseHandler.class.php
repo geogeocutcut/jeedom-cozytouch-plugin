@@ -12,6 +12,7 @@ if (!class_exists('CozyTouchPlace')) {
 if (!class_exists('CozyTouchDevice')) {
 	require_once dirname(__FILE__) . "/../objects/CozyTouchDevice.class.php";
 }
+
 /**
  *
  * Cozytouch Response Handler
@@ -167,10 +168,10 @@ class CozyTouchResponseHandler {
 				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_URL, $device->deviceURL);
 				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_TYPEDEVICE, $device->uiClass);
 				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_SENSORS, array());
-				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_CONTROLLERNAME,$device->controllableName);
+				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME,$device->controllableName);
 				foreach ($device->states as $state)
 				{
-					if (in_array($state->name,CozyTouchDeviceStateName::$DEVICE_STATENAME[$device->controllableName]))
+					if (in_array($state->name,CozyTouchDeviceStateName::DEVICE_STATENAME[$device->controllableName]))
 					{
 						$vartmp = $deviceClss->getVar(CozyTouchDeviceInfo::CTDI_STATES);
 						$vartmp[] = $state;

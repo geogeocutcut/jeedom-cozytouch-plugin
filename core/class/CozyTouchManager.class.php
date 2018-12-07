@@ -1,6 +1,22 @@
 <?php
+
+require_once dirname(__FILE__) . "/../../3rdparty/cozytouch/constants/CozyTouchConstants.class.php";
+require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
+
 if (!class_exists('CozyTouchApiClient')) {
 	require_once dirname(__FILE__) . "/../../3rdparty/cozytouch/client/CozyTouchApiClient.class.php";
+}
+
+if (!class_exists('AbstractCozytouchDevice')) {
+	require_once dirname(__FILE__) . "/../devices/AbstractCozytouchDevice.class.php";
+}
+
+if (!class_exists('CozytouchAtlanticHeatSystem')) {
+	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticHeatSystem.class.php";
+}
+
+if (!class_exists('CozytouchAtlanticHotWater')) {
+	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticHotWater.class.php";
 }
 
 class CozyTouchManager
@@ -11,6 +27,9 @@ class CozyTouchManager
     {
         if (self::$_client == null || $_force) 
         {
+			
+			log::add('cozytouch', 'debug', 'userId = '.config::byKey('username', 'cozytouch')); 
+			log::add('cozytouch', 'debug', 'userPassword = '.config::byKey('password', 'cozytouch')); 
 			self::$_client = new CozyTouchApiClient(array(
 					'userId' => config::byKey('username', 'cozytouch'),
 					'userPassword' => config::byKey('password', 'cozytouch')

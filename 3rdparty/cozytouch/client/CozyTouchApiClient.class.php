@@ -12,16 +12,16 @@ if (!class_exists('CozyTouchResponseHandler')) {
 class CozyTouchApiClient
 {
 	public $jsessionId ='';
-
+	public $userId ='';
+	public $userPassword='';
 	
 	public static $CURL_OPTS = array(
 			CURLOPT_CONNECTTIMEOUT => 10,
 			CURLOPT_RETURNTRANSFER => TRUE,
-			CURLOPT_TIMEOUT        => 60,
-			//CURLOPT_PROXY		   => "192.168.1.21:8888",			
+			CURLOPT_TIMEOUT        => 60,	
 			CURLOPT_SSL_VERIFYPEER => FALSE,
 			CURLOPT_HTTPHEADER     => array("Accept: application/json",
-			CURLOPT_COOKIESESSION  => TRUE)
+				CURLOPT_COOKIESESSION  => TRUE)
 	);
 	
 	function __construct($params = array()) {
@@ -40,7 +40,7 @@ class CozyTouchApiClient
 		);
 		$opts = self::$CURL_OPTS;
 		$curl_response = $this->makeRequest("login",'POST',$post_data,TRUE);
-		
+		log::add('cozytouch', 'info', 'userId='.$this->userId);
 		preg_match("/JSESSIONID=\\w{32}/u", $curl_response, $jsessionid);
 		
 		$this->jsessionId = implode($jsessionid);
@@ -63,6 +63,8 @@ class CozyTouchApiClient
 					if($format_JSON)
 					{
 						$opts[CURLOPT_POSTFIELDS] = json_encode($data);
+						$opts[CURLOPT_HTTPHEADER][] = "Content-Type: application/json";
+						log::add('cozytouch', 'debug', 'data '.$opts[CURLOPT_POSTFIELDS]);
 					}
 					else
 					{
@@ -71,6 +73,8 @@ class CozyTouchApiClient
 					break;
 			}
 		}
+		
+		log::add('cozytouch', 'debug', 'call '.$url);
 		$opts[CURLOPT_URL] = $url;
 		$opts[CURLOPT_HTTPHEADER][]='Cookie: '.$this->jsessionId;
 		$opts[CURLOPT_HEADER] = $header;
@@ -124,7 +128,7 @@ class CozyTouchApiClient
 			//die('error occured');
 		}
 		$result_arr = json_decode($curl_response);
-	
+		log::add('cozytouch', 'debug', $curl_response);
 	}
 }
 

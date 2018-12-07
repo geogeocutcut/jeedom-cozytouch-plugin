@@ -200,7 +200,7 @@ class CozyTouchDeviceSensorInfo
     const CTDSI_STATES = "states";
 }
 
-class CozyTouchDeviceActions
+class CozyTouchDeviceEqCmds
 {
 	const SET_STANDBY = "setStandByMode";
 	const SET_BASIC = "setBasicMode";
@@ -227,10 +227,10 @@ class CozyTouchDeviceActions
 	];
 }
 
-class CozyTouchActionLst
+class CozyTouchDeviceActions
 {
 	// Atlantic chauffage electrique
-	const CTA_SETMODE = "setOperatingMode"; // parameters : standby / basic / internal / external / auto
+	const CTPC_SETMODE = "setOperatingMode"; // parameters : standby / basic / internal / external / auto
 	const CTPC_SETTARGETTEMP = "setTargetTemperature"; //parameters : 18
 	const CTPC_SETDEROGTEMP = "setDerogatedTargetTemperature"; //parameters : 18
 	const CTPC_SETCOMTEMP = "setComfortTemperature"; //parameters : 18

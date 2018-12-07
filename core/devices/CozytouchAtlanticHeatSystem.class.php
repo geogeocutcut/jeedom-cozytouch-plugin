@@ -1,5 +1,6 @@
 <?php
-require_once dirname(__FILE__) . '/../../../../../core/php/core.inc.php';
+require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
+require_once dirname(__FILE__) . "/../../3rdparty/cozytouch/constants/CozyTouchConstants.class.php";
 
 class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
 {
@@ -59,38 +60,39 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
 	
     public static function Execute($cmd,$_options= array())
     {
-		$device_url=$this->eqLogic->getConfiguration('device_url');
+		$eqLogic = $cmd->getEqLogic();
+		$device_url=$eqLogic->getConfiguration('device_url');
         switch($cmd->getLogicalId())
         {
     		case 'refresh':
     			self::refresh_place();
     			$refresh = false;
     			break;
-    		case CozyTouchDeviceActions::SET_STANDBY:
+    		case CozyTouchDeviceEqCmds::SET_STANDBY:
                 self::setOperationMode($device_url,'standby');
     			break;
     			
-    		case CozyTouchDeviceActions::SET_BASIC:
+    		case CozyTouchDeviceEqCmds::SET_BASIC:
                 self::setOperationMode($device_url,'basic');
     			break;
     			
-    		case CozyTouchDeviceActions::SET_EXTERNAL:
+    		case CozyTouchDeviceEqCmds::SET_EXTERNAL:
                 self::setOperationMode($device_url,'external');
     			break;
 
-    		case CozyTouchDeviceActions::SET_INTERNAL:
+    		case CozyTouchDeviceEqCmds::SET_INTERNAL:
                 self::setOperationMode($device_url,'internal');
     			break;
 
-    		case CozyTouchDeviceActions::SET_AUTO:
+    		case CozyTouchDeviceEqCmds::SET_AUTO:
                 self::setOperationMode($device_url,'auto');
 				break;
 				
-    		case CozyTouchDeviceActions::SET_TARGETTEMP:
+    		case CozyTouchDeviceEqCmds::SET_TARGETTEMP:
                 self::setTargetTemperature($device_url);
 				break;
 				
-    		case CozyTouchDeviceActions::SET_THERMOSTAT:
+    		case CozyTouchDeviceEqCmds::SET_THERMOSTAT:
     			$min = $cmd->getConfiguration('minValue');
     			$max = $cmd->getConfiguration('maxValue');
     			if (!isset($_options['slider']) || $_options['slider'] == '' || !is_numeric(intval($_options['slider']))) {
@@ -109,9 +111,8 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
         }
     }
 
-    public static function setOperationMode($value)
+    public static function setOperationMode($device_url,$value)
 	{
-        //$this->cancelHeatingLevel();
         $cmds = array(
             array(
                 "name"=>CozyTouchDeviceActions::CTPC_SETMODE,
@@ -122,23 +123,22 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
                     "values"=>null
             )
         );
-        $this->genericApplyCommand($device_url,$cmds);
-        
+        parent::genericApplyCommand($device_url,$cmds);
         $cmds = array(
-            array(
-                    "name"=>CozyTouchDeviceActions::CTPC_RSHHEATINGLVL,
-                    "values"=>null
-            )
-        );
-        $this->genericApplyCommand($device_url,$cmds);
-        
-        $cmds = array(
-            array(
-                    "name"=>CozyTouchDeviceActions::CTPC_RSHMODE,
-                    "values"=>null
-            )
-        );
-        $this->genericApplyCommand($device_url,$cmds);
+				array(
+						"name"=>CozyTouchDeviceActions::CTPC_RSHHEATINGLVL,
+						"values"=>null
+				)
+		);
+		parent::genericApplyCommand($device_url,$cmds);
+		
+		$cmds = array(
+				array(
+						"name"=>CozyTouchDeviceActions::CTPC_RSHMODE,
+						"values"=>null
+				)
+		);
+		parent::genericApplyCommand($device_url,$cmds);
     }
     
     public static function refreshHeatingLevel($device_url)
@@ -150,7 +150,7 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
                     "values"=>null
             )
 		);
-		$this->genericApplyCommand($device_url,$cmds);
+		parent::genericApplyCommand($device_url,$cmds);
 			
 		$cmds = array(
             array(
@@ -158,7 +158,7 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
                     "values"=>null
             )
 		);
-		$this->genericApplyCommand($device_url,$cmds);
+		parent::genericApplyCommand($device_url,$cmds);
 	}
 	
 	public static function setTargetTemperature($device_url,$value)
@@ -174,7 +174,7 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
                     "values"=>null
             )
 		);
-        $this->genericApplyCommand($device_url,$cmds);
+        parent::genericApplyCommand($device_url,$cmds);
 		
 		$cmds = array(
             array(
@@ -182,7 +182,7 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
                     "values"=>null
             )
 		);
-		$this->genericApplyCommand($device_url,$cmds);
+		parent::genericApplyCommand($device_url,$cmds);
 	}
 	
 	public static function setDerogatedTargetTemperature($device_url,$value)
@@ -197,7 +197,7 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
                     "values"=>null
             )
 		);
-        $this->genericApplyCommand($device_url,$cmds);
+        parent::genericApplyCommand($device_url,$cmds);
 		
 		$cmds = array(
             array(
@@ -205,7 +205,7 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
                     "values"=>null
             )
 		);
-		$this->genericApplyCommand($device_url,$cmds);
+		parent::genericApplyCommand($device_url,$cmds);
 	}
 	
 	public static function setComfortTemperature($device_url,$value)
@@ -220,7 +220,7 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
                     "values"=>null
             )
 		);
-        $this->genericApplyCommand($device_url,$cmds);
+        parent::genericApplyCommand($device_url,$cmds);
 	}
 	
 	public static function setEcoTemperature($device_url,$value)
@@ -235,7 +235,7 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
                     "values"=>null
             )
 		);
-        $this->genericApplyCommand($device_url,$cmds);
+        parent::genericApplyCommand($device_url,$cmds);
 		
     }
     
@@ -251,7 +251,7 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
                     "values"=>null
             )
 		);
-		$this->genericApplyCommand($device_url,$cmds);
+		parent::genericApplyCommand($device_url,$cmds);
 	}
 	
 	public static function setHeatingLevel($device_url,$value)
@@ -266,7 +266,7 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
                     "values"=>null
             )
         );
-		$this->genericApplyCommand($device_url,$cmds);
+		parent::genericApplyCommand($device_url,$cmds);
     }
 
 

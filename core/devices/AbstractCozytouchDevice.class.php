@@ -1,8 +1,22 @@
 <?php
+require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
+require_once dirname(__FILE__) . "/../../3rdparty/cozytouch/constants/CozyTouchConstants.class.php";
+
+if (!class_exists('CozyTouchManager')) {
+	require_once dirname(__FILE__) . "/../class/CozyTouchManager.class.php";
+}
+if (!class_exists('CozyTouchAction')) {
+	require_once dirname(__FILE__) . "/../../3rdparty/cozytouch/objects/CozyTouchAction.class.php";
+}
+if (!class_exists('CozyTouchCommand')) {
+	require_once dirname(__FILE__) . "/../../3rdparty/cozytouch/objects/CozyTouchCommand.class.php";
+}
+if (!class_exists('CozyTouchCommands')) {
+	require_once dirname(__FILE__) . "/../../3rdparty/cozytouch/objects/CozyTouchCommands.class.php";
+}
+
 class AbstractCozytouchDevice
 {
-    
-    
     public static function BuildDefaultEqLogic($device)
     {
         $eqLogic = eqLogic::byLogicalId($device->getVar('oid'), 'cozytouch');
@@ -46,7 +60,7 @@ class AbstractCozytouchDevice
                 }
 			}
 			
-			$actions = CozyTouchDeviceActions::EQLOGIC_ACTIONS[$device->getVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME)];
+			$actions = CozyTouchDeviceEqCmds::EQLOGIC_ACTIONS[$device->getVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME)];
 			if(!empty($actions) && is_array($actions))
             {
                 for($i=0;$i<count($actions);$i++)
@@ -56,7 +70,7 @@ class AbstractCozytouchDevice
                     $cmdId = $actions[$i];
                     $type ="action";
                     $subType = "other";
-                    $name = __(CozyTouchDeviceActions::ACTION_LABEL[$actions[$i]], __FILE__);
+                    $name = __(CozyTouchDeviceEqCmds::ACTION_LABEL[$actions[$i]], __FILE__);
                     
                     self::upsertCommand($eqLogic,$cmdId,$type,$subType,$name,1,'');
                 }
@@ -108,9 +122,8 @@ class AbstractCozytouchDevice
 		}
 	}
 
-    protected static function genericApplyCommand($eqLogic,$cmds)
+    protected static function genericApplyCommand($device_url,$cmds)
 	{
-        $device_url = $eqLogic->getConfiguration('device_url');
 		$actions = array();
 
         $action = new CozyTouchAction();
@@ -135,7 +148,7 @@ class AbstractCozytouchDevice
 		$commandsMsg->label= "Mise a jour du device";
 		$commandsMsg->actions=$actions;
 	
-		$clientApi = self::getClient();
+		$clientApi = CozyTouchManager::getClient();
 		$post_data = $commandsMsg;
 		$clientApi->applyCommand($post_data);
 	}

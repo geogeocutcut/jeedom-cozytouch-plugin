@@ -35,7 +35,16 @@ class CozyTouchManager
 		}
 		return self::$_client;
 	}
-	
+
+	public static function resetCozyTouch()
+	{
+		$eqLogics = eqLogic::byType('cozytouch');
+		foreach($eqLogics as $eqLogic)
+		{
+			$eqLogic->remove();
+		}
+	}
+
 	public static function syncWithCozyTouch() 
 	{
 		$client = self::getClient();

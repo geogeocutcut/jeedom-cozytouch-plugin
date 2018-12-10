@@ -39,13 +39,37 @@ if (!isConnect()) {
       <div class="form-group">
         <label class="col-lg-2 control-label">{{Synchroniser}}</label>
         <div class="col-lg-2">
-        <a class="btn btn-default" id="bt_syncWithCozyTouch"><i class='fa fa-refresh'></i> {{Synchroniser mes équipements}}</a>
+            <a class="btn btn-success" id="bt_syncWithCozyTouch"><i class='fa fa-refresh'></i> {{Synchroniser mes équipements}}</a>
         </div>
-    </div>
+        <label class="col-lg-2 control-label">{{Reset}}</label>
+        <div class="col-lg-2">
+            <a class="btn btn-danger" id="bt_resetCozyTouch"><i class='fa fa-trash'></i> {{Effacer mes équipements}}</a>
+        </div>
+      </div>
   </fieldset>
 </form>
 
 <script>
+    $('#bt_resetCozyTouch').on('click', function () {
+        $.ajax({// fonction permettant de faire de l'ajax
+            type: "POST", // methode de transmission des données au fichier php
+            url: "plugins/cozytouch/core/ajax/cozytouch.ajax.php", // url du fichier php
+            data: {
+                action: "resetCozyTouch",
+            },
+            dataType: 'json',
+            error: function (request, status, error) {
+                handleAjaxError(request, status, error);
+            },
+            success: function (data) { // si l'appel a bien fonctionné
+                if (data.state != 'ok') {
+                    $('#div_alert').showAlert({message: data.result, level: 'danger'});
+                    return;
+                }
+                $('#div_alert').showAlert({message: '{{Suppression  réussie}}', level: 'success'});
+            }
+        });
+    });
     $('#bt_syncWithCozyTouch').on('click', function () {
         $.ajax({// fonction permettant de faire de l'ajax
             type: "POST", // methode de transmission des données au fichier php

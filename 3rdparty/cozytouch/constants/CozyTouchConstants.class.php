@@ -45,8 +45,16 @@ class CozyTouchDeviceToDisplay
 {
 	const CTDTD_HEATINGSYSTEM = "HeatingSystem";
 	const CTDTD_WATERHEATINGSYSTEM = "WaterHeatingSystem";
+	const CTDTD_ROLLLERSHUTTER ="RollerShutter";
+	const CTDTD_WINDOW ="Window";
 
-	const CTDTD_ATLANTICELECTRICHEATER ="io:AtlanticElectricalHeaterWithAdjustableTemperatureSetpointIOComponent";
+	const CTDTD_VELUXWINDOWOPENERSHUTTER="io:WindowOpenerVeluxIOComponent";
+	const CTDTD_VELUXROLLERSHUTTER="io:RollerShutterVeluxIOComponent";
+	const CTDTD_VELUXROLLERSHUTTERLOWSPEED="io:RollerShutterWithLowSpeedManagementIOComponent";
+
+	const CTDTD_ATLANTICELECTRICHEATER = "io:AtlanticElectricalHeaterIOComponent";
+
+	const CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP ="io:AtlanticElectricalHeaterWithAdjustableTemperatureSetpointIOComponent";
 	const CTDTD_ATLANTICELECTRICHEATERTEMPERATURESENSOR = "io:TemperatureInCelciusIOSystemDeviceSensor";
 	const CTDTD_ATLANTICELECTRICHEATEROCCUPANCYSENSOR = "io:OccupancyIOSystemDeviceSensor";
 	const CTDTD_ATLANTICELECTRICHEATERELECTRICITYSENSOR = "io:CumulatedElectricalEnergyConsumptionIOSystemDeviceSensor";
@@ -55,7 +63,12 @@ class CozyTouchDeviceToDisplay
 	const CTDTD_ATLANTICHOTWATERELECTRICITYSENSOR ="io:DHWCumulatedElectricalEnergyConsumptionIOSystemDeviceSensor";
 
 	
-	const CTDTD_DEVICEMODEL = [self::CTDTD_ATLANTICELECTRICHEATER,self::CTDTD_ATLANTICHOTWATER];
+	const CTDTD_DEVICEMODEL = [
+		self::CTDTD_ATLANTICELECTRICHEATER,
+		self::CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP,
+		self::CTDTD_ATLANTICHOTWATER
+	];
+
 	const CTDTD_NAME = [
 		self::CTDTD_HEATINGSYSTEM=>"Radiateur",
 		self::CTDTD_WATERHEATINGSYSTEM=>"Chauffe eau"
@@ -63,6 +76,7 @@ class CozyTouchDeviceToDisplay
 
 	const CTDTD_DEVICESANDSENSORS = [
 		self::CTDTD_ATLANTICELECTRICHEATER,
+		self::CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP,
 		self::CTDTD_ATLANTICELECTRICHEATERTEMPERATURESENSOR,
 		self::CTDTD_ATLANTICELECTRICHEATEROCCUPANCYSENSOR,
 		self::CTDTD_ATLANTICELECTRICHEATERELECTRICITYSENSOR,
@@ -152,7 +166,7 @@ class CozyTouchStateName
 class CozyTouchDeviceStateName
 {
 	const DEVICE_STATENAME = [
-		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATER=>[
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_OPEMODE,
 			CozyTouchStateName::CTSN_ONOFF,
@@ -183,7 +197,7 @@ class CozyTouchDeviceStateName
 	];
 
 	const EQLOGIC_STATENAME = [
-		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATER=>[
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_OPEMODE,
 			CozyTouchStateName::CTSN_ONOFF,
@@ -227,8 +241,15 @@ class CozyTouchDeviceEqCmds
 	const SET_AUTO = "setAutoMode";
 	const SET_TARGETTEMP ="setTargetTemperature";
 	const SET_THERMOSTAT ='cozytouchThermostat';
+	const SET_OFF="setOff";
+	const SET_FROSTPROTECT="setFrostProtection";
+	const SET_ECO="setEco";
+	const SET_COMFORT2="setComfort2";
+	const SET_COMFORT1="setComfort1";
+	const SET_COMFORT="setComfort";
+
 	const EQLOGIC_ACTIONS = [
-		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATER=>[
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP=>[
 			self::SET_STANDBY,
 			self::SET_BASIC,
 			self::SET_EXTERNAL,

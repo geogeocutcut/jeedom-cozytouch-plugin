@@ -28,8 +28,6 @@ class CozyTouchManager
         if (self::$_client == null || $_force) 
         {
 			
-			log::add('cozytouch', 'debug', 'userId = '.config::byKey('username', 'cozytouch')); 
-			log::add('cozytouch', 'debug', 'userPassword = '.config::byKey('password', 'cozytouch')); 
 			self::$_client = new CozyTouchApiClient(array(
 					'userId' => config::byKey('username', 'cozytouch'),
 					'userPassword' => config::byKey('password', 'cozytouch')
@@ -54,7 +52,7 @@ class CozyTouchManager
                     CozytouchAtlanticHeatSystem::BuildEqLogic($device);
 					break;
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER:
-                    CozytouchAtlanticHeatSystem::BuildEqLogic($device);
+					CozytouchAtlanticHotWater::BuildEqLogic($device);
 					break;
                 default:
                     AbstractCozytouchDevice::BuildDefaultEqLogic($device);
@@ -90,11 +88,11 @@ class CozyTouchManager
     		$devices = $clientApi->getDevices();
 			foreach ($devices as $device)
 			{
-				$urlShort = explode("#",$device->getURL())[0];
+				$device_url = $device->getURL();
 				// state du device
 				foreach ($device->getStates() as $state)
 				{
-					$cmd_array = Cmd::byLogicalId($urlShort.$state->name);
+					$cmd_array = Cmd::byLogicalId($device_url.'_'.$state->name);
 					if(is_array($cmd_array) && $cmd_array!=null)
 					{
 						$cmd=$cmd_array[0];
@@ -117,10 +115,11 @@ class CozyTouchManager
 				// Liste des capteurs du device
 				foreach ($device->getSensors() as $sensor)
 				{
+					$sensor_url=$sensor->getURL();
 					// state du capteur
 					foreach ($sensor->getStates() as $state)
 					{
-						$cmd_array = Cmd::byLogicalId($urlShort.$state->name);
+						$cmd_array = Cmd::byLogicalId($sensor_url.'_'.$state->name);
 						if(is_array($cmd_array) && $cmd_array!=null)
 						{
 							$cmd=$cmd_array[0];
@@ -136,14 +135,45 @@ class CozyTouchManager
     							$cmd->setCollectDate('');
 								$cmd->event($value);
 							}
+							
 						}
+					}
+				}
+				log::add('cozytouch','debug','Refresh info : '.$device->getVar(CozyTouchDeviceInfo::CTDI_OID));
+				$eqLogicTmp = eqLogic::byLogicalId($device->getVar(CozyTouchDeviceInfo::CTDI_OID), 'cozytouch');
+				if (is_object($eqLogicTmp)) {
+					$device_type = $eqLogicTmp->getConfiguration('device_model');
+					switch($device_type){
+						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATER:
+							CozyTouchAtlanticHeatSystem::refresh_thermostat($eqLogicTmp);
+							break;
+						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER:
+							CozytouchAtlanticHotWater::refresh_hotwatercoeff($eqLogicTmp);
+							break;	
 					}
 				}
 			}
         } 
-        catch (Exception $e) {
+		catch (Exception $e) 
+		{
     
     	}
-    }
+	}
+	
+	public static function execute($cmd,$_options)
+	{
+    	$eqLogic = $cmd->getEqLogic();
+		$device_type = $eqLogic->getConfiguration('device_model');
+		switch($device_type){
+			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATER:
+				CozyTouchAtlanticHeatSystem::execute($cmd,$_options);
+    			break;
+    			
+    		case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER :
+				CozyTouchAtlanticHotWater::execute($cmd,$_options);
+    			break;
+    			
+    	}
+	}
 }
 ?>

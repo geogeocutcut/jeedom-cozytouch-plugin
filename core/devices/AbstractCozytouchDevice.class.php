@@ -19,9 +19,9 @@ class AbstractCozytouchDevice
 {
     public static function BuildDefaultEqLogic($device)
     {
-        $eqLogic = eqLogic::byLogicalId($device->getVar('oid'), 'cozytouch');
+        $eqLogic = eqLogic::byLogicalId($device->getVar(CozyTouchDeviceInfo::CTDI_OID), 'cozytouch');
         if (!is_object($eqLogic)) {
-            log::add('cozytouch', 'info', 'Device '.$device->getVar('oid').' non existant : creation en cours');
+            log::add('cozytouch', 'info', 'Device '.$device->getVar(CozyTouchDeviceInfo::CTDI_OID).' non existant : creation en cours');
             $eqLogic = new eqLogic();
             $eqLogic->setEqType_name('cozytouch');
             $eqLogic->setIsEnable(1);
@@ -32,31 +32,33 @@ class AbstractCozytouchDevice
             $eqLogic->setConfiguration('device_model', $device->getVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME));
             $eqLogic->setConfiguration('device_url', $device->getVar(CozyTouchDeviceInfo::CTDI_URL));
 
-            $eqLogic->setCategory('heating', 1);
+            
             $eqLogic->setIsVisible(1);
 
             $eqLogic->save();
         }
         $deviceURL = $device->getURL();
-        $deviceURLShort = explode("#",$device->getURL())[0];
-        if(!empty($deviceURLShort))
+        if(!empty($deviceURL))
         {
-            log::add('cozytouch', 'info', 'State : '.$device->getVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME));
+            log::add('cozytouch', 'debug', 'State : '.$device->getVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME));
             $states = CozyTouchDeviceStateName::EQLOGIC_STATENAME[$device->getVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME)];
             if(!empty($states) && is_array($states))
             {
-                for($i=0;$i<count($states);$i++)
+                foreach($device->getStates() as $state)
                 {
-                    log::add('cozytouch', 'info', 'State : '.$states[$i]);
-        
-                    $cmdId = $deviceURLShort.$states[$i];
-                    $type ="info";
-                    $subType = CozyTouchStateName::CTSN_TYPE[$states[$i]];
-                    $name = CozyTouchStateName::CTSN_LABEL[$states[$i]];
-                    $dashboard =$subType=="numeric"?'tile':($subType=="string"?'badge':'');
-                    $mobile =$subType=="numeric"?'tile':($subType=="string"?'badge':'');
-                    $value =$subType=="numeric"?0:($subType=="string"?'value':0);
-                    self::upsertCommand($eqLogic,$cmdId,$type,$subType,$name,1,$value,$dashboard,$mobile,$i+1);
+                    if(in_array($state->name,$states))
+                    {
+                        log::add('cozytouch', 'debug', 'State : '.$state->name);
+            
+                        $cmdId = $deviceURL.'_'.$state->name;
+                        $type ="info";
+                        $subType = CozyTouchStateName::CTSN_TYPE[$state->name];
+                        $name = CozyTouchStateName::CTSN_LABEL[$state->name];
+                        $dashboard =CozyTouchCmdDisplay::DISPLAY_DASH[$subType];
+                        $mobile =CozyTouchCmdDisplay::DISPLAY_MOBILE[$subType];
+                        $value =$subType=="numeric"?0:($subType=="string"?'value':0);
+                        self::upsertCommand($eqLogic,$cmdId,$type,$subType,$name,1,$value,$dashboard,$mobile,$i+1);
+                    }
                 }
 			}
 			
@@ -65,7 +67,7 @@ class AbstractCozytouchDevice
             {
                 for($i=0;$i<count($actions);$i++)
                 {
-                    log::add('cozytouch', 'info', 'action : '.$actions[$i]);
+                    log::add('cozytouch', 'debug', 'action : '.$actions[$i]);
         
                     $cmdId = $actions[$i];
                     $type ="action";
@@ -74,7 +76,10 @@ class AbstractCozytouchDevice
                     
                     self::upsertCommand($eqLogic,$cmdId,$type,$subType,$name,1,'');
                 }
-			}
+            }
+            self::upsertCommand($eqLogic,'refresh','action','other',__('Refresh', __FILE__),1,'');
+
+            
         }
 
         return $eqLogic;
@@ -119,7 +124,9 @@ class AbstractCozytouchDevice
 		{
 			$cmd->setValue($value);
 			$cmd->event($value);
-		}
+        }
+        
+        return $cmd;
 	}
 
     protected static function genericApplyCommand($device_url,$cmds)
@@ -151,7 +158,8 @@ class AbstractCozytouchDevice
 		$clientApi = CozyTouchManager::getClient();
 		$post_data = $commandsMsg;
 		$clientApi->applyCommand($post_data);
-	}
+    }
 }
+
 
 ?>

@@ -28,6 +28,11 @@ class CozyTouchDevice extends CozyTouchObject
     	return $this->getVar(CozyTouchDeviceInfo::CTDI_URL);
     }
 
+    public function getModel()
+    {
+    	return $this->getVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME);
+    }
+
     public function getStates()
     {
         return $this->getVar(CozyTouchDeviceInfo::CTDI_STATES, array());

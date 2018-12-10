@@ -23,7 +23,7 @@ class CozyTouchServiceDiscovery
 		{
 			foreach ($arg as $key => $value)
 			{
-				$url = str_replace("{".$key."}", $value, $url);
+				$url = str_replace("{".$key."}", urlencode($value), $url);
 			}
 		}
 		return $url;

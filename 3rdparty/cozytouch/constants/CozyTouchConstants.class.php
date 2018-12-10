@@ -1,5 +1,18 @@
 <?php
 
+class CozyTouchCmdDisplay
+{
+	const DISPLAY_DASH = [
+		'numeric'=>'tileCozy',
+		'string'=>'badge',
+		'binaire'=>''
+	];
+	const DISPLAY_MOBILE = [
+		'numeric'=>'tile',
+		'string'=>'badge',
+		'binaire'=>''
+	];
+}
 
 class CozyTouchPlaceInfo
 {
@@ -82,6 +95,9 @@ class CozyTouchStateName
 	
 	const CTSN_ELECNRJCONSUMPTION = "core:ElectricEnergyConsumptionState";
 
+	
+	const EQ_HOTWATERCOEFF = "hotWaterCoefficient";
+
 	const CTSN_TYPE = [
 		self::CTSN_NAME=>"string",
 		self::CTSN_OPEMODE=>"string",
@@ -100,6 +116,7 @@ class CozyTouchStateName
 		self::CTSN_AWAYMODEDURATION=>"numeric",
 		self::CTSN_DHWCAPACITY=>"numeric",
 		self::CTSN_ELECNRJCONSUMPTION=>"numeric",
+		self::EQ_HOTWATERCOEFF => "numeric",
 
 		self::CTSN_OCCUPANCY=>"binary",
 		self::CTSN_ONOFF=>"binary"
@@ -110,7 +127,7 @@ class CozyTouchStateName
 		self::CTSN_OPEMODE=>"Programation",
 		self::CTSN_ONOFF=>"On/Off",
 		self::CTSN_TARGETHEATLEVEL=>"Mode",
-		self::CTSN_DHWMODE=>"Programation",
+		self::CTSN_DHWMODE=>"Chauffe eau Mode",
 
 		self::CTSN_TARGETTEMP=>"Temp. Cible",
 		self::CTSN_COMFROOMTEMP=>"Temp. Comfort",
@@ -125,7 +142,10 @@ class CozyTouchStateName
 		self::CTSN_DHWCAPACITY=>"Capacité Eau",
 		self::CTSN_ELECNRJCONSUMPTION=>"Conso Elec",
 
-		self::CTSN_OCCUPANCY=>"Présence"
+		self::CTSN_OCCUPANCY=>"Présence",
+
+		
+		self::EQ_HOTWATERCOEFF => "Proportion eau chaude"
 	];
 }
 
@@ -145,7 +165,6 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_TEMPPROBECALIBR],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER=>[
 			CozyTouchStateName::CTSN_NAME,
-			CozyTouchStateName::CTSN_OPEMODE,
 			CozyTouchStateName::CTSN_TEMP,
 			CozyTouchStateName::CTSN_BOOSTMODEDURATION,
 			CozyTouchStateName::CTSN_WATERCONSUMPTION,
@@ -180,7 +199,6 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER=>[
 			CozyTouchStateName::CTSN_NAME,
-			CozyTouchStateName::CTSN_OPEMODE,
 			CozyTouchStateName::CTSN_TEMP,
 			CozyTouchStateName::CTSN_BOOSTMODEDURATION,
 			CozyTouchStateName::CTSN_WATERCONSUMPTION,

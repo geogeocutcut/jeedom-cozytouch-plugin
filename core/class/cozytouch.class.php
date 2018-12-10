@@ -157,19 +157,7 @@ class cozytouchCmd extends cmd {
     */
 
     public function execute($_options = array()) {
-    	$eqLogic = $this->getEqLogic();
-		$refresh = true;
-		$device_type = $eqLogic->getConfiguration('device_model');
-    	switch($device_type){
-			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATER:
-				CozyTouchAtlanticHeatSystem::execute($this);
-    			break;
-    			
-    		case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER :
-				CozyTouchAtlanticHotWater::execute($this);
-    			break;
-    			
-    	}
+        CozytouchManager::execute($this,$_options);
     }
 
     /***************************** Getteur/Setteur ***************************/ 

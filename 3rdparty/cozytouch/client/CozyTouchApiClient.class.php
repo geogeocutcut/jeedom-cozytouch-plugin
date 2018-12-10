@@ -40,7 +40,6 @@ class CozyTouchApiClient
 		);
 		$opts = self::$CURL_OPTS;
 		$curl_response = $this->makeRequest("login",'POST',$post_data,TRUE);
-		log::add('cozytouch', 'info', 'userId='.$this->userId);
 		preg_match("/JSESSIONID=\\w{32}/u", $curl_response, $jsessionid);
 		
 		$this->jsessionId = implode($jsessionid);
@@ -116,7 +115,19 @@ class CozyTouchApiClient
 		return (new CozyTouchResponseHandler($result_arr))->getData('devices');
 	}
 	
-	
+	public function getDeviceInfo($device_url,$controllableName) {
+		if($this->jsessionId=='')
+		{
+			//die('Not Authorised');
+		}
+		$curl_response = $this->makeRequest('deviceInfo','GET',["deviceURL"=>$device_url]);
+		if (!$curl_response)
+		{
+			//die('error occured');
+		}
+		$result_arr = json_decode($curl_response);
+		return (new CozyTouchResponseHandler($result_arr))->getData('deviceInfo',$controllableName);
+	}
 	public function applyCommand($post_data=array()) {
 		if($this->jsessionId=='')
 		{

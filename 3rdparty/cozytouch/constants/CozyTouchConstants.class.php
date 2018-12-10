@@ -141,7 +141,7 @@ class CozyTouchStateName
 		self::CTSN_OPEMODE=>"Programation",
 		self::CTSN_ONOFF=>"On/Off",
 		self::CTSN_TARGETHEATLEVEL=>"Mode",
-		self::CTSN_DHWMODE=>"Chauffe eau Mode",
+		self::CTSN_DHWMODE=>"Mode",
 
 		self::CTSN_TARGETTEMP=>"Temp. Cible",
 		self::CTSN_COMFROOMTEMP=>"Temp. Comfort",

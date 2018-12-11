@@ -146,8 +146,8 @@ class CozyTouchResponseHandler {
 				
 				log::add('cozytouch', 'debug', 'Type de device '.$type);
 				$PlaceCount[$placeOID][$type]+=1;
-				$name= CozyTouchDeviceToDisplay::CTDTD_NAME[$type]
-				." ".$places[$placeOID]->getVar(CozyTouchPlaceInfo::CTPI_NAME)
+				$name= "(".$places[$placeOID]->getVar(CozyTouchPlaceInfo::CTPI_NAME)
+				.") ".CozyTouchDeviceToDisplay::CTDTD_NAME[$type]
 				." ".$PlaceCount[$placeOID][$type];
 				log::add('cozytouch', 'debug', 'Nom de device '.$name);
 				$device->setVar(CozyTouchDeviceInfo::CTDI_LABEL,$name);

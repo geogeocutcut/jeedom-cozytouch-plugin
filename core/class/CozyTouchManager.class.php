@@ -11,6 +11,10 @@ if (!class_exists('AbstractCozytouchDevice')) {
 	require_once dirname(__FILE__) . "/../devices/AbstractCozytouchDevice.class.php";
 }
 
+if (!class_exists('CozytouchAtlanticHeatSystem')) {
+	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticHeatSystem.class.php";
+}
+
 if (!class_exists('CozytouchAtlanticHeatSystemWithAjustTemp')) {
 	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticHeatSystemWithAjustTemp.class.php";
 }
@@ -57,6 +61,9 @@ class CozyTouchManager
 			$deviceModel = $device->getVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME);
 			switch ($deviceModel)
 			{
+				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATER:
+					CozytouchAtlanticHeatSystem::BuildEqLogic($device);
+					break;
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP:
 					CozytouchAtlanticHeatSystemWithAjustTemp::BuildEqLogic($device);
 					break;
@@ -174,6 +181,9 @@ class CozyTouchManager
     	$eqLogic = $cmd->getEqLogic();
 		$device_type = $eqLogic->getConfiguration('device_model');
 		switch($device_type){
+			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATER:
+				CozytouchAtlanticHeatSystem::execute($cmd,$_options);
+    			break;
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP:
 				CozytouchAtlanticHeatSystemWithAjustTemp::execute($cmd,$_options);
     			break;

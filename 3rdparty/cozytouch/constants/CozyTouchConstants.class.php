@@ -166,6 +166,10 @@ class CozyTouchStateName
 class CozyTouchDeviceStateName
 {
 	const DEVICE_STATENAME = [
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATER=>[
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_ONOFF,
+			CozyTouchStateName::CTSN_TARGETHEATLEVEL],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_OPEMODE,
@@ -197,6 +201,10 @@ class CozyTouchDeviceStateName
 	];
 
 	const EQLOGIC_STATENAME = [
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATER=>[
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_ONOFF,
+			CozyTouchStateName::CTSN_TARGETHEATLEVEL],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_OPEMODE,
@@ -241,6 +249,7 @@ class CozyTouchDeviceEqCmds
 	const SET_AUTO = "setAutoMode";
 	const SET_TARGETTEMP ="setTargetTemperature";
 	const SET_THERMOSTAT ='cozytouchThermostat';
+
 	const SET_OFF="setOff";
 	const SET_FROSTPROTECT="setFrostProtection";
 	const SET_ECO="setEco";
@@ -249,6 +258,15 @@ class CozyTouchDeviceEqCmds
 	const SET_COMFORT="setComfort";
 
 	const EQLOGIC_ACTIONS = [
+		
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATER=>[
+			self::SET_OFF,
+			self::SET_FROSTPROTECT,
+			self::SET_ECO,
+			self::SET_COMFORT2,
+			self::SET_COMFORT1,
+			self::SET_COMFORT
+		],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP=>[
 			self::SET_STANDBY,
 			self::SET_BASIC,
@@ -262,13 +280,21 @@ class CozyTouchDeviceEqCmds
 		self::SET_BASIC=>"Basic",
 		self::SET_EXTERNAL=>"Externe",
 		self::SET_INTERNAL=>"Interne",
-		self::SET_AUTO=>"Auto"
+		self::SET_AUTO=>"Auto",
+		self::SET_OFF=>"Off",
+		self::SET_FROSTPROTECT=>"Hors-gel",
+		self::SET_ECO=>"Eco",
+		self::SET_COMFORT2=>"Confort-2",
+		self::SET_COMFORT1=>"Confort-1",
+		self::SET_COMFORT=>"Confort",
 	];
 }
 
 class CozyTouchDeviceActions
 {
 	// Atlantic chauffage electrique
+	const CTPC_OFF = "off"; 
+	
 	const CTPC_SETMODE = "setOperatingMode"; // parameters : standby / basic / internal / external / auto
 	const CTPC_SETTARGETTEMP = "setTargetTemperature"; //parameters : 18
 	const CTPC_SETDEROGTEMP = "setDerogatedTargetTemperature"; //parameters : 18

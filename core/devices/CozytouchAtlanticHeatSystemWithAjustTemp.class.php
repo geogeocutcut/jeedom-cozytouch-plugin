@@ -23,6 +23,7 @@ class CozytouchAtlanticHeatSystemWithAjustTemp extends AbstractCozytouchDevice
 		CozyTouchDeviceEqCmds::SET_EXTERNAL=>[23,0,1],
 		CozyTouchDeviceEqCmds::SET_INTERNAL=>[24,0,0],
 		CozyTouchDeviceEqCmds::SET_AUTO=>[25,0,1],
+		CozyTouchStateName::CTSN_CONNECT=>[99,1,1],
 		'refresh'=>[1,0,0]
 	];
 
@@ -91,7 +92,7 @@ class CozytouchAtlanticHeatSystemWithAjustTemp extends AbstractCozytouchDevice
         $order->setConfiguration('minValue', $eqLogic->getConfiguration('order_min'));
     	$order->save();
     	
-    	$thermostat = $eqLogic->getCmd(null, 'cozytouchThermostat');
+    	$thermostat = $eqLogic->getCmd(null, CozyTouchDeviceEqCmds::SET_THERMOSTAT);
     	if (!is_object($thermostat)) {
     		$thermostat = new cozytouchCmd();
     	}
@@ -102,7 +103,7 @@ class CozytouchAtlanticHeatSystemWithAjustTemp extends AbstractCozytouchDevice
     	$thermostat->setType('action');
     	$thermostat->setSubType('slider');
     	$thermostat->setUnite('°C');
-    	$thermostat->setLogicalId('cozytouchThermostat');
+    	$thermostat->setLogicalId(CozyTouchDeviceEqCmds::SET_THERMOSTAT);
     	$thermostat->setTemplate('dashboard', 'thermostat');
     	$thermostat->setTemplate('mobile', 'thermostat');
     	$thermostat->setIsVisible(1);
@@ -214,14 +215,8 @@ class CozytouchAtlanticHeatSystemWithAjustTemp extends AbstractCozytouchDevice
 				if(is_array($cmd_array) && $cmd_array!=null)
 				{
 					$cmd=$cmd_array[0];
-					if($state->name=='core:OnOffState')
-					{
-						$value = ($state->value=='on');
-					}
-					else
-					{
-						$value = $state->value;
-					}
+					
+					$value = CozyTouchManager::get_state_value($state);
 					if (is_object($cmd) && $cmd->execCmd() !== $cmd->formatValue($value)) {
 						$cmd->setCollectDate('');
 						$cmd->event($value);

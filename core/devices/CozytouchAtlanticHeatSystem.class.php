@@ -14,6 +14,7 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
 		CozyTouchDeviceEqCmds::SET_COMFORT2=>[23,1,0],
 		CozyTouchDeviceEqCmds::SET_COMFORT1=>[24,0,0],
 		CozyTouchDeviceEqCmds::SET_COMFORT=>[25,0,1],
+		CozyTouchStateName::CTSN_CONNECT=>[99,1,1],
 		'refresh'=>[1,0,0]
 	];
 
@@ -117,14 +118,7 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
 				if(is_array($cmd_array) && $cmd_array!=null)
 				{
 					$cmd=$cmd_array[0];
-					if($state->name=='core:OnOffState')
-					{
-						$value = ($state->value=='on');
-					}
-					else
-					{
-						$value = $state->value;
-					}
+					$value = CozyTouchManager::get_state_value($state);
 					if (is_object($cmd) && $cmd->execCmd() !== $cmd->formatValue($value)) {
 						$cmd->setCollectDate('');
 						$cmd->event($value);

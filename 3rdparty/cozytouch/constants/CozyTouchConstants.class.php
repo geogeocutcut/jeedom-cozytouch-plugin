@@ -88,6 +88,7 @@ class CozyTouchDeviceToDisplay
 class CozyTouchStateName
 {
 	const CTSN_NAME = "core:NameState";
+	const CTSN_CONNECT = "core:StatusState";
 	const CTSN_OPEMODE = "core:OperatingModeState";
 	const CTSN_ONOFF = "core:OnOffState";
 	const CTSN_TARGETHEATLEVEL = "io:TargetHeatingLevelState";
@@ -133,7 +134,8 @@ class CozyTouchStateName
 		self::EQ_HOTWATERCOEFF => "numeric",
 
 		self::CTSN_OCCUPANCY=>"binary",
-		self::CTSN_ONOFF=>"binary"
+		self::CTSN_ONOFF=>"binary",
+		self::CTSN_CONNECT=>"binary"
 	];
 
 	const CTSN_LABEL = [
@@ -157,6 +159,7 @@ class CozyTouchStateName
 		self::CTSN_ELECNRJCONSUMPTION=>"Conso Elec",
 
 		self::CTSN_OCCUPANCY=>"Présence",
+		self::CTSN_CONNECT=>"Connect",
 
 		
 		self::EQ_HOTWATERCOEFF => "Proportion eau chaude"
@@ -168,11 +171,13 @@ class CozyTouchDeviceStateName
 	const DEVICE_STATENAME = [
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATER=>[
 			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_CONNECT,
 			CozyTouchStateName::CTSN_ONOFF,
 			CozyTouchStateName::CTSN_TARGETHEATLEVEL],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_OPEMODE,
+			CozyTouchStateName::CTSN_CONNECT,
 			CozyTouchStateName::CTSN_ONOFF,
 			CozyTouchStateName::CTSN_TARGETHEATLEVEL,
 			CozyTouchStateName::CTSN_TARGETTEMP,
@@ -184,6 +189,7 @@ class CozyTouchDeviceStateName
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_TEMP,
+			CozyTouchStateName::CTSN_CONNECT,
 			CozyTouchStateName::CTSN_BOOSTMODEDURATION,
 			CozyTouchStateName::CTSN_WATERCONSUMPTION,
 			CozyTouchStateName::CTSN_AWAYMODEDURATION,
@@ -203,10 +209,12 @@ class CozyTouchDeviceStateName
 	const EQLOGIC_STATENAME = [
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATER=>[
 			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_CONNECT,
 			CozyTouchStateName::CTSN_ONOFF,
 			CozyTouchStateName::CTSN_TARGETHEATLEVEL],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP=>[
 			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_CONNECT,
 			CozyTouchStateName::CTSN_OPEMODE,
 			CozyTouchStateName::CTSN_ONOFF,
 			CozyTouchStateName::CTSN_TARGETHEATLEVEL,
@@ -221,6 +229,7 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER=>[
 			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_CONNECT,
 			CozyTouchStateName::CTSN_TEMP,
 			CozyTouchStateName::CTSN_BOOSTMODEDURATION,
 			CozyTouchStateName::CTSN_WATERCONSUMPTION,
@@ -256,6 +265,10 @@ class CozyTouchDeviceEqCmds
 	const SET_COMFORT2="setComfort2";
 	const SET_COMFORT1="setComfort1";
 	const SET_COMFORT="setComfort";
+	const SET_AUTOMODE="setAutoMode";
+	const SET_MANUECOACTIVE="setManualEcoActive";
+	const SET_MANUECOINACTIVE="setManualEcoInactive";
+	const SET_BOOSTDURATION="setBoostModeDuration";
 
 	const EQLOGIC_ACTIONS = [
 		
@@ -273,6 +286,12 @@ class CozyTouchDeviceEqCmds
 			self::SET_EXTERNAL,
 			self::SET_INTERNAL,
 			self::SET_AUTO
+		],
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER=>[
+			self::SET_AUTOMODE,
+			self::SET_MANUECOACTIVE,
+			self::SET_MANUECOINACTIVE,
+			//self::SET_BOOSTDURATION
 		]
 	];
 	const ACTION_LABEL = [
@@ -287,6 +306,10 @@ class CozyTouchDeviceEqCmds
 		self::SET_COMFORT2=>"Confort-2",
 		self::SET_COMFORT1=>"Confort-1",
 		self::SET_COMFORT=>"Confort",
+		self::SET_AUTOMODE=>"Auto",
+		self::SET_MANUECOACTIVE=>"Manuel Eco",
+		self::SET_MANUECOINACTIVE=>"Manuel",
+		self::SET_BOOSTDURATION=>"Boost"
 	];
 }
 

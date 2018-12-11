@@ -49,15 +49,23 @@ class AbstractCozytouchDevice
                     if(in_array($state->name,$states))
                     {
                         log::add('cozytouch', 'debug', 'State : '.$state->name);
-            
+                        $order = 0;
                         $cmdId = $deviceURL.'_'.$state->name;
                         $type ="info";
                         $subType = CozyTouchStateName::CTSN_TYPE[$state->name];
                         $name = CozyTouchStateName::CTSN_LABEL[$state->name];
-                        $dashboard =CozyTouchCmdDisplay::DISPLAY_DASH[$subType];
-                        $mobile =CozyTouchCmdDisplay::DISPLAY_MOBILE[$subType];
+                        if(CozyTouchStateName::CTSN_CONNECT==$state->name)
+                        {
+                            $dashboard ='connect';
+                            $mobile ='connect';
+                            $order =99;
+                        }
+                        else{
+                            $dashboard =CozyTouchCmdDisplay::DISPLAY_DASH[$subType];
+                            $mobile =CozyTouchCmdDisplay::DISPLAY_MOBILE[$subType];
+                        }
                         $value =$subType=="numeric"?0:($subType=="string"?'value':0);
-                        self::upsertCommand($eqLogic,$cmdId,$type,$subType,$name,1,$value,$dashboard,$mobile,$i+1);
+                        self::upsertCommand($eqLogic,$cmdId,$type,$subType,$name,1,$value,$dashboard,$mobile,$order==0?$i+1:$order);
                     }
                 }
 			}

@@ -112,14 +112,7 @@ class CozyTouchManager
 					if(is_array($cmd_array) && $cmd_array!=null)
 					{
 						$cmd=$cmd_array[0];
-						if($state->name==CozyTouchStateName::CTSN_ONOFF)
-						{
-							$value = ($state->value=='on');
-						}
-						else
-						{
-							$value = $state->value;
-						}
+						$value = self::get_state_value($state);
 						if (is_object($cmd) && $cmd->execCmd() !== $cmd->formatValue($value)) {
     						$cmd->setCollectDate('');
 							$cmd->event($value);
@@ -139,14 +132,7 @@ class CozyTouchManager
 						if(is_array($cmd_array) && $cmd_array!=null)
 						{
 							$cmd=$cmd_array[0];
-							if($state->name==CozyTouchStateName::CTSN_OCCUPANCY)
-							{
-								$value = ($state->value=='noPersonInside');
-							}
-							else
-							{
-								$value = $state->value;
-							}
+							$value = self::get_state_value($state);
 							if (is_object($cmd) && $cmd->execCmd() !== $cmd->formatValue($value)) {
     							$cmd->setCollectDate('');
 								$cmd->event($value);
@@ -165,6 +151,7 @@ class CozyTouchManager
 							break;
 						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER:
 							CozytouchAtlanticHotWater::refresh_hotwatercoeff($eqLogicTmp);
+							CozytouchAtlanticHotWater::refresh_thermostat($eqLogicTmp);
 							break;	
 					}
 				}
@@ -176,6 +163,27 @@ class CozyTouchManager
     	}
 	}
 	
+	public static function get_state_value($state)
+	{
+		if($state->name==CozyTouchStateName::CTSN_ONOFF)
+		{
+			$value = ($state->value=='on');
+		}
+		elseif($state->name==CozyTouchStateName::CTSN_CONNECT)
+		{
+			$value = ($state->value=='available');
+		}
+		elseif($state->name==CozyTouchStateName::CTSN_OCCUPANCY)
+		{
+			$value = ($state->value=='noPersonInside');
+		}
+		else
+		{
+			$value = $state->value;
+		}
+		return $value;
+	}
+
 	public static function execute($cmd,$_options)
 	{
     	$eqLogic = $cmd->getEqLogic();

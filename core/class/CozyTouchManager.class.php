@@ -76,18 +76,18 @@ class CozyTouchManager
 			}
 		}
 		
-		$cron = cron::byClassAndFunction('cozytouch', 'cron15');
-		if (!is_object($cron)) {
+		// $cron = cron::byClassAndFunction('cozytouch', 'cron15');
+		// if (!is_object($cron)) {
 
-			log::add('cozytouch', 'info', 'cron non existant : creation en cours cron15');
-			$cron = new cron();
-			$cron->setClass('cozytouch');
-			$cron->setFunction('cron15');
-			$cron->setEnable(1);
-			$cron->setDeamon(0);
-			$cron->setSchedule('*/5 * * * * *');
-			$cron->save();
-		}
+		// 	log::add('cozytouch', 'info', 'cron non existant : creation en cours cron15');
+		// 	$cron = new cron();
+		// 	$cron->setClass('cozytouch');
+		// 	$cron->setFunction('cron15');
+		// 	$cron->setEnable(1);
+		// 	$cron->setDeamon(0);
+		// 	$cron->setSchedule('*/5 * * * * *');
+		// 	$cron->save();
+		// }
 		
 		CozyTouchManager::refresh_all();
 	}

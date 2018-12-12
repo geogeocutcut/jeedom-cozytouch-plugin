@@ -169,11 +169,11 @@ class CozyTouchManager
 		{
 			$value = ($state->value=='on');
 		}
-		elseif($state->name==CozyTouchStateName::CTSN_CONNECT)
+		else if($state->name==CozyTouchStateName::CTSN_CONNECT)
 		{
 			$value = ($state->value=='available');
 		}
-		elseif($state->name==CozyTouchStateName::CTSN_OCCUPANCY)
+		else if($state->name==CozyTouchStateName::CTSN_OCCUPANCY)
 		{
 			$value = ($state->value=='noPersonInside');
 		}

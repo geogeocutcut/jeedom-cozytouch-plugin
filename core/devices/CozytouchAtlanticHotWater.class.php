@@ -180,11 +180,11 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 				break;
 			case CozyTouchDeviceEqCmds::SET_BOOSTON:
 				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_BOOSTON);
-				//self::setBoostDuration($device_url,1);
+				self::setBoostDuration($device_url,1);
 				break;
 			case CozyTouchDeviceEqCmds::SET_BOOSTOFF:
 				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_BOOSTOFF);
-				//self::setBoostDuration($device_url,0);
+				self::setBoostDuration($device_url,0);
 				break;
 			case CozyTouchDeviceEqCmds::SET_THERMOSTAT:
     			$min = $cmd->getConfiguration('minValue');

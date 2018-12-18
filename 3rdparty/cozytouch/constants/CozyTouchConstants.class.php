@@ -269,6 +269,8 @@ class CozyTouchDeviceEqCmds
 	const SET_MANUECOACTIVE="setManualEcoActive";
 	const SET_MANUECOINACTIVE="setManualEcoInactive";
 	const SET_BOOSTDURATION="setBoostModeDuration";
+	const SET_BOOSTON ='setBoostOn';
+	const SET_BOOSTOFF ='setBoostOff';
 
 	const EQLOGIC_ACTIONS = [
 		
@@ -291,6 +293,8 @@ class CozyTouchDeviceEqCmds
 			self::SET_AUTOMODE,
 			self::SET_MANUECOACTIVE,
 			self::SET_MANUECOINACTIVE,
+			self::SET_BOOSTON,
+			self::SET_BOOSTOFF,
 			//self::SET_BOOSTDURATION
 		]
 	];
@@ -309,7 +313,9 @@ class CozyTouchDeviceEqCmds
 		self::SET_AUTOMODE=>"Auto",
 		self::SET_MANUECOACTIVE=>"Manuel Eco",
 		self::SET_MANUECOINACTIVE=>"Manuel",
-		self::SET_BOOSTDURATION=>"Boost"
+		self::SET_BOOSTDURATION=>"Boost",
+		self::SET_BOOSTON=>"Boost On",
+		self::SET_BOOSTOFF=>"Boost Off"
 	];
 }
 

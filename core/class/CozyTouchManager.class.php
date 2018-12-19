@@ -68,6 +68,7 @@ class CozyTouchManager
 					CozytouchAtlanticHeatSystemWithAjustTemp::BuildEqLogic($device);
 					break;
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER:
+				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERSPLIT:
 					CozytouchAtlanticHotWater::BuildEqLogic($device);
 					break;
                 default:
@@ -150,6 +151,7 @@ class CozyTouchManager
 							CozytouchAtlanticHeatSystemWithAjustTemp::refresh_thermostat($eqLogicTmp);
 							break;
 						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER:
+						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERSPLIT:
 							CozytouchAtlanticHotWater::refresh_hotwatercoeff($eqLogicTmp);
 							CozytouchAtlanticHotWater::refresh_thermostat($eqLogicTmp);
 							break;	
@@ -197,6 +199,7 @@ class CozyTouchManager
     			break;
     			
     		case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER :
+			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERSPLIT :
 				CozyTouchAtlanticHotWater::execute($cmd,$_options);
     			break;
     			

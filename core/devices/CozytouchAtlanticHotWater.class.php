@@ -13,7 +13,7 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 		CozyTouchStateName::CTSN_TEMP=>[10,1,0],
 		CozyTouchStateName::CTSN_TARGETTEMP=>[11,0,0],
 		CozyTouchStateName::CTSN_WATERCONSUMPTION=>[13,0,1],
-		CozyTouchStateName::CTSN_ELECNRJCONSUMPTION=>[14,0,0],
+		CozyTouchStateName::CTSN_ELECNRJCONSUMPTION=>[14,1,0],
 		CozyTouchStateName::CTSN_BOOSTMODEDURATION=>[15,0,0],
 		CozyTouchStateName::CTSN_AWAYMODEDURATION=>[16,0,0],
 		CozyTouchDeviceEqCmds::SET_THERMOSTAT=>[20,1,1],
@@ -21,7 +21,7 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 		CozyTouchDeviceEqCmds::SET_AUTOMODE=>[21,1,0],
 		CozyTouchDeviceEqCmds::SET_MANUECOACTIVE=>[22,0,0],
 		CozyTouchDeviceEqCmds::SET_MANUECOINACTIVE=>[23,0,1],
-		CozyTouchDeviceEqCmds::SET_BOOSTON=>[24,0,0],
+		CozyTouchDeviceEqCmds::SET_BOOSTON=>[24,1,0],
 		CozyTouchDeviceEqCmds::SET_BOOSTOFF=>[25,0,0],
 		CozyTouchStateName::CTSN_CONNECT=>[1,1,1],
 		'refresh'=>[1,0,0]
@@ -180,7 +180,7 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 				break;
 			case CozyTouchDeviceEqCmds::SET_BOOSTON:
 				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_BOOSTON);
-				self::setBoostDuration($device_url,2);
+				self::setBoostDuration($device_url,1);
 				break;
 			case CozyTouchDeviceEqCmds::SET_BOOSTOFF:
 				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_BOOSTOFF);

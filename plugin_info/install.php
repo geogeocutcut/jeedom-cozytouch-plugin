@@ -17,7 +17,9 @@
  */
 
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
-
+if (!class_exists('CozyTouchManager')) {
+	require_once dirname(__FILE__) . "/../core/class/CozyTouchManager.class.php";
+}
 function cozytouch_install() {
 	$cron = cron::byClassAndFunction('cozytouch', 'cron15');
 	if (!is_object($cron)) {
@@ -29,6 +31,8 @@ function cozytouch_install() {
 		$cron->setSchedule('*/15 * * * * *');
 		$cron->save();
 	}
+
+	config::save('version', '2.0','cozytouch');
 }
 
 function cozytouch_update() {
@@ -42,6 +46,16 @@ function cozytouch_update() {
 		$cron->setSchedule('*/15 * * * * *');
 		$cron->save();
 	}
+
+
+	$version = config::byKey('version', 'cozytouch');
+	log::add('cozytouch','info','Version : '.$version);
+	if(!isset($version) && $version<'2.0')
+	{
+		log::add('cozytouch','info','Reset device, version trop ancienne : '.$version);
+		CozyTouchManager::resetCozyTouch();
+	}
+
 }
 
 
@@ -50,6 +64,10 @@ function cozytouch_remove() {
 	if (is_object($cron)) {
 		$cron->remove();
 	}
+	CozyTouchManager::resetCozyTouch();
+	config::remove('username', 'cozytouch');
+	config::remove('password', 'cozytouch');
+	config::remove('version', 'cozytouch');
 }
 
 ?>

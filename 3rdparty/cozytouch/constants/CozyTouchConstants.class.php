@@ -322,6 +322,7 @@ class CozyTouchDeviceEqCmds
 class CozyTouchDeviceActions
 {
 	// Atlantic chauffage electrique
+	const CTPC_ON = "on"; 
 	const CTPC_OFF = "off"; 
 	
 	const CTPC_SETMODE = "setOperatingMode"; // parameters : standby / basic / internal / external / auto
@@ -351,5 +352,6 @@ class CozyTouchDeviceActions
 	const CTPC_SETAWAYDUR = "setAwayModeDuration";
 	const CTPC_SETBOOSTDUR = "setBoostModeDuration";
 	const CTPC_SETDHWMODE = "setDHWMode";
+	const CTPC_SETCURRENTOPEMODE = "setCurrentOperatingMode";
 }
 ?>

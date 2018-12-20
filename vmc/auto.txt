@@ -1,0 +1,292 @@
+"states": [
+            {
+                "name": "core:NameState",
+                "type": 3,
+                "value": "ACHRV_Actuator"
+            },
+            {
+                "name": "core:VersionState",
+                "type": 3,
+                "value": "36383230303841202020"
+            },
+            {
+                "name": "core:PriorityLockTimerState",
+                "type": 1,
+                "value": 0
+            },
+            {
+                "name": "core:StatusState",
+                "type": 3,
+                "value": "available"
+            },
+            {
+                "name": "core:RSSILevelState",
+                "type": 2,
+                "value": 52
+            },
+            {
+                "name": "core:AirDemandState",
+                "type": 1,
+                "value": 100
+            },
+            {
+                "name": "io:VentilationConfigurationModeState",
+                "type": 3,
+                "value": "comfort"
+            },
+            {
+                "name": "io:AirDemandModeState",
+                "type": 3,
+                "value": "auto"
+            },
+            {
+                "name": "io:VentilationModeState",
+                "type": 11,
+                "value": {
+                    "prog": "off",
+                    "endOfLineTest": "off",
+                    "test": "off",
+                    "month": 12,
+                    "cooling": "off",
+                    "leapYear": "off",
+                    "day": 20,
+                    "dayNight": "night"
+                }
+            },
+            {
+                "name": "io:OutletEngineState",
+                "type": 1,
+                "value": 135
+            },
+            {
+                "name": "io:InletEngineState",
+                "type": 1,
+                "value": 135
+            },
+            {
+                "name": "io:RemainingTimeBeforeFilterChangeState",
+                "type": 1,
+                "value": 7347
+            },
+            {
+                "name": "core:OperatingStateState",
+                "type": 1,
+                "value": 14
+            },
+            {
+                "name": "io:ProgCommandState",
+                "type": 1,
+                "value": 0
+            },
+            {
+                "name": "io:SensorsErrorState",
+                "type": 11,
+                "value": {
+                    "outlet": {
+                        "exhaustAir": false,
+                        "newAir": false
+                    },
+                    "co2": false,
+                    "inlet": {
+                        "exhaustAir": false,
+                        "newAir": false
+                    },
+                    "outside": false
+                }
+            },
+            {
+                "name": "core:TimeProgramState",
+                "type": 11,
+                "value": {
+                    "programs": [
+                        {
+                            "slots": {
+                                "count": 2,
+                                "definitions": [
+                                    {
+                                        "start": "09:00",
+                                        "mode": "away"
+                                    },
+                                    {
+                                        "start": "00:00",
+                                        "mode": "presence"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "slots": {
+                                "count": 0,
+                                "definitions": []
+                            }
+                        }
+                    ],
+                    "daymode": {
+                        "wednesday": "day-presence",
+                        "monday": "day-presence",
+                        "thursday": "day-presence",
+                        "sunday": "day-presence",
+                        "saturday": "day-presence",
+                        "friday": "day-presence",
+                        "tuesday": "day-presence"
+                    },
+                    "lastRequest": "gui"
+                }
+            },
+            {
+                "name": "io:CO2HistoryState",
+                "type": 10,
+                "value": [
+                    45,
+                    45,
+                    45,
+                    45,
+                    45,
+                    47,
+                    47,
+                    47,
+                    48,
+                    50,
+                    52,
+                    52,
+                    52,
+                    52,
+                    53,
+                    53,
+                    54,
+                    55,
+                    54,
+                    51,
+                    51,
+                    51,
+                    50,
+                    50,
+                    49,
+                    50,
+                    50,
+                    49,
+                    49,
+                    49,
+                    50,
+                    49,
+                    49,
+                    50,
+                    50,
+                    49,
+                    48,
+                    47,
+                    47,
+                    46,
+                    45,
+                    45,
+                    46,
+                    45,
+                    45,
+                    44,
+                    44,
+                    43,
+                    43,
+                    43,
+                    43,
+                    44,
+                    45,
+                    46,
+                    47,
+                    49,
+                    52,
+                    53,
+                    54,
+                    55,
+                    56,
+                    55,
+                    53,
+                    52,
+                    51,
+                    51,
+                    51,
+                    50,
+                    50,
+                    50,
+                    49,
+                    49,
+                    49,
+                    48,
+                    47,
+                    47,
+                    47,
+                    47,
+                    47,
+                    47,
+                    47,
+                    47,
+                    46,
+                    46,
+                    46,
+                    46,
+                    46,
+                    46,
+                    46,
+                    47,
+                    48,
+                    50,
+                    50,
+                    49,
+                    48,
+                    48,
+                    48,
+                    47,
+                    46,
+                    47,
+                    49,
+                    49,
+                    48,
+                    47,
+                    47,
+                    47,
+                    50,
+                    49,
+                    49,
+                    50,
+                    51,
+                    51,
+                    51,
+                    52,
+                    51,
+                    50,
+                    50,
+                    50,
+                    49,
+                    49,
+                    50,
+                    50,
+                    49,
+                    49,
+                    49,
+                    49,
+                    49,
+                    49,
+                    49,
+                    49,
+                    50,
+                    49,
+                    49,
+                    47,
+                    47,
+                    46,
+                    46,
+                    45,
+                    46,
+                    47,
+                    46,
+                    45,
+                    45,
+                    44,
+                    20
+                ]
+            },
+            {
+                "name": "io:EnergySavingState",
+                "type": 1,
+                "value": 18
+            }
+        ],

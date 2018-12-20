@@ -336,6 +336,7 @@ class CozyTouchDeviceEqCmds
 	const SET_VENTKITCHEN ='setVentKitchen';
 	const SET_VENTHOME ='setVentHome';
 	const SET_VENTCOOL ='setVentCool';
+	const SET_VENTMANUAL ='setVentManual';
 	const SET_VENTPROG ='setVentProg';
 	const SET_VENTAUTO ='setVentAuto';
 
@@ -370,6 +371,12 @@ class CozyTouchDeviceEqCmds
 			self::SET_MANUECOINACTIVE,
 			self::SET_BOOSTON,
 			self::SET_BOOSTOFF,
+			//self::SET_BOOSTDURATION
+		],
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT=>[
+			self::SET_VENTMANUEL,
+			self::SET_VENTPROG,
+			self::SET_VENTAUTO,
 			//self::SET_BOOSTDURATION
 		]
 	];

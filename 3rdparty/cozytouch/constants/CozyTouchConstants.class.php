@@ -374,9 +374,9 @@ class CozyTouchDeviceEqCmds
 			//self::SET_BOOSTDURATION
 		],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT=>[
-			self::SET_VENTMANUEL,
-			self::SET_VENTPROG,
-			self::SET_VENTAUTO,
+			//self::SET_VENTMANUEL,
+			//self::SET_VENTPROG,
+			//self::SET_VENTAUTO,
 			//self::SET_BOOSTDURATION
 		]
 	];

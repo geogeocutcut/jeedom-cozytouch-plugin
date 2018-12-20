@@ -23,6 +23,9 @@ if (!class_exists('CozytouchAtlanticHotWater')) {
 	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticHotWater.class.php";
 }
 
+if (!class_exists('CozytouchAtlanticVentilation')) {
+	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticVentilation.class.php";
+}
 class CozyTouchManager
 {
     private static $_client = null;
@@ -70,6 +73,9 @@ class CozyTouchManager
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER:
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERSPLIT:
 					CozytouchAtlanticHotWater::BuildEqLogic($device);
+					break;
+				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT:
+					CozytouchAtlanticVentilation::BuildEqLogic($device);
 					break;
                 default:
                     AbstractCozytouchDevice::BuildDefaultEqLogic($device);

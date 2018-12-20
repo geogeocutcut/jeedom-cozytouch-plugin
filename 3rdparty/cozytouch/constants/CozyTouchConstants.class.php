@@ -45,46 +45,48 @@ class CozyTouchDeviceToDisplay
 {
 	const CTDTD_HEATINGSYSTEM = "HeatingSystem";
 	const CTDTD_WATERHEATINGSYSTEM = "WaterHeatingSystem";
-	const CTDTD_ROLLLERSHUTTER ="RollerShutter";
-	const CTDTD_WINDOW ="Window";
-
-	const CTDTD_VELUXWINDOWOPENERSHUTTER="io:WindowOpenerVeluxIOComponent";
-	const CTDTD_VELUXROLLERSHUTTER="io:RollerShutterVeluxIOComponent";
-	const CTDTD_VELUXROLLERSHUTTERLOWSPEED="io:RollerShutterWithLowSpeedManagementIOComponent";
+	const CTDTD_VENTILATIONSYSTEM ="VentilationSystem";
 
 	const CTDTD_ATLANTICELECTRICHEATER = "io:AtlanticElectricalHeaterIOComponent";
 
 	const CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP ="io:AtlanticElectricalHeaterWithAdjustableTemperatureSetpointIOComponent";
-	const CTDTD_ATLANTICELECTRICHEATERTEMPERATURESENSOR = "io:TemperatureInCelciusIOSystemDeviceSensor";
+	const CTDTD_ATLANTICTEMPERATURESENSOR = "io:TemperatureInCelciusIOSystemDeviceSensor";
 	const CTDTD_ATLANTICELECTRICHEATEROCCUPANCYSENSOR = "io:OccupancyIOSystemDeviceSensor";
 	const CTDTD_ATLANTICELECTRICHEATERELECTRICITYSENSOR = "io:CumulatedElectricalEnergyConsumptionIOSystemDeviceSensor";
 	
 	const CTDTD_ATLANTICHOTWATER ="io:AtlanticDomesticHotWaterProductionIOComponent";
 	const CTDTD_ATLANTICHOTWATERSPLIT ="io:AtlanticDomesticHotWaterProductionV2_SPLIT_IOComponent";
 	const CTDTD_ATLANTICHOTWATERELECTRICITYSENSOR ="io:DHWCumulatedElectricalEnergyConsumptionIOSystemDeviceSensor";
+
+	const CTDTD_ATLANTICHEATRECOVERYVENT ="io:AtlanticHeatRecoveryVentilationIOComponent";
+	const CTDTD_ATLANTICC02SENSOR ="io:CO2IOSystemDeviceSensor";
 	
-	
+
 	const CTDTD_DEVICEMODEL = [
 		self::CTDTD_ATLANTICELECTRICHEATER,
 		self::CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP,
 		self::CTDTD_ATLANTICHOTWATER,
-		self::CTDTD_ATLANTICHOTWATERSPLIT
+		self::CTDTD_ATLANTICHOTWATERSPLIT,
+		self::CTDTD_ATLANTICHEATRECOVERYVENT
 	];
 
 	const CTDTD_NAME = [
 		self::CTDTD_HEATINGSYSTEM=>"Radiateur",
-		self::CTDTD_WATERHEATINGSYSTEM=>"Chauffe eau"
+		self::CTDTD_WATERHEATINGSYSTEM=>"Chauffe eau",
+		self::CTDTD_VENTILATIONSYSTEM=>"VMC"
 	];
 
 	const CTDTD_DEVICESANDSENSORS = [
 		self::CTDTD_ATLANTICELECTRICHEATER,
 		self::CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP,
-		self::CTDTD_ATLANTICELECTRICHEATERTEMPERATURESENSOR,
+		self::CTDTD_ATLANTICTEMPERATURESENSOR,
 		self::CTDTD_ATLANTICELECTRICHEATEROCCUPANCYSENSOR,
 		self::CTDTD_ATLANTICELECTRICHEATERELECTRICITYSENSOR,
 		self::CTDTD_ATLANTICHOTWATER,
 		self::CTDTD_ATLANTICHOTWATERSPLIT,
-		self::CTDTD_ATLANTICHOTWATERELECTRICITYSENSOR
+		self::CTDTD_ATLANTICHOTWATERELECTRICITYSENSOR,
+		self::CTDTD_ATLANTICHEATRECOVERYVENT,
+		self::CTDTD_ATLANTICC02SENSOR
 	];
 }
 
@@ -112,8 +114,14 @@ class CozyTouchStateName
 	const CTSN_OCCUPANCY = "core:OccupancyState";
 	
 	const CTSN_ELECNRJCONSUMPTION = "core:ElectricEnergyConsumptionState";
-
 	
+	const CTSN_AIRDEMANDE ="core:AirDemandState";
+	const CTSN_VENTILATIONCONFIG ="io:VentilationConfigurationModeState";
+	const CTSN_AIRDEMANDEMODE ="io:AirDemandModeState";
+	const CTSN_VENTILATIONMODE ="io:VentilationModeState"; // Atention {"prog": "off",	"endOfLineTest": "off",	"test": "off","month": 12,"cooling": "off","leapYear": "off","day": 18,"dayNight": "night"	}
+	const CTSN_CO2CONCENTRATION = "core:CO2ConcentrationState";
+
+
 	const EQ_HOTWATERCOEFF = "hotWaterCoefficient";
 
 	const CTSN_TYPE = [
@@ -121,6 +129,9 @@ class CozyTouchStateName
 		self::CTSN_OPEMODE=>"string",
 		self::CTSN_TARGETHEATLEVEL=>"string",
 		self::CTSN_DHWMODE=>"string",
+		self::CTSN_VENTILATIONCONFIG=>"string",
+		self::CTSN_VENTILATIONMODE=>"string",
+		self::CTSN_AIRDEMANDEMODE=>"string",
 
 		self::CTSN_TARGETTEMP=>"numeric",
 		self::CTSN_COMFROOMTEMP=>"numeric",
@@ -135,6 +146,8 @@ class CozyTouchStateName
 		self::CTSN_DHWCAPACITY=>"numeric",
 		self::CTSN_ELECNRJCONSUMPTION=>"numeric",
 		self::EQ_HOTWATERCOEFF => "numeric",
+		self::CTSN_AIRDEMANDE => "numeric",
+		self::CTSN_CO2CONCENTRATION => "numeric",
 
 		self::CTSN_OCCUPANCY=>"binary",
 		self::CTSN_ONOFF=>"binary",
@@ -160,11 +173,15 @@ class CozyTouchStateName
 		self::CTSN_AWAYMODEDURATION=>"Absent Durée",
 		self::CTSN_DHWCAPACITY=>"Capacité Eau",
 		self::CTSN_ELECNRJCONSUMPTION=>"Conso Elec",
-
 		self::CTSN_OCCUPANCY=>"Présence",
 		self::CTSN_CONNECT=>"Connect",
 
-		
+		self::CTSN_VENTILATIONCONFIG=>"Configuration",
+		self::CTSN_VENTILATIONMODE=>"Ventilation mode",
+		self::CTSN_AIRDEMANDEMODE=>"Air mode",
+		self::CTSN_AIRDEMANDE => "Ventilation",
+		self::CTSN_CO2CONCENTRATION => "C02",
+
 		self::EQ_HOTWATERCOEFF => "Proportion eau chaude"
 	];
 }
@@ -209,14 +226,25 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_DHWMODE,
 			CozyTouchStateName::CTSN_TARGETTEMP,
 			CozyTouchStateName::CTSN_DHWCAPACITY],
-		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATERTEMPERATURESENSOR=>[
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT=>[
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_CONNECT,
+
+			CozyTouchStateName::CTSN_AIRDEMANDEMODE,
+			CozyTouchStateName::CTSN_AIRDEMANDE,
+			CozyTouchStateName::CTSN_VENTILATIONMODE,
+			CozyTouchStateName::CTSN_VENTILATIONCONFIG],
+
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICTEMPERATURESENSOR=>[
 			CozyTouchStateName::CTSN_TEMP],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATEROCCUPANCYSENSOR=>[
 			CozyTouchStateName::CTSN_OCCUPANCY],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATERELECTRICITYSENSOR=>[
 			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERELECTRICITYSENSOR=>[
-			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION]
+			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION],
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICC02SENSOR=>[
+			CozyTouchStateName::CTSN_CO2CONCENTRATION],
 	];
 
 	const EQLOGIC_STATENAME = [
@@ -251,7 +279,6 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_TARGETTEMP,
 			CozyTouchStateName::CTSN_DHWCAPACITY,
 			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION],
-			
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERSPLIT=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_CONNECT,
@@ -262,7 +289,16 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_DHWMODE,
 			CozyTouchStateName::CTSN_TARGETTEMP,
 			CozyTouchStateName::CTSN_DHWCAPACITY,
-			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION]
+			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION],
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT=>[
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_CONNECT,
+
+			CozyTouchStateName::CTSN_AIRDEMANDEMODE,
+			CozyTouchStateName::CTSN_AIRDEMANDE,
+			CozyTouchStateName::CTSN_VENTILATIONMODE,
+			CozyTouchStateName::CTSN_VENTILATIONCONFIG,
+			CozyTouchStateName::CTSN_CO2CONCENTRATION]
 	];
 }
 
@@ -296,6 +332,12 @@ class CozyTouchDeviceEqCmds
 	const SET_BOOSTDURATION="setBoostModeDuration";
 	const SET_BOOSTON ='setBoostOn';
 	const SET_BOOSTOFF ='setBoostOff';
+
+	const SET_VENTKITCHEN ='setVentKitchen';
+	const SET_VENTHOME ='setVentHome';
+	const SET_VENTCOOL ='setVentCool';
+	const SET_VENTPROG ='setVentProg';
+	const SET_VENTAUTO ='setVentAuto';
 
 	const EQLOGIC_ACTIONS = [
 		

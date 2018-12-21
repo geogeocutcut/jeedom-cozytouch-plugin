@@ -14,15 +14,14 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 		CozyTouchStateName::CTSN_TARGETTEMP=>[11,0,0],
 		CozyTouchStateName::CTSN_WATERCONSUMPTION=>[13,0,1],
 		CozyTouchStateName::CTSN_ELECNRJCONSUMPTION=>[14,1,0],
-		CozyTouchStateName::CTSN_BOOSTMODEDURATION=>[15,0,0],
+		CozyTouchDeviceEqCmds::SET_BOOST=>[15,0,0],
+		// CozyTouchStateName::CTSN_BOOSTMODEDURATION=>[15,0,0],
 		CozyTouchStateName::CTSN_AWAYMODEDURATION=>[16,0,0],
 		CozyTouchDeviceEqCmds::SET_THERMOSTAT=>[20,1,1],
 		
 		CozyTouchDeviceEqCmds::SET_AUTOMODE=>[21,1,0],
 		CozyTouchDeviceEqCmds::SET_MANUECOACTIVE=>[22,0,0],
 		CozyTouchDeviceEqCmds::SET_MANUECOINACTIVE=>[23,0,1],
-		CozyTouchDeviceEqCmds::SET_BOOSTON=>[24,1,0],
-		CozyTouchDeviceEqCmds::SET_BOOSTOFF=>[25,0,0],
 		CozyTouchStateName::CTSN_CONNECT=>[1,1,1],
 		'refresh'=>[1,0,0]
     ];
@@ -86,7 +85,6 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 		
 		log::add('cozytouch', 'info', 'creation ou update thermostat');
     	$order = $eqLogic->getCmd(null, 'order');
-
     	if (!is_object($order)) {
     		$order = new cozytouchCmd();
     		$order->setIsVisible(0);
@@ -122,6 +120,35 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 		$thermostat->setOrder(1);
 		$thermostat->save();
 
+
+		$boost = $eqLogic->getCmd(null, 'boost_state');
+    	if (!is_object($boost)) {
+    		$boost = new cozytouchCmd();
+    		$boost->setIsVisible(0);
+    	}
+
+    	$boost->setEqLogic_id($eqLogic->getId());
+    	$boost->setName(__('boost_state', __FILE__));
+    	$boost->setType('info');
+    	$boost->setSubType('binary');
+    	$boost->setIsHistorized(1);
+    	$boost->setLogicalId('boost_state');
+    	$boost->save();
+    	
+    	$boost_toogle = $eqLogic->getCmd(null, CozyTouchDeviceEqCmds::SET_BOOST);
+    	if (!is_object($boost_toogle)) {
+    		$boost_toogle = new cozytouchCmd();
+			$boost_toogle->setLogicalId(CozyTouchDeviceEqCmds::SET_BOOST);
+    	}
+    	$boost_toogle->setEqLogic_id($eqLogic->getId());
+    	$boost_toogle->setName(__('Boost', __FILE__));
+    	$boost_toogle->setType('action');
+    	$boost_toogle->setSubType('slider');
+    	$boost_toogle->setTemplate('dashboard', 'toggle');
+    	$boost_toogle->setTemplate('mobile', 'toggle');
+    	$boost_toogle->setIsVisible(1);
+		$boost_toogle->setValue($boost->getId());
+		$boost_toogle->save();
 
         self::orderCommand($eqLogic);
 
@@ -186,6 +213,10 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_BOOSTOFF);
 				self::setBoostDuration($device_url,0);
 				break;
+			case CozyTouchDeviceEqCmds::SET_BOOST:
+				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_BOOST." value : ".$_options['slider']);
+				self::setBoostDuration($device_url,$_options['slider']);
+				break;
 			case CozyTouchDeviceEqCmds::SET_THERMOSTAT:
     			$min = $cmd->getConfiguration('minValue');
     			$max = $cmd->getConfiguration('maxValue');
@@ -232,7 +263,8 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 						$cmd->event($value);
 					}
 				}
-            }
+			}
+			self::refresh_boost($eqLogic);
 			self::refresh_hotwatercoeff($eqLogic);
 			self::refresh_thermostat($eqLogic);
 	
@@ -240,7 +272,27 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 		catch (Exception $e) {
 	
         }
-    }
+	}
+	
+	public static function refresh_boost($eqLogic) 
+    {
+        log::add('cozytouch', 'debug', __('Refresh boost', __FILE__));
+        $deviceURL = $eqLogic->getConfiguration('device_url');
+        $value="";
+
+		$cmd = Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_BOOSTMODEDURATION);
+		if (is_object($cmd)) {
+			$value=$cmd->execCmd();
+        }
+
+        $cmd=Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),'boost_state');
+		if (is_object($cmd)) {
+			$boost =$value>0?1:0;
+            $cmd->setCollectDate('');
+            $cmd->event($boost);
+            log::add('cozytouch', 'debug', __('Boost : ', __FILE__).$boost. "(".$value.")");
+        }
+	}
 
     public static function refresh_hotwatercoeff($eqLogic) 
     {

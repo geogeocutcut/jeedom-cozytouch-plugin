@@ -121,7 +121,7 @@ class CozyTouchStateName
 	const CTSN_VENTILATIONMODE ="io:VentilationModeState"; // Atention {"prog": "off",	"endOfLineTest": "off",	"test": "off","month": 12,"cooling": "off","leapYear": "off","day": 18,"dayNight": "night"	}
 	const CTSN_CO2CONCENTRATION = "core:CO2ConcentrationState";
 
-
+	const EQ_VMCMODE ="vmcMode";
 	const EQ_HOTWATERCOEFF = "hotWaterCoefficient";
 
 	const CTSN_TYPE = [
@@ -132,6 +132,7 @@ class CozyTouchStateName
 		self::CTSN_VENTILATIONCONFIG=>"string",
 		self::CTSN_VENTILATIONMODE=>"string",
 		self::CTSN_AIRDEMANDEMODE=>"string",
+		self::EQ_VMCMODE=>string,
 
 		self::CTSN_TARGETTEMP=>"numeric",
 		self::CTSN_COMFROOMTEMP=>"numeric",
@@ -179,9 +180,10 @@ class CozyTouchStateName
 		self::CTSN_VENTILATIONCONFIG=>"Configuration",
 		self::CTSN_VENTILATIONMODE=>"Ventilation mode",
 		self::CTSN_AIRDEMANDEMODE=>"Air mode",
-		self::CTSN_AIRDEMANDE => "Ventilation",
+		self::CTSN_AIRDEMANDE => "Air demande",
 		self::CTSN_CO2CONCENTRATION => "C02",
 
+		self::EQ_VMCMODE => "VMC Mode",
 		self::EQ_HOTWATERCOEFF => "Proportion eau chaude"
 	];
 }
@@ -332,9 +334,10 @@ class CozyTouchDeviceEqCmds
 	const SET_BOOSTDURATION="setBoostModeDuration";
 	const SET_BOOSTON ='setBoostOn';
 	const SET_BOOSTOFF ='setBoostOff';
+	const SET_BOOST='setBoost';
 
-	const SET_VENTKITCHEN ='setVentKitchen';
-	const SET_VENTHOME ='setVentHome';
+	const SET_VENTBOOST ='setVentBoost';
+	const SET_VENTHIGH ='setVentHigh';
 	const SET_VENTCOOL ='setVentCool';
 	const SET_VENTMANUAL ='setVentManual';
 	const SET_VENTPROG ='setVentProg';
@@ -360,18 +363,12 @@ class CozyTouchDeviceEqCmds
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER=>[
 			self::SET_AUTOMODE,
 			self::SET_MANUECOACTIVE,
-			self::SET_MANUECOINACTIVE,
-			self::SET_BOOSTON,
-			self::SET_BOOSTOFF,
-			//self::SET_BOOSTDURATION
+			self::SET_MANUECOINACTIVE
 		],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERSPLIT=>[
 			self::SET_AUTOMODE,
 			self::SET_MANUECOACTIVE,
-			self::SET_MANUECOINACTIVE,
-			self::SET_BOOSTON,
-			self::SET_BOOSTOFF,
-			//self::SET_BOOSTDURATION
+			self::SET_MANUECOINACTIVE
 		],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT=>[
 			//self::SET_VENTMANUEL,
@@ -396,8 +393,7 @@ class CozyTouchDeviceEqCmds
 		self::SET_MANUECOACTIVE=>"Manuel Eco",
 		self::SET_MANUECOINACTIVE=>"Manuel",
 		self::SET_BOOSTDURATION=>"Boost",
-		self::SET_BOOSTON=>"Boost On",
-		self::SET_BOOSTOFF=>"Boost Off"
+		self::SET_BOOST=>"Boost"
 	];
 }
 

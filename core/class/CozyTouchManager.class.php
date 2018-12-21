@@ -158,9 +158,13 @@ class CozyTouchManager
 							break;
 						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER:
 						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERSPLIT:
+							CozytouchAtlanticHotWater::refresh_boost($eqLogicTmp);
 							CozytouchAtlanticHotWater::refresh_hotwatercoeff($eqLogicTmp);
 							CozytouchAtlanticHotWater::refresh_thermostat($eqLogicTmp);
 							break;	
+						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT:
+							CozytouchAtlanticVentilation::refresh_vmcmode($eqLogicTmp);
+							break;
 					}
 				}
 			}
@@ -185,6 +189,11 @@ class CozyTouchManager
 		{
 			$value = ($state->value=='noPersonInside');
 		}
+		else if($state->name==CozyTouchStateName::CTSN_VENTILATIONMODE)
+		{
+			log::add('cozytouch','debug','Vmc mode info : '.json_encode($state->value));
+			$value = json_encode($state->value);
+		}
 		else
 		{
 			$value = $state->value;
@@ -208,6 +217,9 @@ class CozyTouchManager
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERSPLIT :
 				CozyTouchAtlanticHotWater::execute($cmd,$_options);
     			break;
+			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT :
+				CozytouchAtlanticVentilation::execute($cmd,$_options);
+				break;
     			
     	}
 	}

@@ -10,10 +10,13 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
 	const DISPLAY = [
 		CozyTouchStateName::CTSN_CONNECT=>[1,1,1],
 		CozyTouchStateName::EQ_VMCMODE=>[2,1,1],
-		CozyTouchStateName::CTSN_AIRDEMANDE=>[3,0,0],
 		CozyTouchStateName::CTSN_AIRDEMANDEMODE=>[4,0,0],
 		CozyTouchStateName::CTSN_VENTILATIONCONFIG=>[5,0,0],
 		CozyTouchStateName::CTSN_CO2CONCENTRATION=>[6,0,0],
+		
+		CozyTouchDeviceEqCmds::SET_VENTMANUAL=>[21,1,0],
+		CozyTouchDeviceEqCmds::SET_VENTPROG=>[22,0,0],
+		CozyTouchDeviceEqCmds::SET_VENTAUTO=>[23,0,1],
 		'refresh'=>[1,0,0]
     ];
     
@@ -110,6 +113,18 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
 			case 'refresh':
 				log::add('cozytouch', 'debug', 'command : '.$device_url.' refresh');
 				break;
+			
+			case CozyTouchDeviceEqCmds::SET_VENTMANUAL:
+				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_VENTMANUAL);
+				break;
+			
+			case CozyTouchDeviceEqCmds::SET_VENTPROG:
+				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_VENTPROG);
+				break;
+			
+			case CozyTouchDeviceEqCmds::SET_VENTAUTO:
+				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_VENTAUTO);
+				break;
 		}
 		if($refresh)
 		{
@@ -182,7 +197,5 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
 	
         }
     }
-
-    
 }
 ?>

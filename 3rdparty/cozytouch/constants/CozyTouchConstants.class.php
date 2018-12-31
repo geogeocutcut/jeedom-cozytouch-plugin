@@ -296,10 +296,10 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_CONNECT,
 
-			CozyTouchStateName::CTSN_AIRDEMANDEMODE,
+			CozyTouchStateName::CTSN_AIRDEMANDEMODE, // "auto","away","boost","high"
 			CozyTouchStateName::CTSN_AIRDEMANDE,
 			CozyTouchStateName::CTSN_VENTILATIONMODE,
-			CozyTouchStateName::CTSN_VENTILATIONCONFIG,
+			CozyTouchStateName::CTSN_VENTILATIONCONFIG, //"comfort","eco","standard"
 			CozyTouchStateName::CTSN_CO2CONCENTRATION]
 	];
 }
@@ -338,7 +338,7 @@ class CozyTouchDeviceEqCmds
 
 	const SET_VENTBOOST ='setVentBoost';
 	const SET_VENTHIGH ='setVentHigh';
-	const SET_VENTCOOL ='setVentCool';
+	const SET_VENTREFRESH ='setVentRefresh';
 	const SET_VENTMANUAL ='setVentManual';
 	const SET_VENTPROG ='setVentProg';
 	const SET_VENTAUTO ='setVentAuto';
@@ -371,9 +371,9 @@ class CozyTouchDeviceEqCmds
 			self::SET_MANUECOINACTIVE
 		],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT=>[
-			//self::SET_VENTMANUEL,
-			//self::SET_VENTPROG,
-			//self::SET_VENTAUTO,
+			self::SET_VENTMANUAL,
+			self::SET_VENTPROG,
+			self::SET_VENTAUTO
 			//self::SET_BOOSTDURATION
 		]
 	];
@@ -393,7 +393,10 @@ class CozyTouchDeviceEqCmds
 		self::SET_MANUECOACTIVE=>"Manuel Eco",
 		self::SET_MANUECOINACTIVE=>"Manuel",
 		self::SET_BOOSTDURATION=>"Boost",
-		self::SET_BOOST=>"Boost"
+		self::SET_BOOST=>"Boost",
+		self::SET_VENTMANUAL=>"Manual",
+		self::SET_VENTPROG=>"Prog",
+		self::SET_VENTAUTO=>"Auto"
 	];
 }
 
@@ -431,5 +434,14 @@ class CozyTouchDeviceActions
 	const CTPC_SETBOOSTDUR = "setBoostModeDuration";
 	const CTPC_SETDHWMODE = "setDHWMode";
 	const CTPC_SETCURRENTOPEMODE = "setCurrentOperatingMode";
+
+	const CTPC_SETAIRDEMANDMODE = "setAirDemandMode";
+	const CTPC_RSHVENTILATION = "refreshVentilationState";
+	const CTPC_SETVENTILATIONMODE = "setVentilationMode";
+
+	const CTPC_SETVENTILATIONCONFIGMODE = "setVentilationConfigurationMode"; // standard = manuel, comfort = auto,
+	const CTPC_RSHVENTILATIONCONFIGMODE = "refreshVentilationConfigurationMode";
 }
+
+
 ?>

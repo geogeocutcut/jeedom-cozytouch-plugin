@@ -11,6 +11,7 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
         CozyTouchStateName::EQ_HOTWATERCOEFF=>[3,1,1],
 		CozyTouchStateName::CTSN_DHWMODE=>[4,0,1],
 		CozyTouchStateName::CTSN_TEMP=>[10,1,0],
+		CozyTouchStateName::CTSN_MIDDLETEMP=>[10,1,0],
 		CozyTouchStateName::CTSN_TARGETTEMP=>[11,0,0],
 		CozyTouchStateName::CTSN_WATERCONSUMPTION=>[13,0,1],
 		CozyTouchStateName::CTSN_ELECNRJCONSUMPTION=>[14,1,0],
@@ -113,8 +114,8 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
     	$thermostat->setSubType('slider');
     	$thermostat->setUnite('°C');
     	$thermostat->setLogicalId(CozyTouchDeviceEqCmds::SET_THERMOSTAT);
-    	$thermostat->setTemplate('dashboard', 'thermHotWater');
-    	$thermostat->setTemplate('mobile', 'thermHotWater');
+    	$thermostat->setTemplate('dashboard', 'thermhotwater');
+    	$thermostat->setTemplate('mobile', 'thermhotwater');
     	$thermostat->setIsVisible(1);
 		$thermostat->setValue($order->getId());
 		$thermostat->setOrder(1);
@@ -307,11 +308,25 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
         $cmd = Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_TEMP);
 		if (is_object($cmd)) {
 			$valuetmp['temp']=$cmd->execCmd();
+		}
+		
+        $cmd = Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_MIDDLETEMP);
+		if (is_object($cmd)) {
+			$valuetmp['middle_temp']=$cmd->execCmd();
         }
 
         $cmd=Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),CozyTouchStateName::EQ_HOTWATERCOEFF);
 		if (is_object($cmd)) {
-            $hotwatercoeff = 100*($valuetmp['temp']-self::cold_water)/($valuetmp['targettemp']-self::cold_water);
+			$temp=0;
+			if(array_key_exists('middle_temp',$valuetmp))
+			{
+				$temp=$valuetmp['middle_temp'];
+			}
+			else
+			{
+				$temp=$valuetmp['temp'];
+			}
+            $hotwatercoeff = 100*($temp-self::cold_water)/($valuetmp['targettemp']-self::cold_water);
             $cmd->setCollectDate('');
             $cmd->event($hotwatercoeff);
             log::add('cozytouch', 'debug', __('Calcul proportion d eau chaude : ', __FILE__).$hotwatercoeff);

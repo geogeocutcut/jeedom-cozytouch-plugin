@@ -3,7 +3,7 @@
 class CozyTouchCmdDisplay
 {
 	const DISPLAY_DASH = [
-		'numeric'=>'tileCozy',
+		'numeric'=>'tilecozy',
 		'string'=>'badge',
 		'binaire'=>''
 	];
@@ -108,6 +108,7 @@ class CozyTouchStateName
 	const CTSN_TEMP = "core:TemperatureState";
 	const CTSN_WATERCONSUMPTION = "core:WaterConsumptionState";
 	const CTSN_AWAYMODEDURATION = "io:AwayModeDurationState";
+	const CTSN_MIDDLETEMP = "io:MiddleWaterTemperatureState";
 	const CTSN_DHWMODE = "io:DHWModeState";
 	const CTSN_DHWCAPACITY = "io:DHWCapacityState";
 	
@@ -149,6 +150,7 @@ class CozyTouchStateName
 		self::EQ_HOTWATERCOEFF => "numeric",
 		self::CTSN_AIRDEMANDE => "numeric",
 		self::CTSN_CO2CONCENTRATION => "numeric",
+		self::CTSN_MIDDLETEMP=>"numeric",
 
 		self::CTSN_OCCUPANCY=>"binary",
 		self::CTSN_ONOFF=>"binary",
@@ -170,6 +172,7 @@ class CozyTouchStateName
 		self::CTSN_TEMPPROBECALIBR=>"Calibrage",
 		self::CTSN_BOOSTMODEDURATION=>"Boost Durée",
 		self::CTSN_TEMP=>"Temp.",
+		self::CTSN_MIDDLETEMP=>"Temp.",
 		self::CTSN_WATERCONSUMPTION=>"Conso Eau",
 		self::CTSN_AWAYMODEDURATION=>"Absent Durée",
 		self::CTSN_DHWCAPACITY=>"Capacité Eau",
@@ -220,7 +223,7 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_DHWCAPACITY],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERSPLIT=>[
 			CozyTouchStateName::CTSN_NAME,
-			CozyTouchStateName::CTSN_TEMP,
+			CozyTouchStateName::CTSN_MIDDLETEMP,
 			CozyTouchStateName::CTSN_CONNECT,
 			CozyTouchStateName::CTSN_BOOSTMODEDURATION,
 			CozyTouchStateName::CTSN_WATERCONSUMPTION,
@@ -284,7 +287,7 @@ class CozyTouchDeviceStateName
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERSPLIT=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_CONNECT,
-			CozyTouchStateName::CTSN_TEMP,
+			CozyTouchStateName::CTSN_MIDDLETEMP,
 			CozyTouchStateName::CTSN_BOOSTMODEDURATION,
 			CozyTouchStateName::CTSN_WATERCONSUMPTION,
 			CozyTouchStateName::CTSN_AWAYMODEDURATION,
@@ -373,7 +376,10 @@ class CozyTouchDeviceEqCmds
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT=>[
 			self::SET_VENTMANUAL,
 			self::SET_VENTPROG,
-			self::SET_VENTAUTO
+			self::SET_VENTAUTO,
+			self::SET_VENTBOOST,
+			self::SET_VENTHIGH,
+			self::SET_VENTREFRESH
 			//self::SET_BOOSTDURATION
 		]
 	];
@@ -394,6 +400,10 @@ class CozyTouchDeviceEqCmds
 		self::SET_MANUECOINACTIVE=>"Manuel",
 		self::SET_BOOSTDURATION=>"Boost",
 		self::SET_BOOST=>"Boost",
+
+		self::SET_VENTBOOST=>"Boost Maison",
+		self::SET_VENTHIGH=>"Boost Cuisine",
+		self::SET_VENTREFRESH=>"Rafraichissement",
 		self::SET_VENTMANUAL=>"Manual",
 		self::SET_VENTPROG=>"Prog",
 		self::SET_VENTAUTO=>"Auto"
@@ -435,6 +445,7 @@ class CozyTouchDeviceActions
 	const CTPC_SETDHWMODE = "setDHWMode";
 	const CTPC_SETCURRENTOPEMODE = "setCurrentOperatingMode";
 
+	// Atlantic VMC
 	const CTPC_SETAIRDEMANDMODE = "setAirDemandMode";
 	const CTPC_RSHVENTILATION = "refreshVentilationState";
 	const CTPC_SETVENTILATIONMODE = "setVentilationMode";

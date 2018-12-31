@@ -1,0 +1,16 @@
+<div style="width:100px;min-height:100px;" class="cmd #history# tooltips cmd-widget" data-type="info" data-subtype="numeric" data-cmd_id="#id#" title="#collectDate#">
+    <center>
+        <span style="font-size: 3.5em;" id="iconCmd#id#"></span>
+    </center>
+    <script>
+       if ('#state#' == 'boost') {
+            $('#iconCmd#id#').append('<img style="width:100px;height: 100px;" src="plugins/cozytouch/core/template/images/vent_boost.png">');
+        } 
+      	else if ('#state#' == 'refresh'){
+            $('#iconCmd#id#').append('<img style="width:100px;height: 100px;" src="plugins/cozytouch/core/template/images/vent_refresh.png">');
+        }
+      	else {
+            $('#iconCmd#id#').append('<img style="width:100px;height: 100px;" src="plugins/cozytouch/core/template/images/vent_auto.png">');
+        }
+    </script>
+</div>

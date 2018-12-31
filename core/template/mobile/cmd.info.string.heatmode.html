@@ -1,0 +1,21 @@
+<div style="width:90px;min-height:120px;" class="cmd #history# tooltips cmd-widget" data-type="info" data-subtype="numeric" data-cmd_id="#id#" title="#collectDate#">
+    <center>
+        <span style="font-weight: bold;font-size : 12px;">#name#</span><br/>
+        <span style="font-size: 3.5em;" id="iconCmd#id#"></span>
+    </center>
+    <script>
+       if ('#state#' == 'off') {
+            $('#iconCmd#id#').append('<img src="plugins/cozytouch/core/template/mobile/cmd.info.string.heatmode/radiateur arret.png">');
+        } else if ('#state#' == 'frostprotection') {
+            $('#iconCmd#id#').append('<img src="plugins/cozytouch/core/template/mobile/cmd.info.string.heatmode/radiateur hg.png">');
+        } else if ('#state#' == 'eco') {
+            $('#iconCmd#id#').append('<img src="plugins/cozytouch/core/template/mobile/cmd.info.string.heatmode/radiateur eco.png">');
+        } else if ('#state#' == 'comfort-2') {
+          	$('#iconCmd#id#').append('<img src="plugins/cozytouch/core/template/mobile/cmd.info.string.heatmode/radiateur confort-2.png">');
+        } else if ('#state#' == 'comfort-1') {
+          	$('#iconCmd#id#').append('<img src="plugins/cozytouch/core/template/mobile/cmd.info.string.heatmode/radiateur confort-1.png">');
+        } else {
+            $('#iconCmd#id#').append('<img src="plugins/cozytouch/core/template/mobile/cmd.info.string.heatmode/radiateur confort.png">');
+        }
+    </script>
+</div>

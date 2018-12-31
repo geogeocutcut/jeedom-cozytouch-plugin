@@ -1,0 +1,28 @@
+<div style="width:80px;min-height:120px;" class="cmd #history# tooltips cmd-widget" data-type="info" data-subtype="numeric" data-cmd_id="#id#" title="#collectDate#">
+    <center>
+        <span style="font-size: 3.5em;" id="iconCmd#id#"></span>
+    </center>
+    <script>
+       if ('#state#' < 10) {
+            $('#iconCmd#id#').append('<img style="width:80px;height: 140px;" src="plugins/cozytouch/core/template/images/hotwater_temp_0.png">');
+        } else if ('#state#' < 20) {
+            $('#iconCmd#id#').append('<img style="width:80px;height: 140px;" src="plugins/cozytouch/core/template/images/hotwater_temp_1.png">');
+        } else if ('#state#' < 30) {
+            $('#iconCmd#id#').append('<img style="width:80px;height: 140px;" src="plugins/cozytouch/core/template/images/hotwater_temp_3.png">');
+        } else if ('#state#' < 40) {
+          	$('#iconCmd#id#').append('<img style="width:80px;height: 140px;" src="plugins/cozytouch/core/template/images/hotwater_temp_4.png">');
+        } else if ('#state#' < 50) {
+          	$('#iconCmd#id#').append('<img style="width:80px;height: 140px;" src="plugins/cozytouch/core/template/images/hotwater_temp_5.png">');
+        } else if ('#state#' < 60) {
+          	$('#iconCmd#id#').append('<img style="width:80px;height: 140px;" src="plugins/cozytouch/core/template/images/hotwater_temp_6.png">');
+        } else if ('#state#' < 70) {
+          	$('#iconCmd#id#').append('<img style="width:80px;height: 140px;" src="plugins/cozytouch/core/template/images/hotwater_temp_7.png">');
+        } else if ('#state#' < 80) {
+          	$('#iconCmd#id#').append('<img style="width:80px;height: 140px;" src="plugins/cozytouch/core/template/images/hotwater_temp_8.png">');
+        } else if ('#state#' < 90) {
+          	$('#iconCmd#id#').append('<img style="width:80px;height: 140px;" src="plugins/cozytouch/core/template/images/hotwater_temp_9.png">');
+        } else {
+            $('#iconCmd#id#').append('<img style="width:80px;height: 140px;" src="plugins/cozytouch/core/template/images/hotwater_temp_10.png">');
+        }
+    </script>
+</div>

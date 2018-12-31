@@ -14,6 +14,9 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
 		CozyTouchStateName::CTSN_VENTILATIONCONFIG=>[5,0,0],
 		CozyTouchStateName::CTSN_CO2CONCENTRATION=>[6,0,0],
 		
+		CozyTouchDeviceEqCmds::SET_VENTBOOST=>[15,1,0],
+		CozyTouchDeviceEqCmds::SET_VENTHIGH=>[16,1,0],
+		CozyTouchDeviceEqCmds::SET_VENTREFRESH=>[17,1,1],
 		CozyTouchDeviceEqCmds::SET_VENTMANUAL=>[21,1,0],
 		CozyTouchDeviceEqCmds::SET_VENTPROG=>[22,0,0],
 		CozyTouchDeviceEqCmds::SET_VENTAUTO=>[23,0,1],
@@ -114,16 +117,34 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
 				log::add('cozytouch', 'debug', 'command : '.$device_url.' refresh');
 				break;
 			
+			case CozyTouchDeviceEqCmds::SET_VENTBOOST:
+				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_VENTBOOST);
+				self::set_boost_mode($device_url);
+				break;
+			
+			case CozyTouchDeviceEqCmds::SET_VENTHIGH:
+				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_VENTHIGH);
+				self::set_high_mode($device_url);
+				break;
+			
+			case CozyTouchDeviceEqCmds::SET_VENTREFRESH:
+				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_VENTREFRESH);
+				self::set_refresh_mode($device_url);
+				break;
+			
 			case CozyTouchDeviceEqCmds::SET_VENTMANUAL:
 				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_VENTMANUAL);
+				self::set_manu_mode($device_url);
 				break;
 			
 			case CozyTouchDeviceEqCmds::SET_VENTPROG:
 				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_VENTPROG);
+				self::set_prog_mode($device_url);
 				break;
 			
 			case CozyTouchDeviceEqCmds::SET_VENTAUTO:
 				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_VENTAUTO);
+				self::set_auto_mode($device_url);
 				break;
 		}
 		if($refresh)
@@ -196,6 +217,231 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
 		catch (Exception $e) {
 	
         }
+	}
+	
+	protected static function refresh_mode_cmd($device_url)
+	{
+		$cmds = array(
+			
+			array(
+				"name"=>CozyTouchDeviceActions::CTPC_RSHVENTILATION,
+				"values"=>null
+			),
+			array(
+					"name"=>CozyTouchDeviceActions::CTPC_RSHVENTILATIONCONFIGMODE,
+					"values"=>null
+			)
+		);
+		parent::genericApplyCommand($device_url,$cmds);
+	}
+
+	public static function set_auto_mode($device_url)
+	{
+		
+		$cmds = array(
+			array(
+				"name"=>CozyTouchDeviceActions::CTPC_SETAIRDEMANDMODE,
+				"values"=>'auto'
+			)
+        );
+		parent::genericApplyCommand($device_url,$cmds);
+
+        $cmds = array(
+            array(
+                "name"=>CozyTouchDeviceActions::CTPC_SETVENTILATIONCONFIGMODE,
+                "values"=>'comfort'
+			),
+			
+            array(
+                "name"=>CozyTouchDeviceActions::CTPC_SETVENTILATIONMODE,
+				"values"=>[
+					"test"=>"off",
+					"endOfLineTest"=>"off",
+					"leapYear"=>"on",
+					"prog"=>"off",
+					"cooling"=>"off",
+					"month"=> date('n'),
+					"day"=> date('j'),
+					"dayNight"=> "night"
+				]
+			)
+        );
+        parent::genericApplyCommand($device_url,$cmds);
+		sleep(1);
+		self::refresh_mode_cmd($device_url);
+	}
+
+	public static function set_manu_mode($device_url)
+	{
+		
+		$cmds = array(
+			array(
+				"name"=>CozyTouchDeviceActions::CTPC_SETAIRDEMANDMODE,
+				"values"=>'auto'
+			)
+        );
+		parent::genericApplyCommand($device_url,$cmds);
+
+        $cmds = array(
+            array(
+                "name"=>CozyTouchDeviceActions::CTPC_SETVENTILATIONCONFIGMODE,
+                "values"=>'standard'
+			),
+			
+            array(
+                "name"=>CozyTouchDeviceActions::CTPC_SETVENTILATIONMODE,
+				"values"=>[
+					"test"=>"off",
+					"endOfLineTest"=>"off",
+					"leapYear"=>"on",
+					"prog"=>"off",
+					"cooling"=>"off",
+					"month"=> date('n'),
+					"day"=> date('j'),
+					"dayNight"=> "night"
+				]
+			)
+        );
+        parent::genericApplyCommand($device_url,$cmds);
+		sleep(1);
+		self::refresh_mode_cmd($device_url);
+	}
+
+	public static function set_prog_mode($device_url)
+	{
+		
+		$cmds = array(
+			array(
+				"name"=>CozyTouchDeviceActions::CTPC_SETAIRDEMANDMODE,
+				"values"=>'auto'
+			)
+        );
+		parent::genericApplyCommand($device_url,$cmds);
+
+        $cmds = array(
+            array(
+                "name"=>CozyTouchDeviceActions::CTPC_SETVENTILATIONMODE,
+				"values"=>[
+					"test"=>"off",
+					"endOfLineTest"=>"off",
+					"leapYear"=>"off",
+					"prog"=>"on",
+					"cooling"=>"off",
+					"month"=> date('n'),
+					"day"=> date('j'),
+					"dayNight"=> "night"
+				]
+			),
+			array(
+				"name"=>CozyTouchDeviceActions::CTPC_SETVENTILATIONCONFIGMODE,
+				"values"=>'standard'
+			)
+        );
+        parent::genericApplyCommand($device_url,$cmds);
+		sleep(1);
+		self::refresh_mode_cmd($device_url);
+	}
+	
+	public static function set_refresh_mode($device_url)
+	{
+		$cmds = array(
+			array(
+				"name"=>CozyTouchDeviceActions::CTPC_SETAIRDEMANDMODE,
+				"values"=>'auto'
+			)
+        );
+		parent::genericApplyCommand($device_url,$cmds);
+		
+        $cmds = array(
+            array(
+                "name"=>CozyTouchDeviceActions::CTPC_SETVENTILATIONMODE,
+				"values"=>[
+					"test"=>"off",
+					"endOfLineTest"=>"off",
+					"leapYear"=>"off",
+					"prog"=>"off",
+					"cooling"=>"on",
+					"month"=> date('n'),
+					"day"=> date('j'),
+					"dayNight"=> "night"
+				]
+			),
+			array(
+				"name"=>CozyTouchDeviceActions::CTPC_SETVENTILATIONCONFIGMODE,
+				"values"=>'standard'
+			)
+        );
+        parent::genericApplyCommand($device_url,$cmds);
+		sleep(1);
+		self::refresh_mode_cmd($device_url);
+	}
+	
+	public static function set_boost_mode($device_url)
+	{
+		$cmds = array(
+			array(
+				"name"=>CozyTouchDeviceActions::CTPC_SETAIRDEMANDMODE,
+				"values"=>'boost'
+			)
+        );
+		parent::genericApplyCommand($device_url,$cmds);
+		
+        $cmds = array(
+            array(
+                "name"=>CozyTouchDeviceActions::CTPC_SETVENTILATIONMODE,
+				"values"=>[
+					"test"=>"off",
+					"endOfLineTest"=>"off",
+					"leapYear"=>"off",
+					"prog"=>"off",
+					"cooling"=>"off",
+					"month"=> date('n'),
+					"day"=> date('j'),
+					"dayNight"=> "night"
+				]
+			),
+			array(
+				"name"=>CozyTouchDeviceActions::CTPC_SETVENTILATIONCONFIGMODE,
+				"values"=>'standard'
+			)
+        );
+        parent::genericApplyCommand($device_url,$cmds);
+		sleep(1);
+		self::refresh_mode_cmd($device_url);
+	}
+	
+	public static function set_high_mode($device_url)
+	{
+		$cmds = array(
+			array(
+				"name"=>CozyTouchDeviceActions::CTPC_SETAIRDEMANDMODE,
+				"values"=>'high'
+			)
+        );
+		parent::genericApplyCommand($device_url,$cmds);
+		
+        $cmds = array(
+            array(
+                "name"=>CozyTouchDeviceActions::CTPC_SETVENTILATIONMODE,
+				"values"=>[
+					"test"=>"off",
+					"endOfLineTest"=>"off",
+					"leapYear"=>"off",
+					"prog"=>"off",
+					"cooling"=>"off",
+					"month"=> date('n'),
+					"day"=> date('j'),
+					"dayNight"=> "night"
+				]
+			),
+			array(
+				"name"=>CozyTouchDeviceActions::CTPC_SETVENTILATIONCONFIGMODE,
+				"values"=>'standard'
+			)
+        );
+        parent::genericApplyCommand($device_url,$cmds);
+		sleep(1);
+		self::refresh_mode_cmd($device_url);
     }
 }
 ?>

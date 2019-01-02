@@ -171,8 +171,8 @@ class CozyTouchStateName
 		self::CTSN_EFFTEMPSETPOINT=>"Effective",
 		self::CTSN_TEMPPROBECALIBR=>"Calibrage",
 		self::CTSN_BOOSTMODEDURATION=>"Boost Durée",
-		self::CTSN_TEMP=>"Temp.",
-		self::CTSN_MIDDLETEMP=>"Temp.",
+		self::CTSN_TEMP=>"Température",
+		self::CTSN_MIDDLETEMP=>"Température",
 		self::CTSN_WATERCONSUMPTION=>"Conso Eau",
 		self::CTSN_AWAYMODEDURATION=>"Absent Durée",
 		self::CTSN_DHWCAPACITY=>"Capacité Eau",
@@ -234,7 +234,6 @@ class CozyTouchDeviceStateName
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_CONNECT,
-
 			CozyTouchStateName::CTSN_AIRDEMANDEMODE,
 			CozyTouchStateName::CTSN_AIRDEMANDE,
 			CozyTouchStateName::CTSN_VENTILATIONMODE,
@@ -298,6 +297,7 @@ class CozyTouchDeviceStateName
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_CONNECT,
+			CozyTouchStateName::CTSN_TEMP,
 
 			CozyTouchStateName::CTSN_AIRDEMANDEMODE, // "auto","away","boost","high"
 			CozyTouchStateName::CTSN_AIRDEMANDE,

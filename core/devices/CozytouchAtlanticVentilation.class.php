@@ -13,6 +13,7 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
 		CozyTouchStateName::CTSN_AIRDEMANDEMODE=>[4,0,0],
 		CozyTouchStateName::CTSN_VENTILATIONCONFIG=>[5,0,0],
 		CozyTouchStateName::CTSN_CO2CONCENTRATION=>[6,0,0],
+		CozyTouchStateName::CTSN_TEMP=>[7,0,0],
 		
 		CozyTouchDeviceEqCmds::SET_VENTBOOST=>[15,1,0],
 		CozyTouchDeviceEqCmds::SET_VENTHIGH=>[16,1,0],
@@ -29,7 +30,8 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
         $eqLogic =self::BuildDefaultEqLogic($device);
 		$eqLogic->setCategory('energy', 1);
 
-        $states = CozyTouchDeviceStateName::EQLOGIC_STATENAME[$device->getVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME)];
+		$states = CozyTouchDeviceStateName::EQLOGIC_STATENAME[$device->getVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME)];
+		$statecount = array();
         $sensors = array();
 		foreach ($device->getSensors() as $sensor)
 		{
@@ -42,11 +44,11 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
 				if(in_array($state->name,$states))
 				{
 					log::add('cozytouch', 'info', 'State : '.$state->name);
-		
+					$statecount[$state->name]+=1;
 					$cmdId = $sensorURL.'_'.$state->name;
 					$type ="info";
 					$subType = CozyTouchStateName::CTSN_TYPE[$state->name];
-					$name = CozyTouchStateName::CTSN_LABEL[$state->name];
+					$name = $statecount[$state->name]>1 ? CozyTouchStateName::CTSN_LABEL[$state->name]." ".$statecount[$state->name]:CozyTouchStateName::CTSN_LABEL[$state->name];
 					$dashboard =CozyTouchCmdDisplay::DISPLAY_DASH[$subType];
 					$mobile =CozyTouchCmdDisplay::DISPLAY_MOBILE[$subType];
 					$value =$subType=="numeric"?0:($subType=="string"?'value':0);
@@ -168,12 +170,30 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
 			case 'auto';
 				$cmd = Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_VENTILATIONMODE);
 				log::add('cozytouch', 'debug', __('Ventilation Demand Mode : ', __FILE__).$cmd->execCmd());
+				$config = Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_VENTILATIONCONFIG);
 				if (is_object($cmd)) {
 					$tmp =json_decode($cmd->execCmd());
-					$value= $tmp->{'cooling'}=='on'?'refresh':'auto';
+					if($tmp->{'cooling'}=='on')
+					{
+						$value= 'refresh';
+					}
+					else if($tmp->{'prog'}=='on')
+					{
+						$value= 'prog';
+					}
+					else if($config->execCmd()=='comfort')
+					{
+						$value= 'auto';
+					}
+					else
+					{
+						$value= 'manual';
+					}
 				}
 				break;
 			case 'high':
+				$value='high';
+				break;
 			case 'boost':
 				$value='boost';
 				break;
@@ -442,6 +462,38 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
         parent::genericApplyCommand($device_url,$cmds);
 		sleep(1);
 		self::refresh_mode_cmd($device_url);
-    }
+	}
+	
+	public static function set_away_mode($device_url)
+	{
+		// "commands": [
+        //     {
+        //         "deviceURL": "io://0809-2858-8963/11324267#1",
+        //         "command": "setAirDemandMode",
+        //         "parameters": [
+        //             "away"
+        //         ],
+        //         "rank": 0,
+        //         "dynamic": false,
+        //         "failureType": "NO_FAILURE",
+        //         "state": "COMPLETED"
+        //     },
+		// ],
+		
+
+		Retour :
+		// "commands": [
+        //     {
+        //         "deviceURL": "io://0809-2858-8963/11324267#1",
+        //         "command": "setAirDemandMode",
+        //         "parameters": [
+        //             "auto"
+        //         ],
+        //         "rank": 0,
+        //         "dynamic": false,
+        //         "failureType": "NO_FAILURE",
+        //         "state": "COMPLETED"
+        //     },
+	}
 }
 ?>

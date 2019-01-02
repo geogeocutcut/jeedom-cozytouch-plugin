@@ -467,6 +467,87 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 			)
 		);
 		parent::genericApplyCommand($device_url,$cmds);
+	}
+	
+	public static function set_away_mode($device_url,$value)
+	{
+		// "commands": [
+        //     {
+        //         "deviceURL": "io://0809-2858-8963/2111203#1",
+        //         "command": "setCurrentOperatingMode",
+        //         "parameters": [
+        //             {
+        //                 "relaunch": "off",
+        //                 "absence": "on"
+        //             }
+        //         ],
+        //         "rank": 1,
+        //         "dynamic": false,
+        //         "failureType": "NO_FAILURE",
+        //         "state": "COMPLETED"
+		//     }
+		// ]
+		
+		// "commands": [
+        //     {
+        //         "deviceURL": "io://0809-2858-8963/2111203#1",
+        //         "command": "refreshAwayModeDuration",
+        //         "parameters": [],
+        //         "rank": 0,
+        //         "dynamic": false,
+        //         "failureType": "NO_FAILURE",
+        //         "state": "COMPLETED"
+        //     },
+        //     {
+        //         "deviceURL": "io://0809-2858-8963/2111203#1",
+        //         "command": "refreshTargetTemperature",
+        //         "parameters": [],
+        //         "rank": 1,
+        //         "dynamic": false,
+        //         "failureType": "NO_FAILURE",
+        //         "state": "COMPLETED"
+        //     },
+        //     {
+        //         "deviceURL": "io://0809-2858-8963/2111203#1",
+        //         "command": "setAwayModeDuration",
+        //         "parameters": [
+        //             5 // nb jours
+        //         ],
+        //         "rank": 2,
+        //         "dynamic": false,
+        //         "failureType": "NO_FAILURE",
+        //         "state": "COMPLETED"
+        //     }
+		// ],
+		
+		// Retour :
+		// "commands": [
+        //     {
+        //         "deviceURL": "io://0809-2858-8963/2111203#1",
+        //         "command": "setCurrentOperatingMode",
+        //         "parameters": [
+        //             {
+        //                 "relaunch": "off",
+        //                 "absence": "off"
+        //             }
+        //         ],
+        //         "rank": 1,
+        //         "dynamic": false,
+        //         "failureType": "NO_FAILURE",
+        //         "state": "COMPLETED"
+        //     },
+        //     {
+        //         "deviceURL": "io://0809-2858-8963/2111203#1",
+        //         "command": "setAwayModeDuration",
+        //         "parameters": [
+        //             0
+        //         ],
+        //         "rank": 2,
+        //         "dynamic": false,
+        //         "failureType": "NO_FAILURE",
+        //         "state": "COMPLETED"
+        //     }
+        // ],
     }
 }
 ?>

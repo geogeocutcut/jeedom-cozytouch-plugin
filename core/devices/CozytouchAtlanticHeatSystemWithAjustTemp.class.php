@@ -104,8 +104,8 @@ class CozytouchAtlanticHeatSystemWithAjustTemp extends AbstractCozytouchDevice
     	$thermostat->setSubType('slider');
     	$thermostat->setUnite('°C');
     	$thermostat->setLogicalId(CozyTouchDeviceEqCmds::SET_THERMOSTAT);
-    	$thermostat->setTemplate('dashboard', 'thermostat');
-    	$thermostat->setTemplate('mobile', 'thermostat');
+    	$thermostat->setTemplate('dashboard', 'thermheatelec');
+    	$thermostat->setTemplate('mobile', 'thermheatelec');
     	$thermostat->setIsVisible(1);
 		$thermostat->setValue($order->getId());
 		$thermostat->setOrder(1);

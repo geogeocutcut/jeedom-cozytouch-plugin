@@ -23,6 +23,11 @@ class CozytouchAtlanticHeatSystemWithAjustTemp extends AbstractCozytouchDevice
 		CozyTouchDeviceEqCmds::SET_EXTERNAL=>[23,0,1],
 		CozyTouchDeviceEqCmds::SET_INTERNAL=>[24,0,0],
 		CozyTouchDeviceEqCmds::SET_AUTO=>[25,0,1],
+		CozyTouchDeviceEqCmds::SET_FROSTPROTECT=>[31,0,0],
+		CozyTouchDeviceEqCmds::SET_ECO=>[32,0,1],
+		CozyTouchDeviceEqCmds::SET_COMFORT2=>[33,1,0],
+		CozyTouchDeviceEqCmds::SET_COMFORT1=>[34,0,0],
+		CozyTouchDeviceEqCmds::SET_COMFORT=>[35,0,1],
 		CozyTouchStateName::CTSN_CONNECT=>[99,1,1],
 		'refresh'=>[1,0,0]
 	];
@@ -167,11 +172,32 @@ class CozytouchAtlanticHeatSystemWithAjustTemp extends AbstractCozytouchDevice
     		case CozyTouchDeviceEqCmds::SET_AUTO:
                 self::setOperationMode($device_url,'auto');
 				break;
-				
+			case CozyTouchDeviceEqCmds::RESET_HEATINGLEVEL:
+				self::cancelHeatingLevel($device_url);
+				break;
+    		case CozyTouchDeviceEqCmds::SET_FROSTPROTECT:
+                self::setHeatingLevel($device_url,'frostprotection');
+    			break;
+    			
+			case CozyTouchDeviceEqCmds::SET_ECO:
+                self::setHeatingLevel($device_url,'eco');
+    			break;
+
+			case CozyTouchDeviceEqCmds::SET_COMFORT2:
+                self::setHeatingLevel($device_url,'comfort-2');
+    			break;
+    			
+			case CozyTouchDeviceEqCmds::SET_COMFORT1:
+                self::setHeatingLevel($device_url,'comfort-1');
+    			break;
+			
+			case CozyTouchDeviceEqCmds::SET_COMFORT:
+                self::setHeatingLevel($device_url,'comfort');
+				break;	
+					
     		case CozyTouchDeviceEqCmds::SET_TARGETTEMP:
                 self::setTargetTemperature($device_url);
 				break;
-				
     		case CozyTouchDeviceEqCmds::SET_THERMOSTAT:
     			$min = $cmd->getConfiguration('minValue');
     			$max = $cmd->getConfiguration('maxValue');

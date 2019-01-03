@@ -69,7 +69,7 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
     		case 'refresh':
     			break;
     		case CozyTouchDeviceEqCmds::SET_OFF:
-                self::setOff($device_url,'off');
+                self::setOff($device_url);
     			break;
     			
     		case CozyTouchDeviceEqCmds::SET_FROSTPROTECT:
@@ -130,7 +130,20 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
 	
 		}
 	}
-    
+
+    public static function setOff($device_url)
+	{
+			
+		$cmds = array(
+            array(
+                    "name"=>CozyTouchDeviceActions::CTPC_OFF,
+                    "values"=>null
+            )
+		);
+		parent::genericApplyCommand($device_url,$cmds);
+			
+	}
+
     public static function refreshHeatingLevel($device_url)
 	{
 			

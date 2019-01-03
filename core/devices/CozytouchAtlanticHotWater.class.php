@@ -23,7 +23,7 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 		CozyTouchDeviceEqCmds::SET_AUTOMODE=>[21,1,0],
 		CozyTouchDeviceEqCmds::SET_MANUECOACTIVE=>[22,0,0],
 		CozyTouchDeviceEqCmds::SET_MANUECOINACTIVE=>[23,0,1],
-		CozyTouchStateName::CTSN_CONNECT=>[1,1,1],
+		CozyTouchStateName::CTSN_CONNECT=>[99,1,1],
 		'refresh'=>[1,0,0]
     ];
     
@@ -151,6 +151,7 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 		$boost_toogle->setValue($boost->getId());
 		$boost_toogle->save();
 
+
         self::orderCommand($eqLogic);
 
         CozyTouchManager::refresh_all();
@@ -201,18 +202,6 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 			case CozyTouchDeviceEqCmds::SET_MANUECOINACTIVE:
 				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_MANUECOINACTIVE);
 				self::setDHWMode($device_url,'manualEcoInactive');
-				break;
-			case CozyTouchDeviceEqCmds::SET_BOOSTDURATION:
-				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_BOOSTDURATION);
-				self::setBoostDuration($device_url,1);
-				break;
-			case CozyTouchDeviceEqCmds::SET_BOOSTON:
-				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_BOOSTON);
-				self::setBoostDuration($device_url,1);
-				break;
-			case CozyTouchDeviceEqCmds::SET_BOOSTOFF:
-				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_BOOSTOFF);
-				self::setBoostDuration($device_url,0);
 				break;
 			case CozyTouchDeviceEqCmds::SET_BOOST:
 				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_BOOST." value : ".$_options['slider']);
@@ -389,14 +378,6 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 
 	public static function setBoostDuration($device_url,$value)
 	{
-		$cmds = array(
-			array(
-					"name"=>CozyTouchDeviceActions::CTPC_RSHDHWMODE,
-					"values"=>null
-			)
-		);
-		parent::genericApplyCommand($device_url,$cmds);
-
 		if($value>0)
 		{
 
@@ -410,11 +391,11 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 				)
 			);
 			parent::genericApplyCommand($device_url,$cmds);
-
+			sleep(1);
 			$cmds = array(
 				array(
 					"name"=>CozyTouchDeviceActions::CTPC_SETBOOSTDUR,
-					"values"=>$value
+					"values"=>intval($value)
 				)
 			);
 			parent::genericApplyCommand($device_url,$cmds);
@@ -432,7 +413,7 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 			);
 			parent::genericApplyCommand($device_url,$cmds);
 		}
-
+		sleep(1);
 		$cmds = array(
 			array(
 					"name"=>CozyTouchDeviceActions::CTPC_RSHDHWMODE,
@@ -440,10 +421,18 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 			)
 		);
 		parent::genericApplyCommand($device_url,$cmds);
-
+		sleep(1);
 		$cmds = array(
 			array(
 					"name"=>CozyTouchDeviceActions::CTPC_RSHBOOSTDUR,
+					"values"=>null
+			)
+		);
+		parent::genericApplyCommand($device_url,$cmds);
+
+		$cmds = array(
+			array(
+					"name"=>CozyTouchDeviceActions::CTPC_RSHTARGETTEMP,
 					"values"=>null
 			)
 		);
@@ -467,87 +456,74 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 			)
 		);
 		parent::genericApplyCommand($device_url,$cmds);
+
+		$cmds = array(
+			array(
+					"name"=>CozyTouchDeviceActions::CTPC_RSHTARGETTEMP,
+					"values"=>null
+			)
+		);
+		parent::genericApplyCommand($device_url,$cmds);
 	}
 	
-	public static function set_away_mode($device_url,$value)
+	public static function setAwayDuration($eqDevice,$value)
 	{
-		// "commands": [
-        //     {
-        //         "deviceURL": "io://0809-2858-8963/2111203#1",
-        //         "command": "setCurrentOperatingMode",
-        //         "parameters": [
-        //             {
-        //                 "relaunch": "off",
-        //                 "absence": "on"
-        //             }
-        //         ],
-        //         "rank": 1,
-        //         "dynamic": false,
-        //         "failureType": "NO_FAILURE",
-        //         "state": "COMPLETED"
-		//     }
-		// ]
+		$nb_days=0;
+		$deviceURL = $eqDevice->getConfiguration('device_url');
+		$cmd=Cmd::byEqLogicIdAndLogicalId($eqDevice->getId(),$device_url.'_'.CozyTouchStateName::CTSN_AWAYMODEDURATION);
+		if (is_object($cmd)) {
+			$nb_days=$cmd->execCmd();
+		}
+		if(intval($value)>0 && $nb_days>0)
+		{
+			$cmds = array(
+				array(
+					"name"=>CozyTouchDeviceActions::CTPC_SETCURRENTOPEMODE,
+					"values"=>[
+						"relaunch"=>"off",
+						"absence"=>"on"
+					]
+				)
+			);
+			parent::genericApplyCommand($device_url,$cmds);
+			sleep(1);
+			$cmds = array(
+				array(
+					"name"=>CozyTouchDeviceActions::CTPC_SETAWAYDUR,
+					"values"=>$nb_days
+				),
+				array(
+					"name"=>CozyTouchDeviceActions::CTPC_RSHAWAYDUR,
+					"values"=>null
+				),
+				array(
+					"name"=>CozyTouchDeviceActions::CTPC_RSHTARGETTEMP,
+					"values"=>null
+				)
+			);
+			parent::genericApplyCommand($device_url,$cmds);
+		}
+		else
+		{
+			$cmds = array(
+				array(
+					"name"=>CozyTouchDeviceActions::CTPC_SETCURRENTOPEMODE,
+					"values"=>[
+						"relaunch"=>"off",
+						"absence"=>"off"
+					]
+				),
+				array(
+					"name"=>CozyTouchDeviceActions::CTPC_SETAWAYDUR,
+					"values"=>0
+				),
+				array(
+					"name"=>CozyTouchDeviceActions::CTPC_RSHTARGETTEMP,
+					"values"=>null
+				)
+			);
+		}
 		
-		// "commands": [
-        //     {
-        //         "deviceURL": "io://0809-2858-8963/2111203#1",
-        //         "command": "refreshAwayModeDuration",
-        //         "parameters": [],
-        //         "rank": 0,
-        //         "dynamic": false,
-        //         "failureType": "NO_FAILURE",
-        //         "state": "COMPLETED"
-        //     },
-        //     {
-        //         "deviceURL": "io://0809-2858-8963/2111203#1",
-        //         "command": "refreshTargetTemperature",
-        //         "parameters": [],
-        //         "rank": 1,
-        //         "dynamic": false,
-        //         "failureType": "NO_FAILURE",
-        //         "state": "COMPLETED"
-        //     },
-        //     {
-        //         "deviceURL": "io://0809-2858-8963/2111203#1",
-        //         "command": "setAwayModeDuration",
-        //         "parameters": [
-        //             5 // nb jours
-        //         ],
-        //         "rank": 2,
-        //         "dynamic": false,
-        //         "failureType": "NO_FAILURE",
-        //         "state": "COMPLETED"
-        //     }
-		// ],
-		
-		// Retour :
-		// "commands": [
-        //     {
-        //         "deviceURL": "io://0809-2858-8963/2111203#1",
-        //         "command": "setCurrentOperatingMode",
-        //         "parameters": [
-        //             {
-        //                 "relaunch": "off",
-        //                 "absence": "off"
-        //             }
-        //         ],
-        //         "rank": 1,
-        //         "dynamic": false,
-        //         "failureType": "NO_FAILURE",
-        //         "state": "COMPLETED"
-        //     },
-        //     {
-        //         "deviceURL": "io://0809-2858-8963/2111203#1",
-        //         "command": "setAwayModeDuration",
-        //         "parameters": [
-        //             0
-        //         ],
-        //         "rank": 2,
-        //         "dynamic": false,
-        //         "failureType": "NO_FAILURE",
-        //         "state": "COMPLETED"
-        //     }
-        // ],
     }
 }
 ?>

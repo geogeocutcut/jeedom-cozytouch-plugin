@@ -173,7 +173,7 @@ class CozyTouchStateName
 		self::CTSN_BOOSTMODEDURATION=>"Boost Durée",
 		self::CTSN_TEMP=>"Température",
 		self::CTSN_MIDDLETEMP=>"Température",
-		self::CTSN_WATERCONSUMPTION=>"Conso Eau",
+		self::CTSN_WATERCONSUMPTION=>"Eau chaude",
 		self::CTSN_AWAYMODEDURATION=>"Absent Durée",
 		self::CTSN_DHWCAPACITY=>"Capacité Eau",
 		self::CTSN_ELECNRJCONSUMPTION=>"Conso Elec",
@@ -325,6 +325,8 @@ class CozyTouchDeviceEqCmds
 	const SET_TARGETTEMP ="setTargetTemperature";
 	const SET_THERMOSTAT ='cozytouchThermostat';
 
+	const RESET_HEATINGLEVEL='resetHeatingLevel';
+
 	const SET_OFF="setOff";
 	const SET_FROSTPROTECT="setFrostProtection";
 	const SET_ECO="setEco";
@@ -335,10 +337,9 @@ class CozyTouchDeviceEqCmds
 	const SET_MANUECOACTIVE="setManualEcoActive";
 	const SET_MANUECOINACTIVE="setManualEcoInactive";
 	const SET_BOOSTDURATION="setBoostModeDuration";
-	const SET_BOOSTON ='setBoostOn';
-	const SET_BOOSTOFF ='setBoostOff';
 	const SET_BOOST='setBoost';
-
+	const SET_AWAY='setAway';
+	const SET_AWAYDURATION='setAwayDuration';
 	const SET_VENTBOOST ='setVentBoost';
 	const SET_VENTHIGH ='setVentHigh';
 	const SET_VENTREFRESH ='setVentRefresh';
@@ -361,7 +362,13 @@ class CozyTouchDeviceEqCmds
 			self::SET_BASIC,
 			self::SET_EXTERNAL,
 			self::SET_INTERNAL,
-			self::SET_AUTO
+			self::SET_AUTO,
+			self::RESET_HEATINGLEVEL,
+			self::SET_FROSTPROTECT,
+			self::SET_ECO,
+			self::SET_COMFORT2,
+			self::SET_COMFORT1,
+			self::SET_COMFORT
 		],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER=>[
 			self::SET_AUTOMODE,
@@ -390,6 +397,7 @@ class CozyTouchDeviceEqCmds
 		self::SET_INTERNAL=>"Interne",
 		self::SET_AUTO=>"Auto",
 		self::SET_OFF=>"Off",
+		self::RESET_HEATINGLEVEL=>"Reset",
 		self::SET_FROSTPROTECT=>"Hors-gel",
 		self::SET_ECO=>"Eco",
 		self::SET_COMFORT2=>"Confort-2",
@@ -444,6 +452,7 @@ class CozyTouchDeviceActions
 	const CTPC_SETBOOSTDUR = "setBoostModeDuration";
 	const CTPC_SETDHWMODE = "setDHWMode";
 	const CTPC_SETCURRENTOPEMODE = "setCurrentOperatingMode";
+	const CTPC_RSHCURRENTOPEMODE = "refreshCurrentOperatingMode";
 
 	// Atlantic VMC
 	const CTPC_SETAIRDEMANDMODE = "setAirDemandMode";

@@ -8,7 +8,7 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
     const cold_water = 15;
     //[{order},{beforeLigne},{afterLigne}]
 	const DISPLAY = [
-		CozyTouchStateName::CTSN_CONNECT=>[1,1,1],
+		CozyTouchStateName::CTSN_CONNECT=>[99,1,1],
 		CozyTouchStateName::EQ_VMCMODE=>[2,1,1],
 		CozyTouchStateName::CTSN_AIRDEMANDEMODE=>[4,0,0],
 		CozyTouchStateName::CTSN_VENTILATIONCONFIG=>[5,0,0],
@@ -481,7 +481,7 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
 		// ],
 		
 
-		Retour :
+		//Retour :
 		// "commands": [
         //     {
         //         "deviceURL": "io://0809-2858-8963/11324267#1",

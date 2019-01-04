@@ -123,6 +123,8 @@ class CozyTouchStateName
 	const CTSN_CO2CONCENTRATION = "core:CO2ConcentrationState";
 
 	const EQ_VMCMODE ="vmcMode";
+	const EQ_VMCTEMPINSUFFLE="vmcTempInsuffle";
+	const EQ_VMCTEMPEXT="vmcTempExt";
 	const EQ_HOTWATERCOEFF = "hotWaterCoefficient";
 
 	const CTSN_TYPE = [
@@ -133,7 +135,7 @@ class CozyTouchStateName
 		self::CTSN_VENTILATIONCONFIG=>"string",
 		self::CTSN_VENTILATIONMODE=>"string",
 		self::CTSN_AIRDEMANDEMODE=>"string",
-		self::EQ_VMCMODE=>string,
+		self::EQ_VMCMODE=>"string",
 
 		self::CTSN_TARGETTEMP=>"numeric",
 		self::CTSN_COMFROOMTEMP=>"numeric",
@@ -151,6 +153,8 @@ class CozyTouchStateName
 		self::CTSN_AIRDEMANDE => "numeric",
 		self::CTSN_CO2CONCENTRATION => "numeric",
 		self::CTSN_MIDDLETEMP=>"numeric",
+		self::EQ_VMCTEMPINSUFFLE => "numeric",
+		self::EQ_VMCTEMPEXT=>"numeric",
 
 		self::CTSN_OCCUPANCY=>"binary",
 		self::CTSN_ONOFF=>"binary",
@@ -187,7 +191,10 @@ class CozyTouchStateName
 		self::CTSN_CO2CONCENTRATION => "C02",
 
 		self::EQ_VMCMODE => "VMC Mode",
-		self::EQ_HOTWATERCOEFF => "Proportion eau chaude"
+		self::EQ_HOTWATERCOEFF => "Proportion eau chaude",
+		
+		self::EQ_VMCTEMPINSUFFLE => "Temp insufflé",
+		self::EQ_VMCTEMPEXT=>"Temp extérieur"
 	];
 }
 
@@ -298,6 +305,8 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_CONNECT,
 			CozyTouchStateName::CTSN_TEMP,
+			CozyTouchStateName::EQ_VMCTEMPINSUFFLE,
+			CozyTouchStateName::EQ_VMCTEMPEXT,
 
 			CozyTouchStateName::CTSN_AIRDEMANDEMODE, // "auto","away","boost","high"
 			CozyTouchStateName::CTSN_AIRDEMANDE,

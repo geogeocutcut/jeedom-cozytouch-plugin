@@ -164,6 +164,7 @@ class CozyTouchManager
 							break;	
 						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT:
 							CozytouchAtlanticVentilation::refresh_vmcmode($eqLogicTmp);
+							CozytouchAtlanticVentilation::refresh_temp($eqLogicTmp);
 							break;
 					}
 				}

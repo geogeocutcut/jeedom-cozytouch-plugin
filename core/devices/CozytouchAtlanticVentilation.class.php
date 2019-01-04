@@ -12,8 +12,9 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
 		CozyTouchStateName::EQ_VMCMODE=>[2,1,1],
 		CozyTouchStateName::CTSN_AIRDEMANDEMODE=>[4,0,0],
 		CozyTouchStateName::CTSN_VENTILATIONCONFIG=>[5,0,0],
-		CozyTouchStateName::CTSN_CO2CONCENTRATION=>[6,0,0],
-		CozyTouchStateName::CTSN_TEMP=>[7,0,0],
+		CozyTouchStateName::CTSN_CO2CONCENTRATION=>[6,1,0],
+		CozyTouchStateName::EQ_VMCTEMPINSUFFLE=>[7,0,0],
+		CozyTouchStateName::EQ_VMCTEMPEXT=>[8,0,0],
 		
 		CozyTouchDeviceEqCmds::SET_VENTBOOST=>[15,1,0],
 		CozyTouchDeviceEqCmds::SET_VENTHIGH=>[16,1,0],
@@ -26,6 +27,8 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
     
 	public static function BuildEqLogic($device)
     {
+		$deviceURL = $device->getURL();
+		
         log::add('cozytouch', 'info', 'creation (ou mise à jour) '.$device->getVar(CozyTouchDeviceInfo::CTDI_LABEL));
         $eqLogic =self::BuildDefaultEqLogic($device);
 		$eqLogic->setCategory('energy', 1);
@@ -38,7 +41,7 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
 			$sensorURL = $sensor->getURL();
 			$sensors[] = array($sensorURL,$sensor->getModel());
 			log::add('cozytouch', 'info', 'Sensor : '.$sensorURL);
-			// state du capteur
+			
 			foreach ($sensor->getStates() as $state)
 			{
 				if(in_array($state->name,$states))
@@ -59,17 +62,39 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
 		$eqLogic->setConfiguration('sensors',$sensors);
 		$eqLogic->save();
 
-		// $cmd= $eqLogic->getCmd(null, $device->getURL().'_'.CozyTouchStateName::CTSN_AIRDEMANDE);
-		// $cmd->setTemplate('dashboard', 'vmc');
-		// $cmd->setTemplate('mobile', 'vmc');
-		// $cmd->save();
-		$vent_mode = $eqLogic->getCmd(null,CozyTouchStateName::EQ_VMCMODE );
+		$temp_int = $eqLogic->getCmd(null,$deviceURL.'_'.CozyTouchStateName::EQ_VMCTEMPINSUFFLE );
+    	if (!is_object($temp_int)) {
+    		$temp_int = new cozytouchCmd();
+		}
+    	$temp_int->setEqLogic_id($eqLogic->getId());
+    	$temp_int->setName(__(CozyTouchStateName::CTSN_LABEL[CozyTouchStateName::EQ_VMCTEMPINSUFFLE], __FILE__));
+		$temp_int->setType('info');
+		$sub_type = CozyTouchStateName::CTSN_TYPE[CozyTouchStateName::EQ_VMCTEMPINSUFFLE];
+    	$temp_int->setSubType($sub_type);
+        $temp_int->setLogicalId($deviceURL.'_'.CozyTouchStateName::EQ_VMCTEMPINSUFFLE);
+    	$temp_int->setTemplate('dashboard', CozyTouchCmdDisplay::DISPLAY_DASH[$subType]);
+    	$temp_int->setTemplate('mobile', CozyTouchCmdDisplay::DISPLAY_MOBILE[$subType]);
+		$temp_int->save();
 
+		$temp_ext = $eqLogic->getCmd(null,$deviceURL.'_'.CozyTouchStateName::EQ_VMCTEMPEXT );
+    	if (!is_object($temp_ext)) {
+    		$temp_ext = new cozytouchCmd();
+		}
+    	$temp_ext->setEqLogic_id($eqLogic->getId());
+    	$temp_ext->setName(__(CozyTouchStateName::CTSN_LABEL[CozyTouchStateName::EQ_VMCTEMPEXT], __FILE__));
+		$temp_ext->setType('info');
+		$sub_type = CozyTouchStateName::CTSN_TYPE[CozyTouchStateName::EQ_VMCTEMPEXT];
+    	$temp_ext->setSubType($sub_type);
+        $temp_ext->setLogicalId($deviceURL.'_'.CozyTouchStateName::EQ_VMCTEMPEXT);
+    	$temp_ext->setTemplate('dashboard', CozyTouchCmdDisplay::DISPLAY_DASH[$subType]);
+    	$temp_ext->setTemplate('mobile', CozyTouchCmdDisplay::DISPLAY_MOBILE[$subType]);
+		$temp_ext->save();
+
+		$vent_mode = $eqLogic->getCmd(null,CozyTouchStateName::EQ_VMCMODE );
     	if (!is_object($vent_mode)) {
     		$vent_mode = new cozytouchCmd();
     		$vent_mode->setIsVisible(1);
     	}
-
     	$vent_mode->setEqLogic_id($eqLogic->getId());
     	$vent_mode->setName(__('Mode VMC', __FILE__));
     	$vent_mode->setType('info');
@@ -78,7 +103,7 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
     	$vent_mode->setTemplate('dashboard', 'vmc');
     	$vent_mode->setTemplate('mobile', 'vmc');
 		$vent_mode->save();
-		
+
         self::orderCommand($eqLogic);
 
         CozyTouchManager::refresh_all();
@@ -154,8 +179,41 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
 			sleep(2);
 			self::refresh($eqLogic);
 		}
-    }
+	}
+	
+	public static function refresh_temp($eqLogic)
+	{
+		$deviceURL = $eqLogic->getConfiguration('device_url');
+		$temp_int=0;
+		$temp_ext=0;
 
+		$sensorURL = explode('#',$deviceURL)[0].'#4';
+		$cmd = Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),$sensorURL.'_'.CozyTouchStateName::CTSN_TEMP);
+		if (is_object($cmd)) {
+			$temp_int=$cmd->execCmd();
+		}
+
+		$sensorURL = explode('#',$deviceURL)[0].'#5';
+		$cmd = Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),$sensorURL.'_'.CozyTouchStateName::CTSN_TEMP);
+		if (is_object($cmd)) {
+			$temp_ext=$cmd->execCmd();
+		}
+
+		$cmd = Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),$deviceURL.'_'.CozyTouchStateName::EQ_VMCTEMPINSUFFLE);
+		if (is_object($cmd)) {
+			$cmd->setCollectDate('');
+			$cmd->event($temp_int);
+			log::add('cozytouch', 'debug', __('Temp air insuffle : ', __FILE__).$temp_int);
+		}
+
+		$cmd = Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),$deviceURL.'_'.CozyTouchStateName::EQ_VMCTEMPEXT);
+		if (is_object($cmd)) {
+			$cmd->setCollectDate('');
+			$cmd->event($temp_ext);
+			log::add('cozytouch', 'debug', __('Temp air exterieur : ', __FILE__).$temp_ext);
+		}
+	}
+	
 	public static function refresh_vmcmode($eqLogic)
 	{
 		$deviceURL = $eqLogic->getConfiguration('device_url');
@@ -233,6 +291,7 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
             }
 			
 			self::refresh_vmcmode($eqLogic);
+			self::refresh_temp($eqLogic);
 		} 
 		catch (Exception $e) {
 	

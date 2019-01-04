@@ -393,8 +393,6 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 
 			parent::genericApplyCommand($device_url,$cmds);
 			
-
-			sleep(1);
 			
 			$cmds = array(
 				array(
@@ -424,15 +422,6 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 			)
 		);
 		parent::genericApplyCommand($device_url,$cmds);
-		sleep(1);
-		$cmds = array(
-			array(
-					"name"=>CozyTouchDeviceActions::CTPC_RSHBOOSTDUR,
-					"values"=>null
-			)
-		);
-		parent::genericApplyCommand($device_url,$cmds);
-
 		$cmds = array(
 			array(
 					"name"=>CozyTouchDeviceActions::CTPC_RSHTARGETTEMP,
@@ -440,6 +429,24 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 			)
 		);
 		parent::genericApplyCommand($device_url,$cmds);
+
+		sleep(5);
+		$cmds = array(
+			array(
+					"name"=>CozyTouchDeviceActions::CTPC_RSHBOOSTDUR,
+					"values"=>null
+			)
+		);
+		parent::genericApplyCommand($device_url,$cmds);
+		sleep(1);
+		$cmds = array(
+			array(
+					"name"=>CozyTouchDeviceActions::CTPC_RSHTARGETTEMP,
+					"values"=>null
+			)
+		);
+		parent::genericApplyCommand($device_url,$cmds);
+
 	}
 	
 	public static function setDHWMode($device_url,$value)

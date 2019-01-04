@@ -390,8 +390,12 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 					]
 				)
 			);
+
 			parent::genericApplyCommand($device_url,$cmds);
+			
+
 			sleep(1);
+			
 			$cmds = array(
 				array(
 					"name"=>CozyTouchDeviceActions::CTPC_SETBOOSTDUR,
@@ -413,7 +417,6 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 			);
 			parent::genericApplyCommand($device_url,$cmds);
 		}
-		sleep(1);
 		$cmds = array(
 			array(
 					"name"=>CozyTouchDeviceActions::CTPC_RSHDHWMODE,

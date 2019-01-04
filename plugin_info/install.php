@@ -33,7 +33,12 @@ function cozytouch_install() {
 		$cron->setSchedule('*/15 * * * * *');
 		$cron->save();
 	}
-
+	$current_version = config::byKey('version', 'cozytouch');
+	if(!isset($current_version) || $current_version<COZY_VERSION)
+	{
+		log::add('cozytouch','info','Reset device, version trop ancienne : '.$current_version);
+		CozyTouchManager::resetCozyTouch();
+	}
 	config::save('version', COZY_VERSION,'cozytouch');
 }
 

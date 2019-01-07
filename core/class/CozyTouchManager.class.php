@@ -23,6 +23,11 @@ if (!class_exists('CozytouchAtlanticHotWater')) {
 	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticHotWater.class.php";
 }
 
+if (!class_exists('CozytouchAtlanticHotWaterFlatC2')) {
+	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticHotWaterFlatC2.class.php";
+}
+
+
 if (!class_exists('CozytouchAtlanticVentilation')) {
 	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticVentilation.class.php";
 }
@@ -74,6 +79,9 @@ class CozyTouchManager
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERSPLIT:
 					CozytouchAtlanticHotWater::BuildEqLogic($device);
 					break;
+				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERFLATC2:
+					CozytouchAtlanticHotWaterFlatC2::BuildEqLogic($device);
+					break;	
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT:
 					CozytouchAtlanticVentilation::BuildEqLogic($device);
 					break;
@@ -161,7 +169,11 @@ class CozyTouchManager
 							CozytouchAtlanticHotWater::refresh_boost($eqLogicTmp);
 							CozytouchAtlanticHotWater::refresh_hotwatercoeff($eqLogicTmp);
 							CozytouchAtlanticHotWater::refresh_thermostat($eqLogicTmp);
-							break;	
+							break;
+						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERFLATC2:
+							CozytouchAtlanticHotWaterFlatC2::refresh_boost($eqLogicTmp);
+							CozytouchAtlanticHotWaterFlatC2::refresh_hotwatercoeff($eqLogicTmp);
+							break;		
 						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT:
 							CozytouchAtlanticVentilation::refresh_vmcmode($eqLogicTmp);
 							CozytouchAtlanticVentilation::refresh_temp($eqLogicTmp);
@@ -217,6 +229,9 @@ class CozyTouchManager
     		case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER :
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERSPLIT :
 				CozyTouchAtlanticHotWater::execute($cmd,$_options);
+				break;
+			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERFLATC2 :
+				CozytouchAtlanticHotWaterFlatC2::execute($cmd,$_options);
     			break;
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT :
 				CozytouchAtlanticVentilation::execute($cmd,$_options);

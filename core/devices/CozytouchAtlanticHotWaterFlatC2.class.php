@@ -156,7 +156,7 @@ class CozytouchAtlanticHotWaterFlatC2 extends AbstractCozytouchDevice
 				break;
 			case CozyTouchDeviceEqCmds::SET_BOOST:
 				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_BOOST." value : ".$_options['slider']);
-				self::setBoostDuration($device_url,$_options['slider']);
+				self::setBoostMode($device_url,$_options['slider']);
 				break;
 			
 		}
@@ -206,14 +206,14 @@ class CozytouchAtlanticHotWaterFlatC2 extends AbstractCozytouchDevice
         $deviceURL = $eqLogic->getConfiguration('device_url');
         $value="";
 
-		$cmd = Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_BOOSTMODEDURATION);
+		$cmd = Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_DHWBOOSTMODE);
 		if (is_object($cmd)) {
 			$value=$cmd->execCmd();
         }
 
         $cmd=Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),'boost_state');
 		if (is_object($cmd)) {
-			$boost =$value>0?1:0;
+			$boost =$value=='off'?0:1;
             $cmd->setCollectDate('');
             $cmd->event($boost);
             log::add('cozytouch', 'debug', __('Boost : ', __FILE__).$boost. "(".$value.")");
@@ -226,32 +226,19 @@ class CozytouchAtlanticHotWaterFlatC2 extends AbstractCozytouchDevice
         $deviceURL = $eqLogic->getConfiguration('device_url');
         $valuetmp = array();
 
-		$cmd = Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_TARGETTEMP);
+		$cmd = Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_EXPECTEDNBSHOWER);
 		if (is_object($cmd)) {
-			$valuetmp['targettemp']=$cmd->execCmd();
+			$valuetmp['targetshower']=$cmd->execCmd();
         }
-        $cmd = Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_TEMP);
+        $cmd = Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_NBSHOWERREMAINING);
 		if (is_object($cmd)) {
-			$valuetmp['temp']=$cmd->execCmd();
+			$valuetmp['remainingshower']=$cmd->execCmd();
 		}
-		
-        $cmd = Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_MIDDLETEMP);
-		if (is_object($cmd)) {
-			$valuetmp['middle_temp']=$cmd->execCmd();
-        }
 
         $cmd=Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),CozyTouchStateName::EQ_HOTWATERCOEFF);
 		if (is_object($cmd)) {
 			$temp=0;
-			if(array_key_exists('middle_temp',$valuetmp))
-			{
-				$temp=$valuetmp['middle_temp'];
-			}
-			else
-			{
-				$temp=$valuetmp['temp'];
-			}
-            $hotwatercoeff = 100*($temp-self::cold_water)/($valuetmp['targettemp']-self::cold_water);
+            $hotwatercoeff = 100*($valuetmp['remainingshower'])/($valuetmp['targetshower']);
             $cmd->setCollectDate('');
             $cmd->event($hotwatercoeff);
             log::add('cozytouch', 'debug', __('Calcul proportion d eau chaude : ', __FILE__).$hotwatercoeff);
@@ -284,6 +271,59 @@ class CozytouchAtlanticHotWaterFlatC2 extends AbstractCozytouchDevice
 			)
 		);
 		parent::genericApplyCommand($device_url,$cmds);
+	}
+
+	public static function setBoostMode($device_url,$value)
+	{
+		if($value==1)
+		{
+			$cmds = array(
+				array(
+					"name"=>CozyTouchDeviceActions::CTPC_SETDATETIME,
+					"values"=>[
+						"second"=> intval(date('s')),
+						"hour"=> intval(date('G')),
+						"minute"=> intval(date('i')),
+						"weekday"=> intval(date('w')),
+						"month"=> intval(date('n')),
+						"year"=> intval(date('Y')),
+						"day"=> intval(date('j'))
+					]
+				),
+				array(
+					"name"=>CozyTouchDeviceActions::CTPC_RSHBOOSTSTARTDATE,
+					"values"=>null
+				),
+				array(
+					"name"=>CozyTouchDeviceActions::CTPC_RSHBOOSTENDDATE,
+					"values"=>null
+				),
+				array(
+					"name"=>CozyTouchDeviceActions::CTPC_SETBOOSTMODE,
+					"values"=>"on"
+				)
+			);
+			parent::genericApplyCommand($device_url,$cmds);
+		}
+		else
+		{
+			$cmds = array(
+				
+				array(
+					"name"=>CozyTouchDeviceActions::CTPC_SETBOOSTMODE,
+					"values"=>"off"
+				),
+				array(
+					"name"=>CozyTouchDeviceActions::CTPC_RSHBOOSTSTARTDATE,
+					"values"=>null
+				),
+				array(
+					"name"=>CozyTouchDeviceActions::CTPC_RSHBOOSTENDDATE,
+					"values"=>null
+				)
+			);
+			parent::genericApplyCommand($device_url,$cmds);
+		}
 	}
 }
 ?>

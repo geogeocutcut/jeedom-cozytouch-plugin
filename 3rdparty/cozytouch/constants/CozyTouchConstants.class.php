@@ -125,7 +125,6 @@ class CozyTouchStateName
 	const CTSN_WATERTEMP = "core:WaterTemperatureState";
 	const CTSN_WATERTARGETTEMP = "core:WaterTargetTemperatureState";
 	const CTSN_EXPECTEDNBSHOWER = "core:ExpectedNumberOfShowerState";
-	const CTSN_WATERTARGETTEMP = "core:WaterTargetTemperatureState";
 	const CTSN_CTRLWATERTARGETTEMP = "core:ControlWaterTargetTemperatureState";
 	const CTSN_MIDDLEWATERTEMPIN = "core:MiddleWaterTemperatureInState";
 	const CTSN_HEATINGSTATUS = "core:HeatingStatusState";
@@ -152,7 +151,6 @@ class CozyTouchStateName
 		self::CTSN_AIRDEMANDEMODE=>"string",
 
 		self::CTSN_HEATINGSTATUS=>"string",
-
 		self::CTSN_DHWBOOSTMODE=>"string", // on / off / prog
 		self::CTSN_DHWABSENCEMODE=>"string",
 
@@ -216,8 +214,10 @@ class CozyTouchStateName
 		self::CTSN_ELECNRJCONSUMPTION=>"Conso Elec",
 		self::CTSN_OCCUPANCY=>"Présence",
 		self::CTSN_CONNECT=>"Connect",
-		self::CTSN_DHWBOOSTMODE=>"Boost",
-		self::CTSN_DHWABSENCEMODE=>"Absence",
+
+		self::CTSN_HEATINGSTATUS=>"Heat status",
+		self::CTSN_DHWBOOSTMODE=>"Boost Mode",
+		self::CTSN_DHWABSENCEMODE=>"Absence Mode",
 		self::CTSN_NUMBERTANK=>"Nb Tank",
 		self::CTSN_V40WATERVOLUME=>"Volume Eau à 40",
 		self::CTSN_WATERTEMP=>"Temp. eau",
@@ -547,6 +547,13 @@ class CozyTouchDeviceActions
 	const CTPC_SETDHWMODE = "setDHWMode";
 	const CTPC_SETCURRENTOPEMODE = "setCurrentOperatingMode";
 	const CTPC_RSHCURRENTOPEMODE = "refreshCurrentOperatingMode";
+
+	const CTPC_RSHBOOSTSTARTDATE = "refreshBoostStartDate";
+	const CTPC_RSHBOOSTENDDATE = "refreshBoostEndDate";
+	const CTPC_SETDATETIME = "setDateTime";
+	const CTPC_SETBOOSTMODE = "setBoostMode";
+
+
 
 	// Atlantic VMC
 	const CTPC_SETAIRDEMANDMODE = "setAirDemandMode";

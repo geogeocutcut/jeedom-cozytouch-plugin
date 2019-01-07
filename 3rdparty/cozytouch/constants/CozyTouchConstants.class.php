@@ -129,6 +129,8 @@ class CozyTouchStateName
 	const CTSN_MIDDLEWATERTEMPIN = "core:MiddleWaterTemperatureInState";
 	const CTSN_HEATINGSTATUS = "core:HeatingStatusState";
 	const CTSN_NBSHOWERREMAINING = "core:NumberOfShowerRemainingState";
+	const CTSN_MINISHOWERMANUAL = "core:MinimalShowerManualModeState";
+	const CTSN_MAXISHOWERMANUAL = "core:MaximalShowerManualModeState";
 
 	const CTSN_AIRDEMANDE ="core:AirDemandState";
 	const CTSN_VENTILATIONCONFIG ="io:VentilationConfigurationModeState";
@@ -182,7 +184,8 @@ class CozyTouchStateName
 		self::CTSN_CTRLWATERTARGETTEMP=>"numeric",
 		self::CTSN_MIDDLEWATERTEMPIN=>"numeric",
 		self::CTSN_NBSHOWERREMAINING=>"numeric",
-
+		self::CTSN_MINISHOWERMANUAL=>"numeric",
+		self::CTSN_MAXISHOWERMANUAL=>"numeric",
 
 		self::EQ_VMCTEMPINSUFFLE => "numeric",
 		self::EQ_VMCTEMPEXT=>"numeric",
@@ -222,10 +225,13 @@ class CozyTouchStateName
 		self::CTSN_V40WATERVOLUME=>"Volume Eau à 40",
 		self::CTSN_WATERTEMP=>"Temp. eau",
 		self::CTSN_WATERTARGETTEMP=>"Temp. eau cible",
-		self::CTSN_EXPECTEDNBSHOWER=>"Nb douche cible",
+		self::CTSN_EXPECTEDNBSHOWER=>"Douches souhaitées",
 		self::CTSN_CTRLWATERTARGETTEMP=>"Temp. ctrl temp. eau cible",
 		self::CTSN_MIDDLEWATERTEMPIN=>"Temp. eau entrante",
-		self::CTSN_NBSHOWERREMAINING=>"Nb douche",
+		self::CTSN_NBSHOWERREMAINING=>"Douches restantes",
+		self::CTSN_MINISHOWERMANUAL=>"Mini douche",
+		self::CTSN_MAXISHOWERMANUAL=>"Maxi douche",
+		
 
 		self::CTSN_VENTILATIONCONFIG=>"Configuration",
 		self::CTSN_VENTILATIONMODE=>"Ventilation mode",
@@ -297,7 +303,9 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_CTRLWATERTARGETTEMP,
 			CozyTouchStateName::CTSN_MIDDLEWATERTEMPIN,
 			CozyTouchStateName::CTSN_HEATINGSTATUS,
-			CozyTouchStateName::CTSN_NBSHOWERREMAINING
+			CozyTouchStateName::CTSN_NBSHOWERREMAINING,
+			CozyTouchStateName::CTSN_MINISHOWERMANUAL,
+			CozyTouchStateName::CTSN_MAXISHOWERMANUAL
 		],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT=>[
 			CozyTouchStateName::CTSN_NAME,
@@ -325,6 +333,7 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_CONNECT,
 			CozyTouchStateName::CTSN_ONOFF,
 			CozyTouchStateName::CTSN_TARGETHEATLEVEL],
+
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_CONNECT,
@@ -340,6 +349,7 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_TEMP,
 			CozyTouchStateName::CTSN_OCCUPANCY,
 			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION],
+
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_CONNECT,
@@ -351,6 +361,7 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_TARGETTEMP,
 			CozyTouchStateName::CTSN_DHWCAPACITY,
 			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION],
+
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERSPLIT=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_CONNECT,
@@ -364,24 +375,26 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION],
 
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERFLATC2=>[
-				CozyTouchStateName::CTSN_NAME,
-				CozyTouchStateName::CTSN_CONNECT,
-				CozyTouchStateName::CTSN_DHWMODE,
-				CozyTouchStateName::CTSN_WATERCONSUMPTION,
-				CozyTouchStateName::CTSN_DHWCAPACITY,
-				CozyTouchStateName::CTSN_DHWBOOSTMODE,
-				CozyTouchStateName::CTSN_DHWABSENCEMODE,
-				CozyTouchStateName::CTSN_MIDDLETEMP,
-				CozyTouchStateName::CTSN_V40WATERVOLUME,
-				CozyTouchStateName::CTSN_WATERTEMP,
-				CozyTouchStateName::CTSN_WATERTARGETTEMP,
-				CozyTouchStateName::CTSN_EXPECTEDNBSHOWER,
-				CozyTouchStateName::CTSN_CTRLWATERTARGETTEMP,
-				CozyTouchStateName::CTSN_MIDDLEWATERTEMPIN,
-				CozyTouchStateName::CTSN_HEATINGSTATUS,
-				CozyTouchStateName::CTSN_NBSHOWERREMAINING,
-				CozyTouchStateName::CTSN_ELECNRJCONSUMPTION
-			],
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_CONNECT,
+			CozyTouchStateName::CTSN_DHWMODE,
+			CozyTouchStateName::CTSN_WATERCONSUMPTION,
+			CozyTouchStateName::CTSN_DHWCAPACITY,
+			CozyTouchStateName::CTSN_DHWBOOSTMODE,
+			CozyTouchStateName::CTSN_DHWABSENCEMODE,
+			CozyTouchStateName::CTSN_MIDDLETEMP,
+			CozyTouchStateName::CTSN_V40WATERVOLUME,
+			CozyTouchStateName::CTSN_WATERTEMP,
+			CozyTouchStateName::CTSN_WATERTARGETTEMP,
+			CozyTouchStateName::CTSN_EXPECTEDNBSHOWER,
+			CozyTouchStateName::CTSN_CTRLWATERTARGETTEMP,
+			CozyTouchStateName::CTSN_MIDDLEWATERTEMPIN,
+			CozyTouchStateName::CTSN_HEATINGSTATUS,
+			CozyTouchStateName::CTSN_NBSHOWERREMAINING,
+			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION,
+			CozyTouchStateName::CTSN_MINISHOWERMANUAL,
+			CozyTouchStateName::CTSN_MAXISHOWERMANUAL],
+
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_CONNECT,
@@ -430,6 +443,8 @@ class CozyTouchDeviceEqCmds
 	const SET_BOOST='setBoost';
 	const SET_AWAY='setAway';
 	const SET_AWAYDURATION='setAwayDuration';
+	const SET_EXPECTEDSHOWER='setExpectedNumberOfShower';
+
 	const SET_VENTBOOST ='setVentBoost';
 	const SET_VENTHIGH ='setVentHigh';
 	const SET_VENTREFRESH ='setVentRefresh';
@@ -552,8 +567,8 @@ class CozyTouchDeviceActions
 	const CTPC_RSHBOOSTENDDATE = "refreshBoostEndDate";
 	const CTPC_SETDATETIME = "setDateTime";
 	const CTPC_SETBOOSTMODE = "setBoostMode";
-
-
+	const CTPC_SETEXPECTEDSHOWER='setExpectedNumberOfShower';
+	
 
 	// Atlantic VMC
 	const CTPC_SETAIRDEMANDMODE = "setAirDemandMode";

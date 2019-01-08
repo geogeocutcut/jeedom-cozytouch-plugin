@@ -19,7 +19,7 @@ class CozytouchAtlanticHotWaterFlatC2 extends AbstractCozytouchDevice
 		CozyTouchStateName::CTSN_NBSHOWERREMAINING=>[11,0,0],
 		
 		CozyTouchDeviceEqCmds::SET_BOOST=>[12,0,0],
-		
+		CozyTouchDeviceEqCmds::SET_EXPECTEDSHOWER=>[20,1,0],
 		CozyTouchDeviceEqCmds::SET_AUTOMODE=>[21,1,0],
 		CozyTouchDeviceEqCmds::SET_MANUECOINACTIVE=>[22,0,1],
 
@@ -29,6 +29,8 @@ class CozytouchAtlanticHotWaterFlatC2 extends AbstractCozytouchDevice
     
 	public static function BuildEqLogic($device)
     {
+		$deviceURL = $device->getURL();
+
         log::add('cozytouch', 'info', 'creation (ou mise à jour) '.$device->getVar(CozyTouchDeviceInfo::CTDI_LABEL));
         $eqLogic =self::BuildDefaultEqLogic($device);
 		
@@ -58,9 +60,10 @@ class CozytouchAtlanticHotWaterFlatC2 extends AbstractCozytouchDevice
 			}
 		}
 		$eqLogic->setConfiguration('sensors',$sensors);
+
+		$eqLogic->setCategory('energy', 1);
 		$eqLogic->save();
 
-		
         $hotWaterCoefficient = $eqLogic->getCmd(null,CozyTouchStateName::EQ_HOTWATERCOEFF );
 
     	if (!is_object($hotWaterCoefficient)) {
@@ -77,6 +80,41 @@ class CozytouchAtlanticHotWaterFlatC2 extends AbstractCozytouchDevice
     	$hotWaterCoefficient->setTemplate('mobile', 'hotwater');
         $hotWaterCoefficient->save();
 		
+		$expectedShower = $eqLogic->getCmd(null,$deviceURL.'_'.CozyTouchStateName::CTSN_EXPECTEDNBSHOWER );
+		if(is_object($expectedShower))
+		{
+			$mini = 2;
+			$maxi = 4;
+			
+			$cmd = $eqLogic->getCmd(null,$deviceURL.'_'.CozyTouchStateName::CTSN_MINISHOWERMANUAL );
+			if(is_object($cmd))
+			{
+				$mini=$cmd->execCmd();
+			}
+
+			$cmd = $eqLogic->getCmd(null,$deviceURL.'_'.CozyTouchStateName::CTSN_MAXISHOWERMANUAL );
+			if(is_object($cmd))
+			{
+				$maxi=$cmd->execCmd();
+			}
+
+			$hotWaterExpShower = $eqLogic->getCmd(null,CozyTouchDeviceEqCmds::SET_EXPECTEDSHOWER );
+			if (!is_object($hotWaterExpShower)) {
+				$hotWaterExpShower = new cozytouchCmd();
+				$hotWaterExpShower->setLogicalId(CozyTouchDeviceEqCmds::SET_EXPECTEDSHOWER);
+			}
+			$hotWaterExpShower->setEqLogic_id($eqLogic->getId());
+			$hotWaterExpShower->setName(__('Nb douche cible', __FILE__));
+			$hotWaterExpShower->setType('action');
+			$hotWaterExpShower->setSubType('slider');
+			$hotWaterExpShower->setTemplate('dashboard', 'numeric');
+			$hotWaterExpShower->setTemplate('mobile', 'numeric');
+			$hotWaterExpShower->setConfiguration('maxValue', $maxi);
+			$hotWaterExpShower->setConfiguration('minValue', $mini);
+			$hotWaterExpShower->setValue($expectedShower->getId());
+			$hotWaterExpShower->save();
+		}
+
 		$boost = $eqLogic->getCmd(null, 'boost_state');
     	if (!is_object($boost)) {
     		$boost = new cozytouchCmd();
@@ -157,6 +195,24 @@ class CozytouchAtlanticHotWaterFlatC2 extends AbstractCozytouchDevice
 			case CozyTouchDeviceEqCmds::SET_BOOST:
 				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_BOOST." value : ".$_options['slider']);
 				self::setBoostMode($device_url,$_options['slider']);
+				break;
+			case CozyTouchDeviceEqCmds::SET_EXPECTEDSHOWER:
+				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_EXPECTEDSHOWER." value : ".$_options['slider']);
+				$min = $cmd->getConfiguration('minValue');
+				$max = $cmd->getConfiguration('maxValue');
+				
+    			if (!isset($_options['slider']) || $_options['slider'] == '' || !is_numeric(intval($_options['slider']))) {
+    				$_options['slider'] = (($max - $min) / 2) + $min;
+    			}
+    			if ($_options['slider'] > $max) {
+    				$_options['slider'] = $max;
+    			}
+    			if ($_options['slider'] < $min) {
+    				$_options['slider'] = $min;
+				}
+				
+    			$eqLogic->getCmd(null, $device_url.'_'.CozyTouchStateName::CTSN_EXPECTEDNBSHOWER)->event($_options['slider']);
+				self::setExpectedShower($device_url,$_options['slider']);
 				break;
 			
 		}
@@ -271,6 +327,17 @@ class CozytouchAtlanticHotWaterFlatC2 extends AbstractCozytouchDevice
 			)
 		);
 		parent::genericApplyCommand($device_url,$cmds);
+	}
+
+	public static function setExpectedShower($device_url,$value)
+	{
+        $cmds = array(
+            array(
+                "name"=>CozyTouchDeviceActions::CTPC_SETEXPECTEDSHOWER,
+                "values"=>intval($value)
+			)
+        );
+        parent::genericApplyCommand($device_url,$cmds);
 	}
 
 	public static function setBoostMode($device_url,$value)

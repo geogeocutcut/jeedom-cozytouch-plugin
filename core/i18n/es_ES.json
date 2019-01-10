@@ -1,6 +1,6 @@
 {
-    "plugins/template/plugin_info/info.xml": {
-        "Plugin template pour la création de plugin": "Plugin de plantilla para la creación de plugin",
-        "Aucune": "Aucune"
+    "plugins\/template\/plugin_info\/info.xml": {
+        "Plugin template pour la création de plugin": "Plantilla de plugin para la creación de plugins",
+        "Aucune": "Ninguno"
     }
 }

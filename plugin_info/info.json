@@ -3,5 +3,6 @@
 	"name" : "CozyTouch",
 	"licence" : "AGPL",
 	"author" : "geoblack",
-	"require" : "2.4"
+	"require" : "2.4",
+	"category":"wellness"
 }

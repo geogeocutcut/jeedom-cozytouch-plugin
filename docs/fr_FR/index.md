@@ -165,7 +165,7 @@ FAQ
 ===
 à compléter
 
-<a id="changelog"></a>
+<div id="changelog"></div>
 
 Changelog
 ========= 

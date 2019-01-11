@@ -165,10 +165,10 @@ FAQ
 ===
 à compléter
 
-[](#changelog)
+<a id="changelog"></a>
 
 Changelog
-=========
+========= 
 
 Version : 2.0.0
 ---------------

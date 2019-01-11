@@ -4,5 +4,10 @@
 	"licence" : "AGPL",
 	"author" : "geoblack",
 	"require" : "2.4",
-	"category":"wellness"
+	"category":"wellness",
+	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile"],
+	"issue" : "https://github.com/geogeocutcut/jeedom-cozytouch-plugin/issues",
+ 	"changelog" : "https://geogeocutcut.github.io/jeedom-cozytouch-plugin/fr_FR/#changelog",
+ 	"documentation" : "https://geogeocutcut.github.io/jeedom-cozytouch-plugin/fr_FR/"
+
 }

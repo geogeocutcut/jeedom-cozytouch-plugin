@@ -165,6 +165,7 @@ FAQ
 ===
 à compléter
 
+[link text](#Changelog)
 Changelog
 =========
 

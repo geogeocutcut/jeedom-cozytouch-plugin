@@ -25,7 +25,7 @@ Une fois le plugin installé, il vous faut renseigner vos informations de
 connexion Cozytouch :
 
 <div style="text-align:center">
-<img  src="images/Config.PNG" alt="..."></div>
+<img  src="../images/Config.PNG" alt="..."></div>
 
 -   **Nom d’utilisateur** : nom d’utilisateur de votre compte Cozytouch
 
@@ -68,13 +68,13 @@ Configuration des équipements
 La configuration des équipements Cozytouch est accessible à  partir du
 menu Plugins :
 <div style="text-align:center">
-<img  src="images/menu.PNG" alt="..."></div>
+<img  src="../images/menu.PNG" alt="..."></div>
 
 Voilà  à  quoi ressemble la page du plugin Cozytouch (ici avec déjà  1
 équipement) :
 
 <div style="text-align:center">
-<img  src="images/eqlogic.PNG" alt="..."></div>
+<img  src="../images/eqlogic.PNG" alt="..."></div>
 
 > **Tip**
 >
@@ -89,7 +89,7 @@ Voilà  à  quoi ressemble la page du plugin Cozytouch (ici avec déjà  1
 
 Une fois que vous cliquez sur un équipement vous obtenez :
 <div style="text-align:center">
-<img  src="images/eqlogic_command.PNG" alt="..."></div>
+<img  src="../images/eqlogic_command.PNG" alt="..."></div>
 
 Equipement compatible
 =====================
@@ -105,11 +105,11 @@ Equipement compatible
 
 Equipement non connecté :
 <div style="text-align:center">
-<img  src="images/unavaible.PNG" alt="..."></div>
+<img  src="../images/unavaible.PNG" alt="..."></div>
 
 Equipement connecté :
 <div style="text-align:center">
-<img  src="images/avaible.PNG" alt="..."></div>
+<img  src="../images/avaible.PNG" alt="..."></div>
 
 Voici les types d'équipement gérés par le plugin et leur représentation
 dans le dashboard :
@@ -130,32 +130,32 @@ dans le dashboard :
 > programmateur externe et les ordres envoyé par ce dernier ne seront
 > plus pris en compte.
 <div style="text-align:center">
-<img  src="images/electricheat2.PNG" alt="..."></div>
+<img  src="../images/electricheat2.PNG" alt="..."></div>
 
 -   **Radiateur connecté grâce à l’interface Cozytouch** :
 <div style="text-align:center">
-<img  src="images/electricheat1.PNG" alt="..."></div>
+<img  src="../images/electricheat1.PNG" alt="..."></div>
 
 -   **VMC Atlantic connecté directement sur le bridge Cozytouch** :
 
 <div style="text-align:center">
-<img  src="images/vmc.PNG" alt="..."></div>
+<img  src="../images/vmc.PNG" alt="..."></div>
 
 -   **Ballon d’eau chaude Atlantic connecté directement sur le bridge
     Cozytouch** :
 
 <div style="text-align:center">
-<img  src="images/hotwater.PNG" alt="..."></div>
+<img  src="../images/hotwater.PNG" alt="..."></div>
 
 > **Note**
 >
 > Plus le ballon devient bleu, moins il reste d’eau chaude:
 
 <div style="text-align:center">
-<img  src="images/hotwater_temp_9.png" alt="...">
-<img  src="images/hotwater_temp_6.png" alt="...">
-<img  src="images/hotwater_temp_3.png" alt="...">
-<img  src="images/hotwater_temp_0.png" alt="..."></div>
+<img  src="../images/hotwater_temp_9.png" alt="...">
+<img  src="../images/hotwater_temp_6.png" alt="...">
+<img  src="../images/hotwater_temp_3.png" alt="...">
+<img  src="../images/hotwater_temp_0.png" alt="..."></div>
 
 WARNING : Le pilotage du boost de certains modèles de ballon d’eau
 chaude est parfois problématique. (Elle l’ai déjà avec l’application

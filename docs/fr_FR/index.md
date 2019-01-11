@@ -165,7 +165,7 @@ FAQ
 ===
 à compléter
 
-[link text](#Changelog)
+<a name="Changelog"></a>
 Changelog
 =========
 

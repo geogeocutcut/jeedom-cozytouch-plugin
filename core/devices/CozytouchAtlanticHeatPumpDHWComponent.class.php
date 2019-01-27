@@ -6,13 +6,18 @@ require_once dirname(__FILE__) . "/../class/CozyTouchManager.class.php";
 class CozytouchAtlanticHeatPumpDHWComponent extends AbstractCozytouchDevice
 {
     const cold_water = 15;
-    //[{order},{beforeLigne},{afterLigne}]
+	//[{order},{beforeLigne},{afterLigne}]
+	
+	
 	const DISPLAY = [
 		CozyTouchStateName::CTSN_DHWONOFF=>[1,0,1],
-		CozyTouchStateName::CTSN_DHWPROFIL=>[2,1,0],
-		CozyTouchStateName::CTSN_DHWTARGETECOTEMP=>[3,1,0],
-		CozyTouchStateName::CTSN_DHWTARGETCOMFORTTEMP=>[4,0,0],
-		CozyTouchStateName::CTSN_DHWTARGETTEMP=>[5,0,1],
+		CozyTouchStateName::CTSN_PASSAPCDHWPROFILE=>[2,1,0],
+		CozyTouchStateName::CTSN_PASSAPCDHWMODE=>[3,1,0],
+		CozyTouchStateName::CTSN_PASSAPCDHWCONFIGURATION=>[4,1,0],
+		CozyTouchStateName::CTSN_ECOTARGETDHWTEMPERATURE=>[5,1,0],
+		CozyTouchStateName::CTSN_COMFORTTARGETDHWTEMPERATURE=>[6,0,0],
+		CozyTouchStateName::CTSN_TARGETDHWTEMPERATURE=>[7,0,1],
+		CozyTouchStateName::CTSN_BOOSTONOFF=>[8,0,1],
 		CozyTouchStateName::CTSN_CONNECT=>[99,1,1],
 		'refresh'=>[1,0,0]
     ];

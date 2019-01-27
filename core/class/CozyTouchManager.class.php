@@ -204,6 +204,26 @@ class CozyTouchManager
 		{
 			$value = ($state->value=='on');
 		}
+		else if($state->name==CozyTouchStateName::CTSN_BOOSTONOFF)
+		{
+			$value = ($state->value=='on');
+		}
+		else if($state->name==CozyTouchStateName::CTSN_DHWONOFF)
+		{
+			$value = ($state->value=='on');
+		}
+		else if($state->name==CozyTouchStateName::CTSN_HEATINGONOFF)
+		{
+			$value = ($state->value=='on');
+		}
+		else if($state->name==CozyTouchStateName::CTSN_DEROGATIONONOFF)
+		{
+			$value = ($state->value=='on');
+		}
+		else if($state->name==CozyTouchStateName::CTSN_COOLINGONOFF)
+		{
+			$value = ($state->value=='on');
+		}
 		else if($state->name==CozyTouchStateName::CTSN_CONNECT)
 		{
 			$value = ($state->value=='available');

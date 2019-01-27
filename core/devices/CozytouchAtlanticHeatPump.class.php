@@ -6,6 +6,9 @@ require_once dirname(__FILE__) . "/../class/CozyTouchManager.class.php";
 if (!class_exists('CozytouchAtlanticHeatPumpDHWComponent')) {
 	require_once dirname(__FILE__) . "/CozytouchAtlanticHeatPumpDHWComponent.class.php";
 }
+if (!class_exists('CozytouchAtlanticHeatPumpHeatZoneComponent')) {
+	require_once dirname(__FILE__) . "/CozytouchAtlanticHeatPumpHeatZoneComponent.class.php";
+}
 
 class CozytouchAtlanticHeatPump extends AbstractCozytouchDevice
 {
@@ -125,9 +128,11 @@ class CozytouchAtlanticHeatPump extends AbstractCozytouchDevice
 					}
 					break;
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCDHW :
-				{
 					CozytouchAtlanticHeatPumpDHWComponent::BuildEqLogic($sensor);
-				}
+					break;
+				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATINGCOOLINGZONE :
+					CozytouchAtlanticHeatPumpHeatZoneComponent::BuildEqLogic($sensor);
+					break;
 			}
 			
 		}

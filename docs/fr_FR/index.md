@@ -4,7 +4,9 @@ bridge Cozytouch
 Mise à jour 1.0 vers 2.0
 ========================
 
-IMPORTANT : Le plugin dans sa version 1.0 ne gérait que des radiateurs
+> **Important**
+>
+> Le plugin dans sa version 1.0 ne gérait que des radiateurs
 Atlantic connectés directement sur le bridge Cozytouch. Afin de pouvoir
 gérer d’autres équipements le plugin a été complètement réécrit. Aussi,
 lors de la mise à jour 1.0 vers 2.0, tous les équipements déjà
@@ -157,9 +159,30 @@ dans le dashboard :
 <img  src="../images/hotwater_temp_3.png" alt="...">
 <img  src="../images/hotwater_temp_0.png" alt="..."></div>
 
-WARNING : Le pilotage du boost de certains modèles de ballon d’eau
-chaude est parfois problématique. (Elle l’ai déjà avec l’application
-Cozytouch sur les smartphones).
+>**Warning**
+>
+> Le pilotage du boost de certains modèles de ballon d’eau chaude est parfois problématique. (Elle l’ai déjà avec l’application Cozytouch sur les smartphones).
+
+-   **Pompe à chaleur** :
+
+<div style="text-align:center">
+<img  src="../images/pump_main.PNG" alt="..."></div>
+
+> **Note**
+>
+> La pompe à chaleur peut être associée à un ballon d'eau chaude et un système de chauffage
+
+<div style="text-align:center">
+<img  src="../images/pump_dhw.png" alt="...">
+<img  src="../images/pump_heat.png" alt="..."></div>
+
+>**Warning**
+>
+> Le mode boost du ballon d'eau de chaude est limité dans le temps.
+
+>**Warning**
+>
+> Le mode dérogation du chauffage est appliqué pour une durée de 4h.
 
 FAQ
 ===
@@ -170,6 +193,13 @@ FAQ
 Changelog
 ========= 
 
+Version : 2.0.1
+---------------
+
+-   Gestion de nouveaux équipements
+
+    -   Pompe à chaleur
+    
 Version : 2.0.0
 ---------------
 

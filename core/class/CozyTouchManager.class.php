@@ -220,6 +220,10 @@ class CozyTouchManager
 		{
 			$value = ($state->value=='on');
 		}
+		else if($state->name==CozyTouchStateName::CTSN_DEROGATIONREMAININGTIME)
+		{
+			$value = ($state->value/60);
+		}
 		else if($state->name==CozyTouchStateName::CTSN_COOLINGONOFF)
 		{
 			$value = ($state->value=='on');
@@ -266,6 +270,12 @@ class CozyTouchManager
     			break;
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT :
 				CozytouchAtlanticVentilation::execute($cmd,$_options);
+				break;
+			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCDHW :
+				CozytouchAtlanticHeatPumpDHWComponent::execute($cmd,$_options);
+				break;
+			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATINGCOOLINGZONE :
+				CozytouchAtlanticHeatPumpHeatZoneComponent::execute($cmd,$_options);
 				break;
     			
     	}

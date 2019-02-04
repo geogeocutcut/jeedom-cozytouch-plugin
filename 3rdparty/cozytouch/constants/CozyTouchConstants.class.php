@@ -329,8 +329,8 @@ class CozyTouchStateName
 		self::CTSN_ECOTARGETDHWTEMPERATURE=>"Temp. eco",
 		self::CTSN_COMFORTTARGETDHWTEMPERATURE=>"Temp. confort",
 		self::CTSN_TARGETDHWTEMPERATURE=>"Temp. cible",
-		self::CTSN_BOOSTONOFF=>"Boost",
-		self::CTSN_DHWONOFF=>"On/Off",
+		self::CTSN_BOOSTONOFF=>"Boost State",
+		self::CTSN_DHWONOFF=>"On/Off State",
 		self::CTSN_HEATINGONOFF=>"Heating",
 		self::CTSN_COOLINGONOFF=>"Cooling",
 		self::CTSN_DEROGATIONONOFF=>"Derogation",
@@ -617,6 +617,7 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_DEROGATIONONOFF,
 			CozyTouchStateName::CTSN_HEATINGONOFF,
 			CozyTouchStateName::CTSN_COOLINGONOFF,
+			CozyTouchStateName::CTSN_TEMP,
 			CozyTouchStateName::CTSN_CONNECT]
 	];
 }
@@ -655,6 +656,8 @@ class CozyTouchDeviceEqCmds
 	const SET_AWAY='setAway';
 	const SET_AWAYDURATION='setAwayDuration';
 	const SET_EXPECTEDSHOWER='setExpectedNumberOfShower';
+
+	const SET_ONOFF="setOnOff";
 
 	const SET_VENTBOOST ='setVentBoost';
 	const SET_VENTHIGH ='setVentHigh';
@@ -733,6 +736,7 @@ class CozyTouchDeviceEqCmds
 		self::SET_MANUECOINACTIVE=>"Manuel",
 		self::SET_BOOSTDURATION=>"Boost",
 		self::SET_BOOST=>"Boost",
+		self::SET_ONOFF=>"Off",
 
 		self::SET_VENTBOOST=>"Boost Maison",
 		self::SET_VENTHIGH=>"Boost Cuisine",
@@ -793,6 +797,18 @@ class CozyTouchDeviceActions
 
 	const CTPC_SETVENTILATIONCONFIGMODE = "setVentilationConfigurationMode"; // standard = manuel, comfort = auto,
 	const CTPC_RSHVENTILATIONCONFIGMODE = "refreshVentilationConfigurationMode";
+
+	// Pompe à chaleur
+	//      Ballon d'eau chaude
+	const CTPC_SETDHWONOFF="setDHWOnOffState";
+	const CTPC_SETBOOSTONOFF="setBoostOnOffState";
+	//		Heat system
+	const CTPC_SETHEATINGONOFF="setHeatingOnOffState";
+	const CTPC_SETECOHEATINGTARGET="setEcoHeatingTargetTemperature";
+	const CTPC_SETCOMFORTHEATINGTARGET="setComfortHeatingTargetTemperature";
+	const CTPC_SETDEROGTIME = "setDerogationTime";
+	const CTPC_SETDEROGONOFF = "setDerogationOnOffState";
+	const CTPC_RSHDEROGTIME = "refreshDerogationRemainingTime";
 }
 
 

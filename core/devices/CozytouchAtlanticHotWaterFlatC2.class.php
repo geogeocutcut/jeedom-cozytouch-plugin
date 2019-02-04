@@ -213,7 +213,6 @@ class CozytouchAtlanticHotWaterFlatC2 extends AbstractCozytouchDevice
     			if ($_options['slider'] < $min) {
     				$_options['slider'] = $min;
 				}
-				log::add('cozytouch', 'debug', 'command2 : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_EXPECTEDSHOWER." value : ".$_options['slider']);
 				
     			$eqLogic->getCmd(null, $device_url.'_'.CozyTouchStateName::CTSN_EXPECTEDNBSHOWER)->event($_options['slider']);
 				self::setExpectedShower($device_url,$_options['slider']);

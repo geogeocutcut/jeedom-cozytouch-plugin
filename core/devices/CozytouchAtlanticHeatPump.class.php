@@ -27,6 +27,7 @@ class CozytouchAtlanticHeatPump extends AbstractCozytouchDevice
     const cold_water = 15;
     //[{order},{beforeLigne},{afterLigne}]
 	const DISPLAY = [
+		CozyTouchStateName::CTSN_CONNECT=>[99,1,1],
 		'refresh'=>[1,0,0]
     ];
     
@@ -36,9 +37,12 @@ class CozytouchAtlanticHeatPump extends AbstractCozytouchDevice
         $eqLogic =self::BuildDefaultEqLogic($device);
 		$eqLogic->setCategory('energy', 1);
         $states = CozyTouchDeviceStateName::EQLOGIC_STATENAME[$device->getVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME)];
-        $sensors = array();
-		foreach ($device->getSensors() as $sensor)
+		$sensors = array();
+		$deviceSensors = $device->getSensors();
+		$nbSesnsors = count($deviceSensors);
+		for ($i = 0; $i <$nbSesnsors; $i++)
 		{
+			$sensor=$deviceSensors[$i];
 			$sensorURL = $sensor->getURL();
 			$sensorModel = $sensor->getModel();
 			// création des équipements
@@ -131,6 +135,13 @@ class CozytouchAtlanticHeatPump extends AbstractCozytouchDevice
 					CozytouchAtlanticHeatPumpDHWComponent::BuildEqLogic($sensor);
 					break;
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATINGCOOLINGZONE :
+					$j = $i+1;
+					if($j<$nbSesnsors && $deviceSensors[$j]->getModel()==CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONETEMPERATURESENSOR)
+					{
+						$sensorstemp = $sensor->getSensors();
+						$sensorstemp[] = $deviceSensors[$j];
+						$sensor->setVar(CozyTouchDeviceInfo::CTDI_SENSORS, $sensorstemp);
+					}
 					CozytouchAtlanticHeatPumpHeatZoneComponent::BuildEqLogic($sensor);
 					break;
 			}
@@ -152,6 +163,21 @@ class CozytouchAtlanticHeatPump extends AbstractCozytouchDevice
 	public static function orderCommand($eqLogic)
 	{
 		
+		$cmds = $eqLogic->getCmd();
+		foreach($cmds as $cmd)
+		{
+			$logicalId=explode('_',$cmd->getLogicalId());
+			$key = $logicalId[(count($logicalId)-1)];
+			log::add('cozytouch','debug','Mise en ordre : '.$key);
+			if(array_key_exists($key,self::DISPLAY))
+			{
+				$cmd->setIsVisible(1);
+				$cmd->setOrder(self::DISPLAY[$key][0]);
+				$cmd->setDisplay('forceReturnLineBefore',self::DISPLAY[$key][1]);
+				$cmd->setDisplay('forceReturnLineAfter',self::DISPLAY[$key][2]);
+			}
+			$cmd->save();
+		}
 	}
     
     public static function Execute($cmd,$_options= array())

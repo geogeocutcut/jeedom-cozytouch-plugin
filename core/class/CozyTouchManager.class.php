@@ -31,6 +31,11 @@ if (!class_exists('CozytouchAtlanticHotWaterFlatC2')) {
 if (!class_exists('CozytouchAtlanticVentilation')) {
 	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticVentilation.class.php";
 }
+
+if (!class_exists('CozytouchAtlanticHeatPump')){
+	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticHeatPump.class.php";
+}
+
 class CozyTouchManager
 {
     private static $_client = null;
@@ -85,6 +90,9 @@ class CozyTouchManager
 					break;	
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT:
 					CozytouchAtlanticVentilation::BuildEqLogic($device);
+					break;
+				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATPUMPMAIN:
+					CozytouchAtlanticHeatPump::BuildEqLogic($device);
 					break;
                 default:
                     AbstractCozytouchDevice::BuildDefaultEqLogic($device);
@@ -196,6 +204,30 @@ class CozyTouchManager
 		{
 			$value = ($state->value=='on');
 		}
+		else if($state->name==CozyTouchStateName::CTSN_BOOSTONOFF)
+		{
+			$value = ($state->value=='on');
+		}
+		else if($state->name==CozyTouchStateName::CTSN_DHWONOFF)
+		{
+			$value = ($state->value=='on');
+		}
+		else if($state->name==CozyTouchStateName::CTSN_HEATINGONOFF)
+		{
+			$value = ($state->value=='on');
+		}
+		else if($state->name==CozyTouchStateName::CTSN_DEROGATIONONOFF)
+		{
+			$value = ($state->value=='on');
+		}
+		else if($state->name==CozyTouchStateName::CTSN_DEROGATIONREMAININGTIME)
+		{
+			$value = ($state->value/60);
+		}
+		else if($state->name==CozyTouchStateName::CTSN_COOLINGONOFF)
+		{
+			$value = ($state->value=='on');
+		}
 		else if($state->name==CozyTouchStateName::CTSN_CONNECT)
 		{
 			$value = ($state->value=='available');
@@ -238,6 +270,12 @@ class CozyTouchManager
     			break;
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT :
 				CozytouchAtlanticVentilation::execute($cmd,$_options);
+				break;
+			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCDHW :
+				CozytouchAtlanticHeatPumpDHWComponent::execute($cmd,$_options);
+				break;
+			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATINGCOOLINGZONE :
+				CozytouchAtlanticHeatPumpHeatZoneComponent::execute($cmd,$_options);
 				break;
     			
     	}

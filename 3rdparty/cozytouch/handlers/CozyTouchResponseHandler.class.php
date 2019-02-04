@@ -93,7 +93,8 @@ class CozyTouchResponseHandler {
 				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_OID, $device->oid);
 				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_PLACEOID, $device->placeOID);
 				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_URL, $device->deviceURL);
-				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_TYPEDEVICE, $device->uiClass);
+
+				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_TYPEDEVICE, strpos($device->widget,"HeatPump")?"HeatPump":$device->uiClass);
 				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_SENSORS, array());
 				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME,$device->controllableName);
 				foreach ($device->states as $state)
@@ -151,6 +152,23 @@ class CozyTouchResponseHandler {
 				." ".$PlaceCount[$placeOID][$type];
 				log::add('cozytouch', 'debug', 'Nom de device '.$name);
 				$device->setVar(CozyTouchDeviceInfo::CTDI_LABEL,$name);
+			}
+			
+			$sensors = $device->getSensors();
+			foreach ($sensors as $sensor)
+			{
+				$type = $sensor->getVar(CozyTouchDeviceInfo::CTDI_TYPEDEVICE);
+				if(array_key_exists($placeOID , $places )==true && array_key_exists($type,CozyTouchDeviceToDisplay::CTDTD_NAME))
+				{
+					
+					log::add('cozytouch', 'debug', 'Type de device '.$type);
+					$PlaceCount[$placeOID][$type]+=1;
+					$name= "(".$places[$placeOID]->getVar(CozyTouchPlaceInfo::CTPI_NAME)
+					.") ".CozyTouchDeviceToDisplay::CTDTD_NAME[$type]
+					." ".$PlaceCount[$placeOID][$type];
+					log::add('cozytouch', 'debug', 'Nom de device '.$name);
+					$sensor->setVar(CozyTouchDeviceInfo::CTDI_LABEL,$name);
+				}
 			}
 		}
 		log::add('cozytouch', 'debug', 'Synchronisation de '.count($devices).' device(s)');

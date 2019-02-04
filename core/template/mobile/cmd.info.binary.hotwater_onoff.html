@@ -1,0 +1,21 @@
+<div style="padding:0;" class="cmd #history# tooltips cmd-widget container-fluid" data-type="info" data-subtype="binary" data-cmd_id="#id#" data-cmd_uid="#uid#" title="#collectDate#">
+	<div class="row">
+		<div class="center-block col-xs-12 h5 cmdName" id="cmdName#id#" style="margin-top:0; #hideCmdName#;">#name_display#</div>
+		<div class="center-block col-xs-12 iconCmd#uid#"></div>
+	</div>
+<!-- Ne Pas Supprimer -->
+	<script class="createWidgetInfo" type="text/javascript">//<![CDATA[{"type":"1","version":"1","image1":"ChauffeEauOff.png","image2":"ChauffeEauOn.png"}]]></script>
+<!-- Ne Pas Supprimer -->
+	<script>
+		jeedom.cmd.update['#id#'] = function(_options){
+			$(".iconCmd#uid#").empty();
+			if (parseInt(_options.display_value) == 1) {
+				$(".iconCmd#uid#").append("<img width=100px src='cozytouch/core/template/images/ChauffeEauOn.png'>");
+			} else {
+				$(".iconCmd#uid#").append("<img width=100px src='cozytouch/core/template/images/ChauffeEauOff.png'>");
+			}
+			$('.cmd[data-cmd_id=#id#]').attr('title','Valeur du '+_options.valueDate+', collectée le '+_options.collectDate);
+		}
+		jeedom.cmd.update['#id#']({display_value:'#state#',valueDate:'#valueDate#',collectDate:'#collectDate#',alertLevel:'#alertLevel#'});
+	</script>
+</div>

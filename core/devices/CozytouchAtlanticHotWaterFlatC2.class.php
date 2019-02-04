@@ -80,6 +80,41 @@ class CozytouchAtlanticHotWaterFlatC2 extends AbstractCozytouchDevice
     	$hotWaterCoefficient->setTemplate('mobile', 'hotwater');
         $hotWaterCoefficient->save();
 		
+		
+
+		$boost = $eqLogic->getCmd(null, 'boost_state');
+    	if (!is_object($boost)) {
+    		$boost = new cozytouchCmd();
+    		$boost->setIsVisible(0);
+    	}
+
+    	$boost->setEqLogic_id($eqLogic->getId());
+    	$boost->setName(__('boost_state', __FILE__));
+    	$boost->setType('info');
+    	$boost->setSubType('binary');
+    	$boost->setIsHistorized(1);
+    	$boost->setLogicalId('boost_state');
+    	$boost->save();
+    	
+    	$boost_toogle = $eqLogic->getCmd(null, CozyTouchDeviceEqCmds::SET_BOOST);
+    	if (!is_object($boost_toogle)) {
+    		$boost_toogle = new cozytouchCmd();
+			$boost_toogle->setLogicalId(CozyTouchDeviceEqCmds::SET_BOOST);
+    	}
+    	$boost_toogle->setEqLogic_id($eqLogic->getId());
+    	$boost_toogle->setName(__('Boost', __FILE__));
+    	$boost_toogle->setType('action');
+    	$boost_toogle->setSubType('slider');
+    	$boost_toogle->setTemplate('dashboard', 'toggle');
+    	$boost_toogle->setTemplate('mobile', 'toggle');
+    	$boost_toogle->setIsVisible(1);
+		$boost_toogle->setValue($boost->getId());
+		$boost_toogle->save();
+
+
+
+		CozyTouchManager::refresh_all();
+		
 		$expectedShower = $eqLogic->getCmd(null,$deviceURL.'_'.CozyTouchStateName::CTSN_EXPECTEDNBSHOWER );
 		if(is_object($expectedShower))
 		{
@@ -114,40 +149,8 @@ class CozytouchAtlanticHotWaterFlatC2 extends AbstractCozytouchDevice
 			$hotWaterExpShower->setValue($expectedShower->getId());
 			$hotWaterExpShower->save();
 		}
-
-		$boost = $eqLogic->getCmd(null, 'boost_state');
-    	if (!is_object($boost)) {
-    		$boost = new cozytouchCmd();
-    		$boost->setIsVisible(0);
-    	}
-
-    	$boost->setEqLogic_id($eqLogic->getId());
-    	$boost->setName(__('boost_state', __FILE__));
-    	$boost->setType('info');
-    	$boost->setSubType('binary');
-    	$boost->setIsHistorized(1);
-    	$boost->setLogicalId('boost_state');
-    	$boost->save();
-    	
-    	$boost_toogle = $eqLogic->getCmd(null, CozyTouchDeviceEqCmds::SET_BOOST);
-    	if (!is_object($boost_toogle)) {
-    		$boost_toogle = new cozytouchCmd();
-			$boost_toogle->setLogicalId(CozyTouchDeviceEqCmds::SET_BOOST);
-    	}
-    	$boost_toogle->setEqLogic_id($eqLogic->getId());
-    	$boost_toogle->setName(__('Boost', __FILE__));
-    	$boost_toogle->setType('action');
-    	$boost_toogle->setSubType('slider');
-    	$boost_toogle->setTemplate('dashboard', 'toggle');
-    	$boost_toogle->setTemplate('mobile', 'toggle');
-    	$boost_toogle->setIsVisible(1);
-		$boost_toogle->setValue($boost->getId());
-		$boost_toogle->save();
-
-
+		
         self::orderCommand($eqLogic);
-
-        CozyTouchManager::refresh_all();
     }
     
 	public static function orderCommand($eqLogic)

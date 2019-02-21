@@ -57,7 +57,9 @@ class cozytouch extends eqLogic {
     
     /*************************** Methode d'instance **************************/ 
  
-
+    public function preConfig_password($value) {
+      return utf8_encode($value);
+    }
     /************************** Pile de mise  jour **************************/ 
     
     /* fonction permettant d'initialiser la pile 

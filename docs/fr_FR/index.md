@@ -173,8 +173,8 @@ dans le dashboard :
 > La pompe à chaleur peut être associée à un ballon d'eau chaude et un système de chauffage
 
 <div style="text-align:center">
-<img  src="../images/pump_dhw.png" alt="...">
-<img  src="../images/pump_heat.png" alt="..."></div>
+<img  src="../images/pump_dhw.PNG" alt="...">
+<img  src="../images/pump_heat.PNG" alt="..."></div>
 
 >**Warning**
 >

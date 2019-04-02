@@ -50,7 +50,7 @@ class CozyTouchManager
 			
 			self::$_client = new CozyTouchApiClient(array(
 					'userId' => config::byKey('username', 'cozytouch'),
-					'userPassword' => config::byKey('password', 'cozytouch')
+					'userPassword' => utf8_decode(config::byKey('password', 'cozytouch'))
 			));
 		}
 		return self::$_client;

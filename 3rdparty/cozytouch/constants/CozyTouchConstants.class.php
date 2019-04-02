@@ -57,6 +57,7 @@ class CozyTouchDeviceToDisplay
 	
 	const CTDTD_ATLANTICHOTWATER ="io:AtlanticDomesticHotWaterProductionIOComponent";
 	const CTDTD_ATLANTICHOTWATERSPLIT ="io:AtlanticDomesticHotWaterProductionV2_SPLIT_IOComponent";
+	const CTDTD_ATLANTICHOTWATERCES4 ="io:AtlanticDomesticHotWaterProductionV2_CE_S4_IOComponent";
 	const CTDTD_ATLANTICHOTWATERFLATC2 ="io:AtlanticDomesticHotWaterProductionV2_CE_FLAT_C2_IOComponent";
 	const CTDTD_ATLANTICHOTWATERCETHIV4 ="io:AtlanticDomesticHotWaterProductionV2_CETHI_V4_IOComponent";
 	const CTDTD_ATLANTICHOTWATERELECTRICITYSENSOR ="io:DHWCumulatedElectricalEnergyConsumptionIOSystemDeviceSensor";
@@ -73,6 +74,8 @@ class CozyTouchDeviceToDisplay
 	const CTDTD_ATLANTICPASSAPCHEATINGCOOLINGZONE ="io:AtlanticPassAPCHeatingAndCoolingZoneComponent";
 	const CTDTD_ATLANTICPASSAPCZONETEMPERATURESENSOR ="io:AtlanticPassAPCZoneTemperatureSensor";
 	
+	const CTDTD_ATLANTICPASSAPCZONECTRLMAIN="io:AtlanticPassAPCZoneControlMainComponent";
+	const CTDTD_ATLANTICPASSAPCZONECTRLZONE="io:AtlanticPassAPCZoneControlZoneComponent";
 
 	const CTDTD_DEVICEMODEL = [
 		self::CTDTD_ATLANTICELECTRICHEATER,
@@ -80,9 +83,11 @@ class CozyTouchDeviceToDisplay
 		self::CTDTD_ATLANTICHOTWATER,
 		self::CTDTD_ATLANTICHOTWATERSPLIT,
 		self::CTDTD_ATLANTICHOTWATERCETHIV4,
+		self::CTDTD_ATLANTICHOTWATERCES4,
 		self::CTDTD_ATLANTICHOTWATERFLATC2,
 		self::CTDTD_ATLANTICHEATRECOVERYVENT,
-		self::CTDTD_ATLANTICPASSAPCHEATPUMPMAIN
+		self::CTDTD_ATLANTICPASSAPCHEATPUMPMAIN,
+		self::CTDTD_ATLANTICPASSAPCZONECTRLMAIN
 	];
 
 	const CTDTD_NAME = [
@@ -90,7 +95,8 @@ class CozyTouchDeviceToDisplay
 		self::CTDTD_WATERHEATINGSYSTEM=>"Chauffe eau",
 		self::CTDTD_VENTILATIONSYSTEM=>"VMC",
 		
-		self::CTDTD_HEATPUMPSYSTEM=>"Pompe à chaleur"
+		self::CTDTD_HEATPUMPSYSTEM=>"Pompe à chaleur",
+
 	];
 
 	const CTDTD_DEVICESANDSENSORS = [
@@ -102,6 +108,7 @@ class CozyTouchDeviceToDisplay
 		self::CTDTD_ATLANTICHOTWATER,
 		self::CTDTD_ATLANTICHOTWATERSPLIT,
 		self::CTDTD_ATLANTICHOTWATERCETHIV4,
+		self::CTDTD_ATLANTICHOTWATERCES4,
 		self::CTDTD_ATLANTICHOTWATERFLATC2,
 		self::CTDTD_ATLANTICHOTWATERELECTRICITYSENSOR,
 		self::CTDTD_ATLANTICHEATRECOVERYVENT,
@@ -165,14 +172,17 @@ class CozyTouchStateName
 
 
 	
-	// Pompe à chaleur
-	const CTSN_PASSAPCPRODUCTTYPE = "io:PassAPCProductTypeState";
+	// Pompe à chaleur / zone controle
+	const CTSN_PASSAPCPRODUCTTYPE = "io:PassAPCProductTypeState"; // "values": ["accumulationDomesticHotWater","airConditioning","boiler","convector","doubleFlowControlledMechanicalVentilation","heatPump","heater","hybrid","singleFlowControlledMechanicalVentilation","thermodynamicDomesticHotWater","zoneController"],
 	const CTSN_ZONESNUMBER = "core:ZonesNumberState";
 	const CTSN_PASSAPCOPERATINGMODE = "io:PassAPCOperatingModeState";
-	const CTSN_THERMALSCHEDULINGMODE = "io:ThermalSchedulingModeState";
-	const CTSN_ABSENCESCHEDULINGMODE = "io:AbsenceSchedulingModeState";
+	const CTSN_THERMALSCHEDULINGMODE = "io:ThermalSchedulingModeState"; // "values": ["heatingAndCoolingCommonScheduling","heatingAndCoolingSeparatedScheduling"]
+	const CTSN_ABSENCESCHEDULINGMODE = "io:AbsenceSchedulingModeState"; // dateScheduling / numberOfDaysScheduling
 	const CTSN_ABSENCEHEATINGTARGETTEMP = "core:AbsenceHeatingTargetTemperatureState";
-	const CTSN_LASTPASSAPCOPERATINGMODE = "io:LastPassAPCOperatingModeState";
+	const CTSN_ABSENCECOOLINGTARGETTEMP = "core:AbsenceCoolingTargetTemperatureState";
+	const CTSN_ABSENCEENDDATETIME = "core:AbsenceEndDateTimeState";//"value": {"minute": 0,"month": 11,"year": 2018,"hour": 0,"day": 30}
+	const CTSN_LASTPASSAPCOPERATINGMODE = "io:LastPassAPCOperatingModeState"; // cooling / drying / heating / stop
+	const CTSN_HEATINGCOOLINGAUTOSWITCH = "core:HeatingCoolingAutoSwitchState"; // on / off
 
 	const CTSN_PASSAPCDHWCONFIGURATION = "io:PassAPCDHWConfigurationState";
 	const CTSN_PASSAPCDHWMODE= "io:PassAPCDHWModeState";
@@ -183,11 +193,11 @@ class CozyTouchStateName
 	const CTSN_BOOSTONOFF= "core:BoostOnOffState";
 	const CTSN_DHWONOFF= "core:DHWOnOffState";
 
-	const CTSN_THERMALCONFIGURATION= "core:ThermalConfigurationState";
-	const CTSN_PASSAPCHEATINGMODE= "io:PassAPCHeatingModeState";
-	const CTSN_PASSAPCCOOLINGMODE="io:PassAPCCoolingModeState";
-	const CTSN_PASSAPCHEATINGPROFILE="io:PassAPCHeatingProfileState";
-	const CTSN_PASSAPCCOOLINGPROFILE="io:PassAPCCoolingProfileState";
+	const CTSN_THERMALCONFIGURATION= "core:ThermalConfigurationState";// "values": ["cooling","heating","heatingAndCooling"	]
+	const CTSN_PASSAPCHEATINGMODE= "io:PassAPCHeatingModeState";//"values": ["absence","auto","comfort","eco","externalScheduling","internalScheduling","manu","stop"],
+	const CTSN_PASSAPCCOOLINGMODE="io:PassAPCCoolingModeState"; //"values": ["absence","auto","comfort","eco","externalScheduling","internalScheduling","manu","stop"],
+	const CTSN_PASSAPCHEATINGPROFILE="io:PassAPCHeatingProfileState";// "values": ["absence","comfort","derogation","eco","externalSetpoint","frostprotection","manu","stop"]
+	const CTSN_PASSAPCCOOLINGPROFILE="io:PassAPCCoolingProfileState";// "values": ["absence","comfort","derogation","eco","externalSetpoint","frostprotection","manu","stop"]
 
 	const CTSN_COMFORTHEATINGTARGETTEMP="core:ComfortHeatingTargetTemperatureState";
 	const CTSN_ECOHEATINGTARGETTEMP="core:EcoHeatingTargetTemperatureState";
@@ -197,7 +207,14 @@ class CozyTouchStateName
 	const CTSN_HEATINGONOFF="core:HeatingOnOffState";
 	const CTSN_COOLINGONOFF="core:CoolingOnOffState";
 	const CTSN_DEROGATIONONOFF="core:DerogationOnOffState";
-
+	const CTSN_HEATINGTARGETTEMP="core:HeatingTargetTemperatureState";
+	const CTSN_COOLINGTARGETTEMP="core:CoolingTargetTemperatureState";
+	const CTSN_MINHEATTARGETTEMP="core:MinimumHeatingTargetTemperatureState";
+	const CTSN_MAXHEATTARGETTEMP="core:MaximumHeatingTargetTemperatureState";
+	const CTSN_MINCOOLTARGETTEMP="core:MinimumCoolingTargetTemperatureState";
+	const CTSN_MAXCOOLTARGETTEMP="core:MaximumCoolingTargetTemperatureState";
+	
+	
 
 	const EQ_VMCMODE ="vmcMode";
 	const EQ_VMCTEMPINSUFFLE="vmcTempInsuffle";
@@ -278,6 +295,25 @@ class CozyTouchStateName
 		self::CTSN_HEATINGONOFF=>"binary",
 		self::CTSN_COOLINGONOFF=>"binary",
 		self::CTSN_DEROGATIONONOFF=>"binary",
+
+		
+		self::CTSN_HEATINGTARGETTEMP=>"numeric",
+		self::CTSN_COOLINGTARGETTEMP=>"numeric",
+		self::CTSN_MINHEATTARGETTEMP=>"numeric",
+		self::CTSN_MAXHEATTARGETTEMP=>"numeric",
+		self::CTSN_MINCOOLTARGETTEMP=>"numeric",
+		self::CTSN_MAXCOOLTARGETTEMP=>"numeric",
+
+		self::CTSN_PASSAPCPRODUCTTYPE =>"string",
+		self::CTSN_ZONESNUMBER =>"numeric",
+		self::CTSN_PASSAPCOPERATINGMODE =>"string",
+		self::CTSN_THERMALSCHEDULINGMODE =>"string",
+		self::CTSN_ABSENCESCHEDULINGMODE =>"string",
+		self::CTSN_ABSENCEHEATINGTARGETTEMP =>"numeric",
+		self::CTSN_ABSENCECOOLINGTARGETTEMP =>"numeric",
+		self::CTSN_ABSENCEENDDATETIME =>"string",
+		self::CTSN_LASTPASSAPCOPERATINGMODE =>"string",
+		self::CTSN_HEATINGCOOLINGAUTOSWITCH =>"string",
 	];
 
 	const CTSN_LABEL = [
@@ -344,6 +380,24 @@ class CozyTouchStateName
 		self::CTSN_PASSAPCCOOLINGMODE=>"Mode cool",
 		self::CTSN_PASSAPCHEATINGPROFILE=>"Profile heat",
 		self::CTSN_PASSAPCCOOLINGPROFILE=>"Profile cool",
+
+		self::CTSN_HEATINGTARGETTEMP=>"Temp Chauffage",
+		self::CTSN_COOLINGTARGETTEMP=>"Temp climatisation",
+		self::CTSN_MINHEATTARGETTEMP=>"Min Temp Chauffage",
+		self::CTSN_MAXHEATTARGETTEMP=>"Max Temp Chauffage",
+		self::CTSN_MINCOOLTARGETTEMP=>"Min Temp climatisation",
+		self::CTSN_MAXCOOLTARGETTEMP=>"Max Temp climatisation",
+
+		self::CTSN_PASSAPCPRODUCTTYPE =>"APC type produit",
+		self::CTSN_ZONESNUMBER =>"Nb zone",
+		self::CTSN_PASSAPCOPERATINGMODE =>"Ope Mode",
+		self::CTSN_THERMALSCHEDULINGMODE =>"Thermal schedule mode",
+		self::CTSN_ABSENCESCHEDULINGMODE =>"Abs schedule mode",
+		self::CTSN_ABSENCEHEATINGTARGETTEMP =>"Abs temp chauffage",
+		self::CTSN_ABSENCECOOLINGTARGETTEMP =>"Abs temp climatisation",
+		self::CTSN_ABSENCEENDDATETIME =>"Abs date",
+		self::CTSN_LASTPASSAPCOPERATINGMODE =>"Last ope mode",
+		self::CTSN_HEATINGCOOLINGAUTOSWITCH =>"Switch heat cool",
 
 
 
@@ -425,6 +479,26 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_MINISHOWERMANUAL,
 			CozyTouchStateName::CTSN_MAXISHOWERMANUAL
 		],
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERCES4=>[
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_CONNECT,
+			CozyTouchStateName::CTSN_DHWMODE,
+			CozyTouchStateName::CTSN_WATERCONSUMPTION,
+			CozyTouchStateName::CTSN_DHWCAPACITY,
+			CozyTouchStateName::CTSN_DHWBOOSTMODE,
+			CozyTouchStateName::CTSN_DHWABSENCEMODE,
+			CozyTouchStateName::CTSN_MIDDLETEMP,
+			CozyTouchStateName::CTSN_V40WATERVOLUME,
+			CozyTouchStateName::CTSN_WATERTEMP,
+			CozyTouchStateName::CTSN_WATERTARGETTEMP,
+			CozyTouchStateName::CTSN_EXPECTEDNBSHOWER,
+			CozyTouchStateName::CTSN_CTRLWATERTARGETTEMP,
+			CozyTouchStateName::CTSN_MIDDLEWATERTEMPIN,
+			CozyTouchStateName::CTSN_HEATINGSTATUS,
+			CozyTouchStateName::CTSN_NBSHOWERREMAINING,
+			CozyTouchStateName::CTSN_MINISHOWERMANUAL,
+			CozyTouchStateName::CTSN_MAXISHOWERMANUAL
+		],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_CONNECT,
@@ -466,6 +540,43 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_COOLINGONOFF,
 			CozyTouchStateName::CTSN_CONNECT],
 
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONECTRLMAIN=>[
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_PASSAPCPRODUCTTYPE,
+			CozyTouchStateName::CTSN_ZONESNUMBER,
+			CozyTouchStateName::CTSN_PASSAPCOPERATINGMODE,
+			CozyTouchStateName::CTSN_THERMALSCHEDULINGMODE,
+			CozyTouchStateName::CTSN_ABSENCESCHEDULINGMODE,
+			CozyTouchStateName::CTSN_ABSENCEHEATINGTARGETTEMP,
+			CozyTouchStateName::CTSN_ABSENCECOOLINGTARGETTEMP,
+			CozyTouchStateName::CTSN_ABSENCEENDDATETIME,
+			CozyTouchStateName::CTSN_HEATINGCOOLINGAUTOSWITCH,
+			CozyTouchStateName::CTSN_LASTPASSAPCOPERATINGMODE,
+			CozyTouchStateName::CTSN_CONNECT
+		],
+
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONECTRLZONE=>[
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_THERMALCONFIGURATION,
+			CozyTouchStateName::CTSN_PASSAPCHEATINGMODE,
+			CozyTouchStateName::CTSN_PASSAPCCOOLINGMODE,
+			CozyTouchStateName::CTSN_PASSAPCHEATINGPROFILE,
+			CozyTouchStateName::CTSN_PASSAPCCOOLINGPROFILE,
+			CozyTouchStateName::CTSN_COMFORTHEATINGTARGETTEMP,
+			CozyTouchStateName::CTSN_ECOHEATINGTARGETTEMP,
+			CozyTouchStateName::CTSN_COMFORTCOOLINGTARGETTEMP,
+			CozyTouchStateName::CTSN_ECOCOOLINGTARGETTEMP,
+			CozyTouchStateName::CTSN_TARGETTEMP,
+			CozyTouchStateName::CTSN_HEATINGONOFF,
+			CozyTouchStateName::CTSN_COOLINGONOFF,
+			CozyTouchStateName::CTSN_HEATINGTARGETTEMP,
+			CozyTouchStateName::CTSN_COOLINGTARGETTEMP,
+			CozyTouchStateName::CTSN_MINHEATTARGETTEMP,
+			CozyTouchStateName::CTSN_MAXHEATTARGETTEMP,
+			CozyTouchStateName::CTSN_MINCOOLTARGETTEMP,
+			CozyTouchStateName::CTSN_MAXCOOLTARGETTEMP,
+			CozyTouchStateName::CTSN_DEROGATIONONOFF,
+			CozyTouchStateName::CTSN_CONNECT],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICTEMPERATURESENSOR=>[
 			CozyTouchStateName::CTSN_TEMP],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONETEMPERATURESENSOR=>[
@@ -549,7 +660,29 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_TARGETTEMP,
 			CozyTouchStateName::CTSN_DHWCAPACITY,
 			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION],
+
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERFLATC2=>[
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_CONNECT,
+			CozyTouchStateName::CTSN_DHWMODE,
+			CozyTouchStateName::CTSN_WATERCONSUMPTION,
+			CozyTouchStateName::CTSN_DHWCAPACITY,
+			CozyTouchStateName::CTSN_DHWBOOSTMODE,
+			CozyTouchStateName::CTSN_DHWABSENCEMODE,
+			CozyTouchStateName::CTSN_MIDDLETEMP,
+			CozyTouchStateName::CTSN_V40WATERVOLUME,
+			CozyTouchStateName::CTSN_WATERTEMP,
+			CozyTouchStateName::CTSN_WATERTARGETTEMP,
+			CozyTouchStateName::CTSN_EXPECTEDNBSHOWER,
+			CozyTouchStateName::CTSN_CTRLWATERTARGETTEMP,
+			CozyTouchStateName::CTSN_MIDDLEWATERTEMPIN,
+			CozyTouchStateName::CTSN_HEATINGSTATUS,
+			CozyTouchStateName::CTSN_NBSHOWERREMAINING,
+			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION,
+			CozyTouchStateName::CTSN_MINISHOWERMANUAL,
+			CozyTouchStateName::CTSN_MAXISHOWERMANUAL],
+
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERCES4=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_CONNECT,
 			CozyTouchStateName::CTSN_DHWMODE,
@@ -618,6 +751,44 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_HEATINGONOFF,
 			CozyTouchStateName::CTSN_COOLINGONOFF,
 			CozyTouchStateName::CTSN_TEMP,
+			CozyTouchStateName::CTSN_CONNECT],
+		
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONECTRLMAIN=>[
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_PASSAPCPRODUCTTYPE,
+			CozyTouchStateName::CTSN_ZONESNUMBER,
+			CozyTouchStateName::CTSN_PASSAPCOPERATINGMODE,
+			CozyTouchStateName::CTSN_THERMALSCHEDULINGMODE,
+			CozyTouchStateName::CTSN_ABSENCESCHEDULINGMODE,
+			CozyTouchStateName::CTSN_ABSENCEHEATINGTARGETTEMP,
+			CozyTouchStateName::CTSN_ABSENCECOOLINGTARGETTEMP,
+			CozyTouchStateName::CTSN_ABSENCEENDDATETIME,
+			CozyTouchStateName::CTSN_HEATINGCOOLINGAUTOSWITCH,
+			CozyTouchStateName::CTSN_LASTPASSAPCOPERATINGMODE,
+			CozyTouchStateName::CTSN_CONNECT
+		],
+
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONECTRLZONE=>[
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_THERMALCONFIGURATION,
+			CozyTouchStateName::CTSN_PASSAPCHEATINGMODE,
+			CozyTouchStateName::CTSN_PASSAPCCOOLINGMODE,
+			CozyTouchStateName::CTSN_PASSAPCHEATINGPROFILE,
+			CozyTouchStateName::CTSN_PASSAPCCOOLINGPROFILE,
+			CozyTouchStateName::CTSN_COMFORTHEATINGTARGETTEMP,
+			CozyTouchStateName::CTSN_ECOHEATINGTARGETTEMP,
+			CozyTouchStateName::CTSN_COMFORTCOOLINGTARGETTEMP,
+			CozyTouchStateName::CTSN_ECOCOOLINGTARGETTEMP,
+			CozyTouchStateName::CTSN_TARGETTEMP,
+			CozyTouchStateName::CTSN_HEATINGONOFF,
+			CozyTouchStateName::CTSN_COOLINGONOFF,
+			CozyTouchStateName::CTSN_HEATINGTARGETTEMP,
+			CozyTouchStateName::CTSN_COOLINGTARGETTEMP,
+			CozyTouchStateName::CTSN_MINHEATTARGETTEMP,
+			CozyTouchStateName::CTSN_MAXHEATTARGETTEMP,
+			CozyTouchStateName::CTSN_MINCOOLTARGETTEMP,
+			CozyTouchStateName::CTSN_MAXCOOLTARGETTEMP,
+			CozyTouchStateName::CTSN_DEROGATIONONOFF,
 			CozyTouchStateName::CTSN_CONNECT]
 	];
 }
@@ -705,6 +876,10 @@ class CozyTouchDeviceEqCmds
 			self::SET_MANUECOINACTIVE
 		],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERFLATC2=>[
+			self::SET_AUTOMODE,
+			self::SET_MANUECOINACTIVE
+		],
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERCES4=>[
 			self::SET_AUTOMODE,
 			self::SET_MANUECOINACTIVE
 		],

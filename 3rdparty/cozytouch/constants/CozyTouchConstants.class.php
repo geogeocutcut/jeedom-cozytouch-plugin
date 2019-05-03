@@ -43,10 +43,14 @@ class CozyTouchDeviceStateInfo
 
 class CozyTouchDeviceToDisplay
 {
+	// class
 	const CTDTD_HEATINGSYSTEM = "HeatingSystem";
 	const CTDTD_WATERHEATINGSYSTEM = "WaterHeatingSystem";
 	const CTDTD_VENTILATIONSYSTEM ="VentilationSystem";
+	// widget
 	const CTDTD_HEATPUMPSYSTEM ="HeatPump";
+	const CTDTD_ZONECONTROLMAINSYSTEM ="AtlanticPassAPCZoneControl";
+	const CTDTD_ZONECONTROLZONESYSTEM ="AtlanticPassAPCHeatingAndCoolingZone";
 
 	const CTDTD_ATLANTICELECTRICHEATER = "io:AtlanticElectricalHeaterIOComponent";
 
@@ -94,8 +98,9 @@ class CozyTouchDeviceToDisplay
 		self::CTDTD_HEATINGSYSTEM=>"Radiateur",
 		self::CTDTD_WATERHEATINGSYSTEM=>"Chauffe eau",
 		self::CTDTD_VENTILATIONSYSTEM=>"VMC",
-		
 		self::CTDTD_HEATPUMPSYSTEM=>"Pompe à chaleur",
+		self::CTDTD_ZONECONTROLMAINSYSTEM=>"PAC Centrale",
+		self::CTDTD_ZONECONTROLZONESYSTEM=>"PAC Zone",
 
 	];
 
@@ -121,7 +126,9 @@ class CozyTouchDeviceToDisplay
 		self::CTDTD_DHWENERGYCONSUMPTIONSENSOR,
 		self::CTDTD_HEATINGENERGYCONSUMPTIONSENSOR,
 		self::CTDTD_ATLANTICPASSAPCHEATINGCOOLINGZONE,
-		self::CTDTD_ATLANTICPASSAPCZONETEMPERATURESENSOR
+		self::CTDTD_ATLANTICPASSAPCZONETEMPERATURESENSOR,
+		self::CTDTD_ATLANTICPASSAPCZONECTRLMAIN,
+		self::CTDTD_ATLANTICPASSAPCZONECTRLZONE
 	
 	];
 }

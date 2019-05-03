@@ -3,8 +3,8 @@ require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 require_once dirname(__FILE__) . "/../../3rdparty/cozytouch/constants/CozyTouchConstants.class.php";
 require_once dirname(__FILE__) . "/../class/CozyTouchManager.class.php";
 
-if (!class_exists('CozytouchAtlanticZoneControlZoneComponent')) {
-	require_once dirname(__FILE__) . "/CozytouchAtlanticZoneControlZoneComponent.class.php";
+if (!class_exists('CozytouchAtlanticZoneControlZone')) {
+	require_once dirname(__FILE__) . "/CozytouchAtlanticZoneControlZone.class.php";
 }
 
 class CozytouchAtlanticZoneControlMain extends AbstractCozytouchDevice
@@ -36,8 +36,9 @@ class CozytouchAtlanticZoneControlMain extends AbstractCozytouchDevice
         $states = CozyTouchDeviceStateName::EQLOGIC_STATENAME[$device->getVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME)];
 		$sensors = array();
 		$deviceSensors = $device->getSensors();
-		$nbSesnsors = count($deviceSensors);
-		for ($i = 0; $i <$nbSesnsors; $i++)
+		$nbSensors = count($deviceSensors);
+		log::add('cozytouch', 'info', 'Zones count : '.$nbSensors);
+		for ($i = 0; $i <$nbSensors; $i++)
 		{
 			$sensor=$deviceSensors[$i];
 			$sensorURL = $sensor->getURL();
@@ -54,14 +55,16 @@ class CozytouchAtlanticZoneControlMain extends AbstractCozytouchDevice
 			{
 				
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONECTRLZONE :
+					
+					log::add('cozytouch', 'info', 'Zone control To Create');
 					$j = $i+1;
-					if($j<$nbSesnsors && $deviceSensors[$j]->getModel()==CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONETEMPERATURESENSOR)
+					if($j<$nbSensors && $deviceSensors[$j]->getModel()===CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONETEMPERATURESENSOR)
 					{
 						$sensorstemp = $sensor->getSensors();
 						$sensorstemp[] = $deviceSensors[$j];
 						$sensor->setVar(CozyTouchDeviceInfo::CTDI_SENSORS, $sensorstemp);
 					}
-					CozytouchAtlanticZoneControlZoneComponent::BuildEqLogic($sensor);
+					CozytouchAtlanticZoneControlZone::BuildEqLogic($sensor);
 					break;
 			}
 			

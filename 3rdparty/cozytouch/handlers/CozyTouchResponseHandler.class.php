@@ -93,8 +93,15 @@ class CozyTouchResponseHandler {
 				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_OID, $device->oid);
 				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_PLACEOID, $device->placeOID);
 				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_URL, $device->deviceURL);
-
-				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_TYPEDEVICE, strpos($device->widget,"HeatPump")?"HeatPump":$device->uiClass);
+				$type = $device->uiClass;
+				if(!(strpos($device->widget,CozyTouchDeviceToDisplay::CTDTD_HEATPUMPSYSTEM)===false))
+					$type=CozyTouchDeviceToDisplay::CTDTD_HEATPUMPSYSTEM;
+				else if(!(strpos($device->widget,CozyTouchDeviceToDisplay::CTDTD_ZONECONTROLMAINSYSTEM)===false))
+					$type=CozyTouchDeviceToDisplay::CTDTD_ZONECONTROLMAINSYSTEM;
+				else if(!(strpos($device->widget,CozyTouchDeviceToDisplay::CTDTD_ZONECONTROLZONESYSTEM)===false))
+					$type=CozyTouchDeviceToDisplay::CTDTD_ZONECONTROLZONESYSTEM;
+					
+				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_TYPEDEVICE, $type);
 				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_SENSORS, array());
 				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME,$device->controllableName);
 				foreach ($device->states as $state)
@@ -144,7 +151,6 @@ class CozyTouchResponseHandler {
 			if(array_key_exists($placeOID , $places )==true)
 			{
 				$type = $device->getVar(CozyTouchDeviceInfo::CTDI_TYPEDEVICE);
-				
 				log::add('cozytouch', 'debug', 'Type de device '.$type);
 				$PlaceCount[$placeOID][$type]+=1;
 				$name= "(".$places[$placeOID]->getVar(CozyTouchPlaceInfo::CTPI_NAME)
@@ -158,9 +164,9 @@ class CozyTouchResponseHandler {
 			foreach ($sensors as $sensor)
 			{
 				$type = $sensor->getVar(CozyTouchDeviceInfo::CTDI_TYPEDEVICE);
+
 				if(array_key_exists($placeOID , $places )==true && array_key_exists($type,CozyTouchDeviceToDisplay::CTDTD_NAME))
 				{
-					
 					log::add('cozytouch', 'debug', 'Type de device '.$type);
 					$PlaceCount[$placeOID][$type]+=1;
 					$name= "(".$places[$placeOID]->getVar(CozyTouchPlaceInfo::CTPI_NAME)

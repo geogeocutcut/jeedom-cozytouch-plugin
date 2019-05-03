@@ -39,6 +39,10 @@ if (!class_exists('CozytouchAtlanticHeatPump')){
 	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticHeatPump.class.php";
 }
 
+if (!class_exists('CozytouchAtlanticZoneControlMain')){
+	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticZoneControlMain.class.php";
+}
+
 class CozyTouchManager
 {
     private static $_client = null;
@@ -99,6 +103,9 @@ class CozyTouchManager
 					break;
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATPUMPMAIN:
 					CozytouchAtlanticHeatPump::BuildEqLogic($device);
+					break;
+				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONECTRLMAIN:
+					CozytouchAtlanticZoneControlMain::BuildEqLogic($device);
 					break;
                 default:
                     AbstractCozytouchDevice::BuildDefaultEqLogic($device);

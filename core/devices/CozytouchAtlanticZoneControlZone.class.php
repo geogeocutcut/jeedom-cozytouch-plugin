@@ -3,21 +3,24 @@ require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 require_once dirname(__FILE__) . "/../../3rdparty/cozytouch/constants/CozyTouchConstants.class.php";
 require_once dirname(__FILE__) . "/../class/CozyTouchManager.class.php";
 
-class CozytouchAtlanticZoneControlZoneComponent extends AbstractCozytouchDevice
+class CozytouchAtlanticZoneControlZone extends AbstractCozytouchDevice
 {
     //[{order},{beforeLigne},{afterLigne}]
 	const DISPLAY = [
 		CozyTouchStateName::CTSN_NAME=>[1,0,0],
-		//CozyTouchStateName::CTSN_THERMALCONFIGURATION=>[2,0,0],
-		CozyTouchStateName::CTSN_PASSAPCHEATINGPROFILE=>[2,0,1],
-		CozyTouchStateName::CTSN_TARGETTEMP=>[3,0,0],
+		CozyTouchStateName::CTSN_THERMALCONFIGURATION=>[2,0,0],
+		CozyTouchStateName::CTSN_PASSAPCHEATINGPROFILE=>[3,0,1],
+		CozyTouchStateName::CTSN_PASSAPCCOOLINGPROFILE=>[4,0,1],
+		CozyTouchStateName::CTSN_TARGETTEMP=>[5,0,0],
 		
 		CozyTouchStateName::CTSN_TEMP=>[17,0,1],
 		CozyTouchDeviceEqCmds::SET_ONOFF=>[18,1,0],
 		CozyTouchDeviceActions::CTPC_SETECOHEATINGTARGET=>[19,0,0],
 		CozyTouchDeviceActions::CTPC_SETCOMFORTHEATINGTARGET=>[20,0,0],
+		CozyTouchDeviceActions::CTPC_SETECOCOOLINGTARGET=>[21,0,0],
+		CozyTouchDeviceActions::CTPC_SETECOCOOLINGTARGET=>[22,0,0],
 		CozyTouchDeviceActions::CTPC_SETDEROGONOFF=>[30,1,0],
-		CozyTouchDeviceActions::CTPC_SETDEROGTEMP=>[31,0,0],
+		//CozyTouchDeviceActions::CTPC_SETDEROGTEMP=>[31,0,0],
 		//CozyTouchDeviceActions::CTPC_SETDEROGTIME=>[32,0,0],
 		CozyTouchStateName::CTSN_CONNECT=>[99,1,1],
 		'refresh'=>[1,0,0]
@@ -28,10 +31,6 @@ class CozytouchAtlanticZoneControlZoneComponent extends AbstractCozytouchDevice
         $deviceURL = $device->getURL();
        	log::add('cozytouch', 'info', 'creation (ou mise à jour) '.$device->getVar(CozyTouchDeviceInfo::CTDI_LABEL));
 		$eqLogic =self::BuildDefaultEqLogic($device);
-		$profil_state = $eqLogic->getCmd(null,$deviceURL.'_'.CozyTouchStateName::CTSN_PASSAPCHEATINGPROFILE);
-		$profil_state->setTemplate('dashboard', 'heatmode');
-		$profil_state->setTemplate('mobile', 'heatmode');
-		$profil_state->save();
 		$states = CozyTouchDeviceStateName::EQLOGIC_STATENAME[$device->getVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME)];
         $sensors = array();
 		foreach ($device->getSensors() as $sensor)

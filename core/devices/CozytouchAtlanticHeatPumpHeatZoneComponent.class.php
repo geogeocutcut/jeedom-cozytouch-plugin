@@ -61,7 +61,7 @@ class CozytouchAtlanticHeatPumpHeatZoneComponent extends AbstractCozytouchDevice
 		$eqLogic->setCategory('energy', 1);
 		$eqLogic->save();
 
-		CozyTouchManager::refresh_all();
+		self::refresh($eqLogic);
 		
 		$onoff_state = $eqLogic->getCmd(null,$deviceURL.'_'.CozyTouchStateName::CTSN_HEATINGONOFF);
 		if(is_object($onoff_state))

@@ -9,17 +9,16 @@ class CozytouchAtlanticZoneControlZone extends AbstractCozytouchDevice
 	const DISPLAY = [
 		CozyTouchStateName::CTSN_NAME=>[1,0,0],
 		CozyTouchStateName::CTSN_THERMALCONFIGURATION=>[2,0,0],
-		CozyTouchStateName::CTSN_PASSAPCHEATINGPROFILE=>[3,0,1],
-		CozyTouchStateName::CTSN_PASSAPCCOOLINGPROFILE=>[4,0,1],
-		CozyTouchStateName::CTSN_TARGETTEMP=>[5,0,0],
+		CozyTouchStateName::CTSN_PASSAPCHEATINGPROFILE=>[3,0,0],
+		CozyTouchStateName::CTSN_PASSAPCCOOLINGPROFILE=>[4,0,0],
+		CozyTouchDeviceActions::CTPC_SETTARGETTEMP=>[5,0,0],
 		
-		CozyTouchStateName::CTSN_TEMP=>[17,0,1],
-		CozyTouchDeviceEqCmds::SET_ONOFF=>[18,1,0],
+		CozyTouchStateName::CTSN_TEMP=>[17,0,0],
 		CozyTouchDeviceActions::CTPC_SETECOHEATINGTARGET=>[19,0,0],
 		CozyTouchDeviceActions::CTPC_SETCOMFORTHEATINGTARGET=>[20,0,0],
 		CozyTouchDeviceActions::CTPC_SETECOCOOLINGTARGET=>[21,0,0],
-		CozyTouchDeviceActions::CTPC_SETECOCOOLINGTARGET=>[22,0,0],
-		CozyTouchDeviceActions::CTPC_SETDEROGONOFF=>[30,1,0],
+		CozyTouchDeviceActions::CTPC_SETCOMFORTCOOLINGTARGET=>[22,0,0],
+		//CozyTouchDeviceActions::CTPC_SETDEROGONOFF=>[30,1,0],
 		//CozyTouchDeviceActions::CTPC_SETDEROGTEMP=>[31,0,0],
 		//CozyTouchDeviceActions::CTPC_SETDEROGTIME=>[32,0,0],
 		CozyTouchStateName::CTSN_CONNECT=>[99,1,1],
@@ -60,45 +59,32 @@ class CozytouchAtlanticZoneControlZone extends AbstractCozytouchDevice
 		$eqLogic->setCategory('energy', 1);
 		$eqLogic->save();
 
-		CozyTouchManager::refresh_all();
-		
-		$onoff_state = $eqLogic->getCmd(null,$deviceURL.'_'.CozyTouchStateName::CTSN_HEATINGONOFF);
-		if(is_object($onoff_state))
+		self::refresh($eqLogic);
+
+		// Consigne
+		$targettemp = $eqLogic->getCmd(null,$deviceURL.'_'.CozyTouchStateName::CTSN_TARGETTEMP );
+		if(is_object($targettemp))
 		{
-			$onoff_toogle = $eqLogic->getCmd(null, CozyTouchDeviceEqCmds::SET_ONOFF);
-			if (!is_object($onoff_toogle)) {
-				$onoff_toogle = new cozytouchCmd();
-				$onoff_toogle->setLogicalId(CozyTouchDeviceEqCmds::SET_ONOFF);
+			$mini = 18;
+			$maxi = 28;
+
+			$thermo = $eqLogic->getCmd(null,CozyTouchDeviceActions::CTPC_SETTARGETTEMP );
+			if (!is_object($thermo)) {
+				$thermo = new cozytouchCmd();
+				$thermo->setLogicalId(CozyTouchDeviceActions::CTPC_SETTARGETTEMP);
 			}
-			$onoff_toogle->setEqLogic_id($eqLogic->getId());
-			$onoff_toogle->setName(__('Heat On/Off', __FILE__));
-			$onoff_toogle->setType('action');
-			$onoff_toogle->setSubType('slider');
-			$onoff_toogle->setTemplate('dashboard', 'toggle');
-			$onoff_toogle->setTemplate('mobile', 'toggle');
-			$onoff_toogle->setIsVisible(1);
-			$onoff_toogle->setValue($onoff_state->getId());
-			$onoff_toogle->save();
+			$thermo->setEqLogic_id($eqLogic->getId());
+			$thermo->setName(__('Consigne', __FILE__));
+			$thermo->setType('action');
+			$thermo->setSubType('slider');
+			$thermo->setTemplate('dashboard', 'button');
+			$thermo->setTemplate('mobile', 'button');
+			$thermo->setConfiguration('maxValue', $maxi);
+			$thermo->setConfiguration('minValue', $mini);
+			$thermo->setValue($targettemp->getId());
+			$thermo->save();
 		}
 
-		$derog_state = $eqLogic->getCmd(null,$deviceURL.'_'.CozyTouchStateName::CTSN_DEROGATIONONOFF);
-		if(is_object($derog_state))
-		{
-			$derog_toogle = $eqLogic->getCmd(null, CozyTouchDeviceActions::CTPC_SETDEROGONOFF);
-			if (!is_object($derog_toogle)) {
-				$derog_toogle = new cozytouchCmd();
-				$derog_toogle->setLogicalId(CozyTouchDeviceActions::CTPC_SETDEROGONOFF);
-			}
-			$derog_toogle->setEqLogic_id($eqLogic->getId());
-			$derog_toogle->setName(__('Derog On/Off', __FILE__));
-			$derog_toogle->setType('action');
-			$derog_toogle->setSubType('slider');
-			$derog_toogle->setTemplate('dashboard', 'toggle');
-			$derog_toogle->setTemplate('mobile', 'toggle');
-			$derog_toogle->setIsVisible(1);
-			$derog_toogle->setValue($derog_state->getId());
-			$derog_toogle->save();
-		}
 		// comfort
 		$targettemp = $eqLogic->getCmd(null,$deviceURL.'_'.CozyTouchStateName::CTSN_COMFORTHEATINGTARGETTEMP );
 		if(is_object($targettemp))
@@ -147,20 +133,20 @@ class CozytouchAtlanticZoneControlZone extends AbstractCozytouchDevice
 			$thermo->save();
 		}
 
-		// Derog
-		$targettemp = $eqLogic->getCmd(null,$deviceURL.'_'.CozyTouchStateName::CTSN_DEROGTARGETTEMP );
+		// comfort
+		$targettemp = $eqLogic->getCmd(null,$deviceURL.'_'.CozyTouchStateName::CTSN_COMFORTCOOLINGTARGETTEMP );
 		if(is_object($targettemp))
 		{
-			$mini = 15;
+			$mini = 18;
 			$maxi = 28;
 
-			$thermo = $eqLogic->getCmd(null,CozyTouchDeviceActions::CTPC_SETDEROGTEMP );
+			$thermo = $eqLogic->getCmd(null,CozyTouchDeviceActions::CTPC_SETCOMFORTCOOLINGTARGET );
 			if (!is_object($thermo)) {
 				$thermo = new cozytouchCmd();
-				$thermo->setLogicalId(CozyTouchDeviceActions::CTPC_SETDEROGTEMP);
+				$thermo->setLogicalId(CozyTouchDeviceActions::CTPC_SETCOMFORTCOOLINGTARGET);
 			}
 			$thermo->setEqLogic_id($eqLogic->getId());
-			$thermo->setName(__('Derogation Temp.', __FILE__));
+			$thermo->setName(__('Cooling Comfort', __FILE__));
 			$thermo->setType('action');
 			$thermo->setSubType('slider');
 			$thermo->setTemplate('dashboard', 'button');
@@ -171,30 +157,30 @@ class CozytouchAtlanticZoneControlZone extends AbstractCozytouchDevice
 			$thermo->save();
 		}
 
-		$targettemp = $eqLogic->getCmd(null,$deviceURL.'_'.CozyTouchStateName::CTSN_DEROGATIONREMAININGTIME );
+		//Eco
+		$targettemp = $eqLogic->getCmd(null,$deviceURL.'_'.CozyTouchStateName::CTSN_ECOCOOLINGTARGETTEMP );
 		if(is_object($targettemp))
 		{
-			$mini = 0;
-			$maxi = 24;
+			$mini = 7;
+			$maxi = 25;
 
-			$thermo = $eqLogic->getCmd(null,CozyTouchDeviceActions::CTPC_SETDEROGTIME );
+			$thermo = $eqLogic->getCmd(null,CozyTouchDeviceActions::CTPC_SETECOCOOLINGTARGET );
 			if (!is_object($thermo)) {
 				$thermo = new cozytouchCmd();
-				$thermo->setLogicalId(CozyTouchDeviceActions::CTPC_SETDEROGTIME);
+				$thermo->setLogicalId(CozyTouchDeviceActions::CTPC_SETECOCOOLINGTARGET);
 			}
 			$thermo->setEqLogic_id($eqLogic->getId());
-			$thermo->setName(__('Derogation time', __FILE__));
+			$thermo->setName(__('Cooling Eco', __FILE__));
 			$thermo->setType('action');
 			$thermo->setSubType('slider');
-			$thermo->setTemplate('dashboard', 'numeric');
-			$thermo->setTemplate('mobile', 'numeric');
+			$thermo->setTemplate('dashboard', 'button');
+			$thermo->setTemplate('mobile', 'button');
 			$thermo->setConfiguration('maxValue', $maxi);
 			$thermo->setConfiguration('minValue', $mini);
 			$thermo->setValue($targettemp->getId());
 			$thermo->save();
 		}
-
-        self::orderCommand($eqLogic);
+		self::orderCommand($eqLogic);
     }
     
 	public static function orderCommand($eqLogic)
@@ -362,7 +348,9 @@ class CozytouchAtlanticZoneControlZone extends AbstractCozytouchDevice
 	
         }
 	}
-
+	
+//off / manu / prog
+//set eco, comfort heating / eco, comfort cooling
 	public static function setOnOffMode($device_url,$value)
 	{
         $cmds = array(

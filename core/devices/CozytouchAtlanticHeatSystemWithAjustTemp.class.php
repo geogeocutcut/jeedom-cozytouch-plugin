@@ -80,7 +80,6 @@ class CozytouchAtlanticHeatSystemWithAjustTemp extends AbstractCozytouchDevice
 
         log::add('cozytouch', 'info', 'creation ou update thermostat');
     	$order = $eqLogic->getCmd(null, 'order');
-
     	if (!is_object($order)) {
     		$order = new cozytouchCmd();
     		$order->setIsVisible(0);
@@ -118,7 +117,7 @@ class CozytouchAtlanticHeatSystemWithAjustTemp extends AbstractCozytouchDevice
 
 		self::orderCommand($eqLogic);
 
-		CozyTouchManager::refresh_all();
+		self::refresh($eqLogic);
 	}
 
 	public static function orderCommand($eqLogic)

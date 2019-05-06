@@ -984,13 +984,25 @@ class CozyTouchDeviceActions
 	//      Ballon d'eau chaude
 	const CTPC_SETDHWONOFF="setDHWOnOffState";
 	const CTPC_SETBOOSTONOFF="setBoostOnOffState";
+
 	//		Heat system
-	const CTPC_SETHEATINGONOFF="setHeatingOnOffState";
+	const CTPC_SETHEATINGONOFF="setHeatingOnOffState"; // on,off
 	const CTPC_SETECOHEATINGTARGET="setEcoHeatingTargetTemperature";
 	const CTPC_SETCOMFORTHEATINGTARGET="setComfortHeatingTargetTemperature";
+	const CTPC_SETECOCOOLINGTARGET="setEcoCoolingTargetTemperature";
+	const CTPC_SETCOMFORTCOOLINGTARGET="setComfortCoolingTargetTemperature";
 	const CTPC_SETDEROGTIME = "setDerogationTime";
 	const CTPC_SETDEROGONOFF = "setDerogationOnOffState";
 	const CTPC_RSHDEROGTIME = "refreshDerogationRemainingTime";
+
+	const CTPC_SETHEATINGTARGETTEMP = "setHeatingTargetTemperature";
+	const CTPC_SETAPCHEATINGMODE = "setPassAPCHeatingMode";// manu, internalScheduling
+	const CTPC_RSHAPCHEATINGPROFILE = "refreshPassAPCHeatingProfile";
+	const CTPC_SETHEATINGCOOLINGAUTOSWITCH = "setHeatingCoolingAutoSwitch";// on, off
+	const CTPC_SETAPCOPERATINGMODE = "setPassAPCOperatingMode";// stop, heating, cooling, drying
+	const CTPC_RSHZONESTARGETTEMP = "refreshZonesTargetTemperature";
+	const CTPC_RSHZONESAPCCOOLINGPROFILE = "refreshZonesPassAPCCoolingProfile";
+	const CTPC_RSHZONESAPCHEATINGPROFILE = "refreshZonesPassAPCHeatingProfile";
 }
 
 

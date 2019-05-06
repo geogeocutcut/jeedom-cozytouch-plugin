@@ -786,6 +786,7 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_ECOHEATINGTARGETTEMP,
 			CozyTouchStateName::CTSN_COMFORTCOOLINGTARGETTEMP,
 			CozyTouchStateName::CTSN_ECOCOOLINGTARGETTEMP,
+			CozyTouchStateName::CTSN_TEMP,
 			CozyTouchStateName::CTSN_TARGETTEMP,
 			CozyTouchStateName::CTSN_HEATINGONOFF,
 			CozyTouchStateName::CTSN_COOLINGONOFF,
@@ -844,6 +845,11 @@ class CozyTouchDeviceEqCmds
 	const SET_VENTPROG ='setVentProg';
 	const SET_VENTAUTO ='setVentAuto';
 
+	
+	const SET_ZONECTRLHEAT ='setHeatMode';
+	const SET_ZONECTRLCOOL ='setCoolMode';
+	const SET_ZONECTRLDRY ='setDryMode';
+
 	const EQLOGIC_ACTIONS = [
 		
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATER=>[
@@ -898,6 +904,14 @@ class CozyTouchDeviceEqCmds
 			self::SET_VENTHIGH,
 			self::SET_VENTREFRESH
 			//self::SET_BOOSTDURATION
+		],
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONECTRLMAIN=>[
+			self::SET_OFF,
+			self::SET_ZONECTRLHEAT,
+			self::SET_ZONECTRLCOOL,
+			self::SET_ZONECTRLDRY,
+			self::SET_AUTO
+			//self::SET_BOOSTDURATION
 		]
 	];
 	const ACTION_LABEL = [
@@ -925,7 +939,10 @@ class CozyTouchDeviceEqCmds
 		self::SET_VENTREFRESH=>"Rafraichissement",
 		self::SET_VENTMANUAL=>"Manual",
 		self::SET_VENTPROG=>"Prog",
-		self::SET_VENTAUTO=>"Auto"
+		self::SET_VENTAUTO=>"Auto",
+		self::SET_ZONECTRLHEAT=>"Chauffage",
+		self::SET_ZONECTRLCOOL=>"Rafraichissement",
+		self::SET_ZONECTRLDRY=>"Deshumidification"
 	];
 }
 

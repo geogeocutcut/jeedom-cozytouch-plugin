@@ -43,6 +43,10 @@ if (!class_exists('CozytouchAtlanticZoneControlMain')){
 	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticZoneControlMain.class.php";
 }
 
+if (!class_exists('CozytouchAtlanticZoneControlZone')){
+	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticZoneControlZone.class.php";
+}
+
 class CozyTouchManager
 {
     private static $_client = null;
@@ -283,6 +287,12 @@ class CozyTouchManager
 				break;
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATINGCOOLINGZONE :
 				CozytouchAtlanticHeatPumpHeatZoneComponent::execute($cmd,$_options);
+				break;
+			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONECTRLMAIN:
+				CozytouchAtlanticZoneControlMain::execute($cmd,$_options);
+				break;
+			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONECTRLZONE :
+				CozytouchAtlanticZoneControlZone::execute($cmd,$_options);
 				break;
     			
     	}

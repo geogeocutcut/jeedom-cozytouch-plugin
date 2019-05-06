@@ -11,9 +11,11 @@ class CozytouchAtlanticZoneControlZone extends AbstractCozytouchDevice
 		CozyTouchStateName::CTSN_THERMALCONFIGURATION=>[2,0,0],
 		CozyTouchStateName::CTSN_PASSAPCHEATINGPROFILE=>[3,0,0],
 		CozyTouchStateName::CTSN_PASSAPCCOOLINGPROFILE=>[4,0,0],
-		CozyTouchDeviceActions::CTPC_SETTARGETTEMP=>[5,0,0],
+		CozyTouchStateName::CTSN_TEMP=>[5,0,0],
+		CozyTouchStateName::CTSN_PASSAPCHEATINGMODE=>[6,0,0],
+		CozyTouchStateName::CTSN_PASSAPCCOOLINGMODE=>[7,0,0],
 		
-		CozyTouchStateName::CTSN_TEMP=>[17,0,0],
+		CozyTouchDeviceActions::CTPC_SETTARGETTEMP=>[18,0,0],
 		CozyTouchDeviceActions::CTPC_SETECOHEATINGTARGET=>[19,0,0],
 		CozyTouchDeviceActions::CTPC_SETCOMFORTHEATINGTARGET=>[20,0,0],
 		CozyTouchDeviceActions::CTPC_SETECOCOOLINGTARGET=>[21,0,0],

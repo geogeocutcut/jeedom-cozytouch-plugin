@@ -1,0 +1,19 @@
+<div style="width:90px;min-height:70px;" class="cmd #history# tooltips cmd-widget" data-type="info" data-subtype="numeric" data-cmd_id="#id#" title="#collectDate#">
+    <center>
+        <span style="font-weight: bold;font-size : 12px;">#name#</span><br/>
+        <span style="font-size: 3.5em;" id="iconCmd#id#"></span>
+    </center>
+    <script>
+       if ('#state#' == 'stop') {
+            $('#iconCmd#id#').append('<img style="width:50px;height: 50px;" src="plugins/cozytouch/core/template/images/zonectrl_off.png">');
+        } else if ('#state#' == 'heating') {
+            $('#iconCmd#id#').append('<img style="width:50px;height: 50px;" src="plugins/cozytouch/core/template/images/zonectrl_heat.png">');
+        } else if ('#state#' == 'cooling') {
+            $('#iconCmd#id#').append('<img style="width:50px;height: 50px;" src="plugins/cozytouch/core/template/images/zonectrl_cool.png">');
+        } else if ('#state#' == 'drying') {
+          	$('#iconCmd#id#').append('<img style="width:50px;height: 50px;" src="plugins/cozytouch/core/template/images/zonectrl_dry.png">');
+        } else {
+            $('#iconCmd#id#').append('<img style="width:50px;height: 50px;" src="plugins/cozytouch/core/template/images/zonectrl_auto.png">');
+        }
+    </script>
+</div>

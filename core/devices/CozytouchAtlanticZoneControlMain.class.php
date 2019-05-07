@@ -28,7 +28,7 @@ class CozytouchAtlanticZoneControlMain extends AbstractCozytouchDevice
 		CozyTouchStateName::CTSN_PASSAPCOPERATINGMODE=>[2,0,1],
 		CozyTouchDeviceEqCmds::SET_OFF=>[30,1,0],
 		CozyTouchDeviceEqCmds::SET_ZONECTRLHEAT=>[31,0,0],
-		CozyTouchDeviceEqCmds::SET_ZONECTRLCOOL=>[32,0,0],
+		CozyTouchDeviceEqCmds::SET_ZONECTRLCOOL=>[32,0,1],
 		CozyTouchDeviceEqCmds::SET_ZONECTRLDRY=>[33,0,0],
 		CozyTouchDeviceEqCmds::SET_AUTO=>[34,0,0],
 		'refresh'=>[1,0,0]
@@ -88,12 +88,8 @@ class CozytouchAtlanticZoneControlMain extends AbstractCozytouchDevice
 
 		$eqLogic->save();
 
-		
-        
-
         self::orderCommand($eqLogic);
 
-        //CozyTouchManager::refresh_all();
     }
     
 	public static function orderCommand($eqLogic)

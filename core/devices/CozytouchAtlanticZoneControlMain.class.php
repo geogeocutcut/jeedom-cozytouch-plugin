@@ -131,6 +131,26 @@ class CozytouchAtlanticZoneControlMain extends AbstractCozytouchDevice
 			case 'refresh':
 				log::add('cozytouch', 'debug', 'command : '.$device_url.' refresh');
 				break;
+			case CozyTouchDeviceEqCmds::SET_OFF:
+				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_OFF);
+				self::set_stop_mode($device_url);
+				break;
+			case CozyTouchDeviceEqCmds::SET_ZONECTRLHEAT:
+				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_ZONECTRLHEAT);
+				self::set_heating_mode($device_url);
+				break;
+			case CozyTouchDeviceEqCmds::SET_ZONECTRLCOOL:
+				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_ZONECTRLCOOL);
+				self::set_cooling_mode($device_url);
+				break;
+			case CozyTouchDeviceEqCmds::SET_ZONECTRLDRY:
+				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_ZONECTRLDRY);
+				self::set_drying_mode($device_url);
+				break;
+			case CozyTouchDeviceEqCmds::SET_AUTO:
+				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_AUTO);
+				self::set_auto_mode($device_url);
+				break;
 		}
 		if($refresh)
 		{
@@ -163,11 +183,143 @@ class CozytouchAtlanticZoneControlMain extends AbstractCozytouchDevice
 					}
 				}
 			}
-	
+			
+			self::refresh_mode($eqLogic);
 		} 
 		catch (Exception $e) {
 	
         }
+	}
+
+	public static function refresh_mode($eqDevice) 
+    {
+		log::add('cozytouch', 'debug', 'Refresh mode');
+		$deviceURL = $eqDevice->getConfiguration('device_url');
+
+		$cmd_array = Cmd::byLogicalId($deviceURL.'_'.CozyTouchStateName::CTSN_HEATINGCOOLINGAUTOSWITCH);
+		if(is_array($cmd_array) && $cmd_array!=null)
+		{
+			$cmd=$cmd_array[0];
+			$mode=$cmd->execCmd();
+		}
+		$cmd=Cmd::byEqLogicIdAndLogicalId($eqDevice->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_PASSAPCOPERATINGMODE);
+		if($mode=='on' && is_object($cmd))
+		{
+			$cmd->setCollectDate('');
+			$cmd->event('auto');
+			log::add('cozytouch', 'info', __('Mode ', __FILE__).' auto');
+		}
+	}
+
+	protected static function set_heating_mode($device_url)
+	{
+		$cmds = array(
+            array(
+                "name"=>CozyTouchDeviceActions::CTPC_RSHZONESAPCHEATINGPROFILE,
+				"values"=>null
+			),
+			array(
+				"name"=>CozyTouchDeviceActions::CTPC_RSHZONESTARGETTEMP,
+				"values"=>null
+			)
+        );
+		parent::genericApplyCommand($device_url,$cmds);
+		sleep(1);
+		$cmds = array(
+            array(
+                "name"=>CozyTouchDeviceActions::CTPC_SETHEATINGCOOLINGAUTOSWITCH,
+				"values"=>'off'
+			),
+			array(
+				"name"=>CozyTouchDeviceActions::CTPC_SETAPCOPERATINGMODE,
+				"values"=>'heating'
+			)
+        );
+        parent::genericApplyCommand($device_url,$cmds);
+	}
+
+	protected static function set_cooling_mode($device_url)
+	{
+		$cmds = array(
+            array(
+                "name"=>CozyTouchDeviceActions::CTPC_RSHZONESAPCCOOLINGPROFILE,
+				"values"=>null
+			),
+			array(
+				"name"=>CozyTouchDeviceActions::CTPC_RSHZONESTARGETTEMP,
+				"values"=>null
+			)
+        );
+		parent::genericApplyCommand($device_url,$cmds);
+		sleep(1);
+		$cmds = array(
+            array(
+                "name"=>CozyTouchDeviceActions::CTPC_SETHEATINGCOOLINGAUTOSWITCH,
+				"values"=>'off'
+			),
+			array(
+				"name"=>CozyTouchDeviceActions::CTPC_SETAPCOPERATINGMODE,
+				"values"=>'cooling'
+			)
+        );
+        parent::genericApplyCommand($device_url,$cmds);
+	}
+
+	protected static function set_drying_mode($device_url)
+	{
+		$cmds = array(
+            array(
+                "name"=>CozyTouchDeviceActions::CTPC_RSHZONESAPCCOOLINGPROFILE,
+				"values"=>null
+			),
+			array(
+				"name"=>CozyTouchDeviceActions::CTPC_RSHZONESTARGETTEMP,
+				"values"=>null
+			)
+        );
+		parent::genericApplyCommand($device_url,$cmds);
+		sleep(1);
+		$cmds = array(
+            array(
+                "name"=>CozyTouchDeviceActions::CTPC_SETHEATINGCOOLINGAUTOSWITCH,
+				"values"=>'off'
+			),
+			array(
+				"name"=>CozyTouchDeviceActions::CTPC_SETAPCOPERATINGMODE,
+				"values"=>'drying'
+			)
+        );
+        parent::genericApplyCommand($device_url,$cmds);
+	}
+
+	protected static function set_stop_mode($device_url)
+	{
+		$cmds = array(
+            array(
+                "name"=>CozyTouchDeviceActions::CTPC_SETHEATINGCOOLINGAUTOSWITCH,
+				"values"=>'off'
+			),
+			array(
+				"name"=>CozyTouchDeviceActions::CTPC_RSHMODE,
+				"values"=>'stop'
+			)
+        );
+        parent::genericApplyCommand($device_url,$cmds);
+	}
+
+	protected static function set_auto_mode($device_url)
+	{
+		$cmds = array(
+            array(
+                "name"=>CozyTouchDeviceActions::CTPC_SETHEATINGCOOLINGAUTOSWITCH,
+				"values"=>'on'
+			),
+			array(
+				"name"=>CozyTouchDeviceActions::CTPC_RSHMODE,
+				"values"=>null
+			)
+        );
+        parent::genericApplyCommand($device_url,$cmds);
 	}
 }
 ?>

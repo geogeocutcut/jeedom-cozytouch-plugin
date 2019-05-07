@@ -196,6 +196,9 @@ class CozyTouchManager
 							CozytouchAtlanticVentilation::refresh_vmcmode($eqLogicTmp);
 							CozytouchAtlanticVentilation::refresh_temp($eqLogicTmp);
 							break;
+						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONECTRLMAIN:
+							CozytouchAtlanticZoneControlMain::refresh_mode($eqLogicTmp);
+							break;
 					}
 				}
 			}

@@ -193,10 +193,7 @@ class CozytouchAtlanticHeatSystemWithAjustTemp extends AbstractCozytouchDevice
 			case CozyTouchDeviceEqCmds::SET_COMFORT:
                 self::setHeatingLevel($device_url,'comfort');
 				break;	
-					
-    		case CozyTouchDeviceEqCmds::SET_TARGETTEMP:
-                self::setTargetTemperature($device_url);
-				break;
+				
     		case CozyTouchDeviceEqCmds::SET_THERMOSTAT:
     			$min = $cmd->getConfiguration('minValue');
     			$max = $cmd->getConfiguration('maxValue');

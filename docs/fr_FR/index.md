@@ -184,6 +184,12 @@ dans le dashboard :
 >
 > Le mode dérogation du chauffage est appliqué pour une durée de 4h.
 
+-   **PAC zone control** :
+
+<div style="text-align:center">
+<img  src="../images/zonemain.PNG" alt="...">
+<img  src="../images/zonezone.PNG" alt="..."></div>
+
 FAQ
 ===
 à compléter
@@ -192,6 +198,12 @@ FAQ
 
 Changelog
 ========= 
+Version : 2.0.2
+---------------
+
+-   Gestion de nouveaux équipements
+
+    -   Zone Control Odysee Pi
 
 Version : 2.0.1
 ---------------

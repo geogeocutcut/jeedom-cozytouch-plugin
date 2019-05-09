@@ -227,6 +227,7 @@ class CozyTouchStateName
 	const EQ_VMCTEMPINSUFFLE="vmcTempInsuffle";
 	const EQ_VMCTEMPEXT="vmcTempExt";
 	const EQ_HOTWATERCOEFF = "hotWaterCoefficient";
+	const EQ_ZONECTRLMODE ="zoneMode";
 
 	const CTSN_TYPE = [
 		self::CTSN_NAME=>"string",
@@ -251,6 +252,7 @@ class CozyTouchStateName
 		self::CTSN_PASSAPCCOOLINGPROFILE=>"string",
 
 		self::EQ_VMCMODE=>"string",
+		self::EQ_ZONECTRLMODE=>"string",
 
 		self::CTSN_TARGETTEMP=>"numeric",
 		self::CTSN_COMFROOMTEMP=>"numeric",
@@ -412,7 +414,8 @@ class CozyTouchStateName
 		self::EQ_HOTWATERCOEFF => "Proportion eau chaude",
 		
 		self::EQ_VMCTEMPINSUFFLE => "Temp insufflé",
-		self::EQ_VMCTEMPEXT=>"Temp extérieur"
+		self::EQ_VMCTEMPEXT=>"Temp extérieur",
+		self::EQ_ZONECTRLMODE=>"Mode"
 	];
 }
 
@@ -772,6 +775,7 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_ABSENCEENDDATETIME,
 			CozyTouchStateName::CTSN_HEATINGCOOLINGAUTOSWITCH,
 			CozyTouchStateName::CTSN_LASTPASSAPCOPERATINGMODE,
+			CozyTouchStateName::EQ_ZONECTRLMODE,
 			CozyTouchStateName::CTSN_CONNECT
 		],
 
@@ -797,6 +801,7 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_MINCOOLTARGETTEMP,
 			CozyTouchStateName::CTSN_MAXCOOLTARGETTEMP,
 			CozyTouchStateName::CTSN_DEROGATIONONOFF,
+			CozyTouchStateName::EQ_ZONECTRLMODE,
 			CozyTouchStateName::CTSN_CONNECT]
 	];
 }
@@ -849,6 +854,10 @@ class CozyTouchDeviceEqCmds
 	const SET_ZONECTRLHEAT ='setHeatMode';
 	const SET_ZONECTRLCOOL ='setCoolMode';
 	const SET_ZONECTRLDRY ='setDryMode';
+
+	const SET_ZONECTRLZONEOFF ='setZoneOff';
+	const SET_ZONECTRLZONEMANU ='setZoneManu';
+	const SET_ZONECTRLZONEPROGRAM ='setZoneProgram';
 
 	const EQLOGIC_ACTIONS = [
 		
@@ -911,7 +920,11 @@ class CozyTouchDeviceEqCmds
 			self::SET_ZONECTRLCOOL,
 			self::SET_ZONECTRLDRY,
 			self::SET_AUTO
-			//self::SET_BOOSTDURATION
+		],
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONECTRLZONE=>[
+			self::SET_ZONECTRLZONEOFF,
+			self::SET_ZONECTRLZONEMANU,
+			self::SET_ZONECTRLZONEPROGRAM
 		]
 	];
 	const ACTION_LABEL = [
@@ -940,9 +953,16 @@ class CozyTouchDeviceEqCmds
 		self::SET_VENTMANUAL=>"Manual",
 		self::SET_VENTPROG=>"Prog",
 		self::SET_VENTAUTO=>"Auto",
+
 		self::SET_ZONECTRLHEAT=>"Chauffage",
 		self::SET_ZONECTRLCOOL=>"Rafraichissement",
-		self::SET_ZONECTRLDRY=>"Deshumidification"
+		self::SET_ZONECTRLDRY=>"Deshumidification",
+
+		self::SET_ZONECTRLZONEOFF=>"Off",
+		self::SET_ZONECTRLZONEMANU=>"Manual",
+		self::SET_ZONECTRLZONEPROGRAM=>"Program"
+
+
 	];
 }
 
@@ -1003,7 +1023,6 @@ class CozyTouchDeviceActions
 	const CTPC_SETBOOSTONOFF="setBoostOnOffState";
 
 	//		Heat system
-	const CTPC_SETHEATINGONOFF="setHeatingOnOffState"; // on,off
 	const CTPC_SETECOHEATINGTARGET="setEcoHeatingTargetTemperature";
 	const CTPC_SETCOMFORTHEATINGTARGET="setComfortHeatingTargetTemperature";
 	const CTPC_SETECOCOOLINGTARGET="setEcoCoolingTargetTemperature";
@@ -1012,8 +1031,13 @@ class CozyTouchDeviceActions
 	const CTPC_SETDEROGONOFF = "setDerogationOnOffState";
 	const CTPC_RSHDEROGTIME = "refreshDerogationRemainingTime";
 
+	
+	const CTPC_SETHEATINGONOFF = "setHeatingOnOffState";
 	const CTPC_SETHEATINGTARGETTEMP = "setHeatingTargetTemperature";
 	const CTPC_SETAPCHEATINGMODE = "setPassAPCHeatingMode";// manu, internalScheduling
+	const CTPC_SETCOOLINGONOFF = "setCoolingOnOffState";
+	const CTPC_SETCOOLINGTARGETTEMP = "setCoolingTargetTemperature";
+	const CTPC_SETAPCCOOLINGMODE = "setPassAPCCoolingMode";
 	const CTPC_RSHAPCHEATINGPROFILE = "refreshPassAPCHeatingProfile";
 	const CTPC_SETHEATINGCOOLINGAUTOSWITCH = "setHeatingCoolingAutoSwitch";// on, off
 	const CTPC_SETAPCOPERATINGMODE = "setPassAPCOperatingMode";// stop, heating, cooling, drying

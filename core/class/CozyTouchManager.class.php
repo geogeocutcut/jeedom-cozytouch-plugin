@@ -199,6 +199,9 @@ class CozyTouchManager
 						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONECTRLMAIN:
 							CozytouchAtlanticZoneControlMain::refresh_mode($eqLogicTmp);
 							break;
+						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONECTRLZONE:
+							CozytouchAtlanticZoneControlZone::refresh_mode($eqLogicTmp);
+							break;
 					}
 				}
 			}
@@ -294,7 +297,7 @@ class CozyTouchManager
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONECTRLMAIN:
 				CozytouchAtlanticZoneControlMain::execute($cmd,$_options);
 				break;
-			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONECTRLZONE :
+			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONECTRLZONE:
 				CozytouchAtlanticZoneControlZone::execute($cmd,$_options);
 				break;
     			

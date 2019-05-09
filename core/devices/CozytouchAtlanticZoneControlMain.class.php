@@ -25,7 +25,7 @@ class CozytouchAtlanticZoneControlMain extends AbstractCozytouchDevice
     //[{order},{beforeLigne},{afterLigne}]
 	const DISPLAY = [
 		CozyTouchStateName::CTSN_CONNECT=>[99,1,1],
-		CozyTouchStateName::CTSN_PASSAPCOPERATINGMODE=>[2,0,1],
+		CozyTouchStateName::EQ_ZONECTRLMODE=>[2,0,1],
 		CozyTouchDeviceEqCmds::SET_OFF=>[30,1,0],
 		CozyTouchDeviceEqCmds::SET_AUTO=>[31,0,1],
 		CozyTouchDeviceEqCmds::SET_ZONECTRLHEAT=>[32,0,0],
@@ -39,7 +39,17 @@ class CozytouchAtlanticZoneControlMain extends AbstractCozytouchDevice
         log::add('cozytouch', 'info', 'creation (ou mise à jour) '.$device->getVar(CozyTouchDeviceInfo::CTDI_LABEL));
         $eqLogic =self::BuildDefaultEqLogic($device);
 		$eqLogic->setCategory('energy', 1);
-		$cmd= $eqLogic->getCmd(null, $device->getURL().'_'.CozyTouchStateName::CTSN_PASSAPCOPERATINGMODE);
+
+		$cmd= $eqLogic->getCmd(null, $device->getURL().'_'.CozyTouchStateName::EQ_ZONECTRLMODE);
+		if (!is_object($cmd)) {
+    		$cmd = new cozytouchCmd();
+    		$cmd->setIsVisible(1);
+    	}
+    	$cmd->setEqLogic_id($eqLogic->getId());
+    	$cmd->setName(__(CozyTouchStateName::CTSN_LABEL[CozyTouchStateName::EQ_ZONECTRLMODE], __FILE__));
+    	$cmd->setType('info');
+    	$cmd->setSubType('string');
+        $cmd->setLogicalId( $device->getURL().'_'.CozyTouchStateName::EQ_ZONECTRLMODE);
 		$cmd->setTemplate('dashboard', 'zonetctlmode');
 		$cmd->setTemplate('mobile', 'zonetctlmode');
 		$cmd->save();
@@ -56,12 +66,6 @@ class CozytouchAtlanticZoneControlMain extends AbstractCozytouchDevice
 			$sensorModel = $sensor->getModel();
 			
 			log::add('cozytouch', 'info', $i.' '.$sensorModel);
-			// création des équipements
-			//  getModel()
-			// controllableName: io:AtlanticPassAPCDHWComponent,
-			//					 io:AtlanticPassAPCHeatingAndCoolingZoneComponent
-			// 					 rattacher io:AtlanticPassAPCZoneTemperatureSensor à l'équipement précédent créé.
-			// sinon
 			$sensors[] = array($sensorURL,$sensor->getModel());
 			log::add('cozytouch', 'info', 'Sensor : '.$sensorURL);
 			switch($sensorModel)
@@ -192,18 +196,35 @@ class CozytouchAtlanticZoneControlMain extends AbstractCozytouchDevice
 		log::add('cozytouch', 'debug', 'Refresh mode');
 		$deviceURL = $eqDevice->getConfiguration('device_url');
 
-		$cmd_array = Cmd::byLogicalId($deviceURL.'_'.CozyTouchStateName::CTSN_HEATINGCOOLINGAUTOSWITCH);
+		$cmd_array = Cmd::byLogicalId($deviceURL.'_'.CozyTouchStateName::CTSN_PASSAPCOPERATINGMODE);
 		if(is_array($cmd_array) && $cmd_array!=null)
 		{
 			$cmd=$cmd_array[0];
 			$mode=$cmd->execCmd();
 		}
-		$cmd=Cmd::byEqLogicIdAndLogicalId($eqDevice->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_PASSAPCOPERATINGMODE);
-		if($mode=='on' && is_object($cmd))
+
+		$cmd_array = Cmd::byLogicalId($deviceURL.'_'.CozyTouchStateName::CTSN_HEATINGCOOLINGAUTOSWITCH);
+		if(is_array($cmd_array) && $cmd_array!=null)
 		{
-			$cmd->setCollectDate('');
-			$cmd->event('auto');
-			log::add('cozytouch', 'info', __('Mode ', __FILE__).' auto');
+			$cmd=$cmd_array[0];
+			$auto=$cmd->execCmd();
+		}
+
+		$cmd=Cmd::byEqLogicIdAndLogicalId($eqDevice->getId(),$deviceURL.'_'.CozyTouchStateName::EQ_ZONECTRLMODE);
+		if(is_object($cmd))
+		{
+			if($auto=='on')
+			{
+				$cmd->setCollectDate('');
+				$cmd->event('auto');
+				log::add('cozytouch', 'info', __('Mode ', __FILE__).' auto');
+			}
+			else
+			{
+				$cmd->setCollectDate('');
+				$cmd->event($mode);
+				log::add('cozytouch', 'info', __('Mode ', __FILE__).$mode);
+			}
 		}
 	}
 

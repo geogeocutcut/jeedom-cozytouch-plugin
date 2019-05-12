@@ -23,6 +23,7 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 		CozyTouchDeviceEqCmds::SET_AUTOMODE=>[21,1,0],
 		CozyTouchDeviceEqCmds::SET_MANUECOACTIVE=>[22,0,0],
 		CozyTouchDeviceEqCmds::SET_MANUECOINACTIVE=>[23,0,1],
+        CozyTouchStateName::EQ_ISHOTWATERHEATING=>[24,1,1],
 		CozyTouchStateName::CTSN_CONNECT=>[99,1,1],
 		'refresh'=>[1,0,0]
     ];
@@ -67,7 +68,18 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 		$eqLogic->setConfiguration('sensors',$sensors);
 		$eqLogic->save();
 
-		
+		$is_heating = $eqLogic->getCmd(null,CozyTouchStateName::EQ_ISHOTWATERHEATING );
+    	if (!is_object($is_heating)) {
+    		$is_heating = new cozytouchCmd();
+    		$is_heating->setIsVisible(1);
+    	}
+    	$is_heating->setEqLogic_id($eqLogic->getId());
+    	$is_heating->setName(__('Chauffe en cours', __FILE__));
+    	$is_heating->setType('info');
+    	$is_heating->setSubType('binary');
+        $is_heating->setLogicalId(CozyTouchStateName::EQ_ISHOTWATERHEATING);
+		$is_heating->save();
+
         $hotWaterCoefficient = $eqLogic->getCmd(null,CozyTouchStateName::EQ_HOTWATERCOEFF );
 
     	if (!is_object($hotWaterCoefficient)) {
@@ -154,7 +166,7 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 
         self::orderCommand($eqLogic);
 
-        CozyTouchManager::refresh_all();
+        self::refresh($eqLogic);
     }
     
 	public static function orderCommand($eqLogic)
@@ -255,6 +267,7 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 				}
 			}
 			self::refresh_boost($eqLogic);
+			self::refresh_isheating($eqLogic);
 			self::refresh_hotwatercoeff($eqLogic);
 			self::refresh_thermostat($eqLogic);
 	
@@ -263,7 +276,31 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 	
         }
 	}
-	
+
+	public static function refresh_isheating($eqLogic) 
+    {
+        log::add('cozytouch', 'debug', __('Refresh is heating', __FILE__));
+        $deviceURL = $eqLogic->getConfiguration('device_url');
+        $value=0;
+
+		$cmd = Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_OPEMODECAPABILITIES);
+		if (is_object($cmd)) 
+		{
+			$tmp =json_decode($cmd->execCmd());
+			if($tmp->{'energyDemandStatus'}==1)
+			{
+				$value= 1;
+			}
+        }
+
+        $cmd=Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),CozyTouchStateName::EQ_ISHOTWATERHEATING);
+		if (is_object($cmd)) {
+			$cmd->setCollectDate('');
+            $cmd->event($value);
+            log::add('cozytouch', 'debug', __('Heating : ', __FILE__).$value);
+        }
+	}
+
 	public static function refresh_boost($eqLogic) 
     {
         log::add('cozytouch', 'debug', __('Refresh boost', __FILE__));

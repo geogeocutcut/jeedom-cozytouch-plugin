@@ -94,7 +94,7 @@ class CozyTouchApiClient
 			log::add('cozytouch', 'info', 'pas de réponse');
 		}
 		$result_arr = json_decode($curl_response);
-		log::add('cozytouch', 'info', $result_arr);
+		log::add('cozytouch', 'debug', $result_arr);
 		return (new CozyTouchResponseHandler($result_arr))->getData('setup');
 		
 	}

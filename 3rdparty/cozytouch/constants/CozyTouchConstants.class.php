@@ -170,6 +170,7 @@ class CozyTouchStateName
 	const CTSN_NBSHOWERREMAINING = "core:NumberOfShowerRemainingState";
 	const CTSN_MINISHOWERMANUAL = "core:MinimalShowerManualModeState";
 	const CTSN_MAXISHOWERMANUAL = "core:MaximalShowerManualModeState";
+	const CTSN_OPEMODECAPABILITIES = "io:OperatingModeCapabilitiesState"; // {"energyDemandStatus": 0,"relaunch": 1,"absence": 1,"rateManagement": 0}
 
 	const CTSN_AIRDEMANDE ="core:AirDemandState";
 	const CTSN_VENTILATIONCONFIG ="io:VentilationConfigurationModeState";
@@ -228,6 +229,8 @@ class CozyTouchStateName
 	const EQ_VMCTEMPEXT="vmcTempExt";
 	const EQ_HOTWATERCOEFF = "hotWaterCoefficient";
 	const EQ_ZONECTRLMODE ="zoneMode";
+	
+	const EQ_ISHOTWATERHEATING ="isHotWaterHeating";
 
 	const CTSN_TYPE = [
 		self::CTSN_NAME=>"string",
@@ -241,6 +244,7 @@ class CozyTouchStateName
 		self::CTSN_HEATINGSTATUS=>"string",
 		self::CTSN_DHWBOOSTMODE=>"string", // on / off / prog
 		self::CTSN_DHWABSENCEMODE=>"string",
+		self::CTSN_OPEMODECAPABILITIES=>"string",
 
 		self::CTSN_PASSAPCDHWPROFILE=>"string",
 		self::CTSN_PASSAPCDHWMODE=>"string",
@@ -304,6 +308,7 @@ class CozyTouchStateName
 		self::CTSN_HEATINGONOFF=>"binary",
 		self::CTSN_COOLINGONOFF=>"binary",
 		self::CTSN_DEROGATIONONOFF=>"binary",
+		self::EQ_ISHOTWATERHEATING=>"binary",
 
 		
 		self::CTSN_HEATINGTARGETTEMP=>"numeric",
@@ -361,6 +366,7 @@ class CozyTouchStateName
 		self::CTSN_NBSHOWERREMAINING=>"Douches restantes",
 		self::CTSN_MINISHOWERMANUAL=>"Mini douche",
 		self::CTSN_MAXISHOWERMANUAL=>"Maxi douche",
+		self::CTSN_OPEMODECAPABILITIES=>"Operation mode",
 
 		self::CTSN_VENTILATIONCONFIG=>"Configuration",
 		self::CTSN_VENTILATIONMODE=>"Ventilation mode",
@@ -415,7 +421,8 @@ class CozyTouchStateName
 		
 		self::EQ_VMCTEMPINSUFFLE => "Temp insufflé",
 		self::EQ_VMCTEMPEXT=>"Temp extérieur",
-		self::EQ_ZONECTRLMODE=>"Mode"
+		self::EQ_ZONECTRLMODE=>"Mode",
+		self::EQ_ISHOTWATERHEATING=>"Chauffage en cours"
 	];
 }
 
@@ -448,7 +455,8 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_AWAYMODEDURATION,
 			CozyTouchStateName::CTSN_DHWMODE,
 			CozyTouchStateName::CTSN_TARGETTEMP,
-			CozyTouchStateName::CTSN_DHWCAPACITY],
+			CozyTouchStateName::CTSN_DHWCAPACITY,
+			CozyTouchStateName::CTSN_OPEMODECAPABILITIES],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERSPLIT=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_MIDDLETEMP,
@@ -645,7 +653,9 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_DHWMODE,
 			CozyTouchStateName::CTSN_TARGETTEMP,
 			CozyTouchStateName::CTSN_DHWCAPACITY,
-			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION],
+			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION,
+			CozyTouchStateName::CTSN_OPEMODECAPABILITIES,
+			CozyTouchStateName::EQ_ISHOTWATERHEATING],
 
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERSPLIT=>[
 			CozyTouchStateName::CTSN_NAME,

@@ -178,6 +178,11 @@ class CozyTouchManager
 							CozytouchAtlanticHeatSystemWithAjustTemp::refresh_thermostat($eqLogicTmp);
 							break;
 						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER:
+							CozytouchAtlanticHotWater::refresh_isheating($eqLogicTmp);
+							CozytouchAtlanticHotWater::refresh_boost($eqLogicTmp);
+							CozytouchAtlanticHotWater::refresh_hotwatercoeff($eqLogicTmp);
+							CozytouchAtlanticHotWater::refresh_thermostat($eqLogicTmp);
+							break;
 						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERSPLIT:
 						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERCETHIV4 :
 							CozytouchAtlanticHotWater::refresh_boost($eqLogicTmp);
@@ -253,6 +258,11 @@ class CozyTouchManager
 		else if($state->name==CozyTouchStateName::CTSN_VENTILATIONMODE)
 		{
 			log::add('cozytouch','debug','Vmc mode info : '.json_encode($state->value));
+			$value = json_encode($state->value);
+		}
+		else if($state->name==CozyTouchStateName::CTSN_OPEMODECAPABILITIES)
+		{
+			log::add('cozytouch','debug','Ope mode info : '.json_encode($state->value));
 			$value = json_encode($state->value);
 		}
 		else

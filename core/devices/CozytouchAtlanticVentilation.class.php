@@ -106,7 +106,7 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
 
         self::orderCommand($eqLogic);
 
-        CozyTouchManager::refresh_all();
+        self::refresh($eqLogic);
     }
     
 	public static function orderCommand($eqLogic)

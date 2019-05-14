@@ -10,6 +10,7 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 	const DISPLAY = [
         CozyTouchStateName::EQ_HOTWATERCOEFF=>[3,1,1],
 		CozyTouchStateName::CTSN_DHWMODE=>[4,0,1],
+        CozyTouchStateName::EQ_ISHOTWATERHEATING=>[5,1,1],
 		CozyTouchStateName::CTSN_TEMP=>[10,1,0],
 		CozyTouchStateName::CTSN_MIDDLETEMP=>[10,1,0],
 		CozyTouchStateName::CTSN_TARGETTEMP=>[11,0,0],
@@ -23,7 +24,6 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 		CozyTouchDeviceEqCmds::SET_AUTOMODE=>[21,1,0],
 		CozyTouchDeviceEqCmds::SET_MANUECOACTIVE=>[22,0,0],
 		CozyTouchDeviceEqCmds::SET_MANUECOINACTIVE=>[23,0,1],
-        CozyTouchStateName::EQ_ISHOTWATERHEATING=>[24,1,1],
 		CozyTouchStateName::CTSN_CONNECT=>[99,1,1],
 		'refresh'=>[1,0,0]
     ];
@@ -78,7 +78,9 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
     	$is_heating->setType('info');
     	$is_heating->setSubType('binary');
         $is_heating->setLogicalId(CozyTouchStateName::EQ_ISHOTWATERHEATING);
-		$is_heating->save();
+		$is_heating->setTemplate('dashboard', 'heat');
+    	$is_heating->setTemplate('mobile', 'heat');
+        $is_heating->save();
 
         $hotWaterCoefficient = $eqLogic->getCmd(null,CozyTouchStateName::EQ_HOTWATERCOEFF );
 

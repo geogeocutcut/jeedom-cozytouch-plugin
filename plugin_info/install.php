@@ -21,7 +21,7 @@ if (!class_exists('CozyTouchManager')) {
 	require_once dirname(__FILE__) . "/../core/class/CozyTouchManager.class.php";
 }
 
-const COZY_VERSION = '2.0.2';
+const COZY_VERSION = '2.0.1';
 function cozytouch_install() {
 	$cron = cron::byClassAndFunction('cozytouch', 'cron15');
 	if (!is_object($cron)) {

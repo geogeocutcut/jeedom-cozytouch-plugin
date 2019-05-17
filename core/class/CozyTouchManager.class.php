@@ -22,6 +22,9 @@ if (!class_exists('CozytouchAtlanticHeatSystemWithAjustTemp')) {
 if (!class_exists('CozytouchAtlanticHotWater')) {
 	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticHotWater.class.php";
 }
+if (!class_exists('CozytouchAtlanticHotWaterV3')) {
+	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticHotWaterV3.class.php";
+}
 
 if (!class_exists('CozytouchAtlanticHotWaterCES4')) {
 	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticHotWaterCES4.class.php";
@@ -104,6 +107,9 @@ class CozyTouchManager
 					break;	
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT:
 					CozytouchAtlanticVentilation::BuildEqLogic($device);
+					break;
+				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERV3:
+					CozytouchAtlanticHotWaterV3::BuildEqLogic($device);
 					break;
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATPUMPMAIN:
 					CozytouchAtlanticHeatPump::BuildEqLogic($device);
@@ -295,6 +301,9 @@ class CozyTouchManager
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERFLATC2 :
 				CozytouchAtlanticHotWaterFlatC2::execute($cmd,$_options);
     			break;
+			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERV3 :
+				CozytouchAtlanticHotWaterV3::execute($cmd,$_options);
+				break;
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT :
 				CozytouchAtlanticVentilation::execute($cmd,$_options);
 				break;

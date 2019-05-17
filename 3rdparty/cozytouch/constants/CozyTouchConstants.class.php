@@ -64,6 +64,7 @@ class CozyTouchDeviceToDisplay
 	const CTDTD_ATLANTICHOTWATERCES4 ="io:AtlanticDomesticHotWaterProductionV2_CE_S4_IOComponent";
 	const CTDTD_ATLANTICHOTWATERFLATC2 ="io:AtlanticDomesticHotWaterProductionV2_CE_FLAT_C2_IOComponent";
 	const CTDTD_ATLANTICHOTWATERCETHIV4 ="io:AtlanticDomesticHotWaterProductionV2_CETHI_V4_IOComponent";
+	const CTDTD_ATLANTICHOTWATERV3="io:AtlanticDomesticHotWaterProductionV3IOComponent";
 	const CTDTD_ATLANTICHOTWATERELECTRICITYSENSOR ="io:DHWCumulatedElectricalEnergyConsumptionIOSystemDeviceSensor";
 
 	const CTDTD_ATLANTICHEATRECOVERYVENT ="io:AtlanticHeatRecoveryVentilationIOComponent";

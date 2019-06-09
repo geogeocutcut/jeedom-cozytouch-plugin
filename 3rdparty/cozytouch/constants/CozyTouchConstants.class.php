@@ -58,6 +58,7 @@ class CozyTouchDeviceToDisplay
 	const CTDTD_ATLANTICTEMPERATURESENSOR = "io:TemperatureInCelciusIOSystemDeviceSensor";
 	const CTDTD_ATLANTICELECTRICHEATEROCCUPANCYSENSOR = "io:OccupancyIOSystemDeviceSensor";
 	const CTDTD_ATLANTICELECTRICHEATERELECTRICITYSENSOR = "io:CumulatedElectricalEnergyConsumptionIOSystemDeviceSensor";
+	const CTDTD_ATLANTICDIMMABLELIGHT = "io:AtlanticDimmableLightIOComponent";
 	
 	const CTDTD_ATLANTICHOTWATER ="io:AtlanticDomesticHotWaterProductionIOComponent";
 	const CTDTD_ATLANTICHOTWATERSPLIT ="io:AtlanticDomesticHotWaterProductionV2_SPLIT_IOComponent";
@@ -112,6 +113,7 @@ class CozyTouchDeviceToDisplay
 		self::CTDTD_ATLANTICTEMPERATURESENSOR,
 		self::CTDTD_ATLANTICELECTRICHEATEROCCUPANCYSENSOR,
 		self::CTDTD_ATLANTICELECTRICHEATERELECTRICITYSENSOR,
+		self::CTDTD_ATLANTICDIMMABLELIGHT,
 		self::CTDTD_ATLANTICHOTWATER,
 		self::CTDTD_ATLANTICHOTWATERSPLIT,
 		self::CTDTD_ATLANTICHOTWATERCETHIV4,
@@ -152,6 +154,15 @@ class CozyTouchStateName
 	const CTSN_OCCUPANCY = "core:OccupancyState";
 	const CTSN_ELECNRJCONSUMPTION = "core:ElectricEnergyConsumptionState";
 
+	//Dimmable light
+	const CTSN_LIGHTSTATE ="core:LightState";
+	const CTSN_LIGHTINTENSITY ="core:LightIntensityState";
+	const CTSN_AUTOTURNOFF ="core:AutomaticTurnOffDelayConfigurationState";
+	const CTSN_REMAININGTIME ="core:RemainingTimeState";
+	const CTSN_OCCUPANCYACTIVATION ="core:OccupancyActivationState";
+	const CTSN_NIGHTOCCUPANCYACTIVATION ="core:NightOccupancyActivationState";
+
+	// HotWater
 	const CTSN_BOOSTMODEDURATION = "core:BoostModeDurationState";
 	const CTSN_TEMP = "core:TemperatureState";
 	const CTSN_WATERCONSUMPTION = "core:WaterConsumptionState";
@@ -258,6 +269,8 @@ class CozyTouchStateName
 		self::CTSN_PASSAPCHEATINGPROFILE=>"string",
 		self::CTSN_PASSAPCCOOLINGPROFILE=>"string",
 
+		self::CTSN_LIGHTSTATE=>"string",
+
 		self::EQ_VMCMODE=>"string",
 		self::EQ_ZONECTRLMODE=>"string",
 
@@ -331,6 +344,13 @@ class CozyTouchStateName
 		self::CTSN_ABSENCEENDDATETIME =>"string",
 		self::CTSN_LASTPASSAPCOPERATINGMODE =>"string",
 		self::CTSN_HEATINGCOOLINGAUTOSWITCH =>"string",
+		
+		self::CTSN_LIGHTSTATE=>"string",
+		self::CTSN_LIGHTINTENSITY =>"numeric",
+		self::CTSN_AUTOTURNOFF =>"numeric",
+		self::CTSN_REMAININGTIME=>"numeric",
+		self::CTSN_OCCUPANCYACTIVATION=>"binary",
+		self::CTSN_NIGHTOCCUPANCYACTIVATION=>"binary"
 	];
 
 	const CTSN_LABEL = [
@@ -425,7 +445,14 @@ class CozyTouchStateName
 		self::EQ_VMCTEMPINSUFFLE => "Temp insufflé",
 		self::EQ_VMCTEMPEXT=>"Temp extérieur",
 		self::EQ_ZONECTRLMODE=>"Mode",
-		self::EQ_ISHOTWATERHEATING=>"Chauffage en cours"
+		self::EQ_ISHOTWATERHEATING=>"Chauffage en cours",
+		
+		self::CTSN_LIGHTSTATE=>"Lumière",
+		self::CTSN_LIGHTINTENSITY =>"Intensité",
+		self::CTSN_AUTOTURNOFF =>"Timer",
+		self::CTSN_REMAININGTIME=>"Remaining",
+		self::CTSN_OCCUPANCYACTIVATION=>"Automatique",
+		self::CTSN_NIGHTOCCUPANCYACTIVATION=>"Automatique Nuit"
 	];
 }
 
@@ -449,6 +476,15 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_DEROGTARGETTEMP,
 			CozyTouchStateName::CTSN_EFFTEMPSETPOINT,
 			CozyTouchStateName::CTSN_TEMPPROBECALIBR],
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICDIMMABLELIGHT=>[
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_ONOFF,
+			CozyTouchStateName::CTSN_LIGHTSTATE,
+			CozyTouchStateName::CTSN_LIGHTINTENSITY,
+			CozyTouchStateName::CTSN_AUTOTURNOFF,
+			CozyTouchStateName::CTSN_REMAININGTIME,
+			CozyTouchStateName::CTSN_OCCUPANCYACTIVATION,
+			CozyTouchStateName::CTSN_NIGHTOCCUPANCYACTIVATION],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_TEMP,
@@ -1031,6 +1067,13 @@ class CozyTouchDeviceActions
 	const CTPC_RSHEFFTEMP = "refreshEffectiveTemperatureSetpoint"; //parameters : 3,5  // => 18-3,5
 	const CTPC_RSHHEATINGLVL = "refreshHeatingLevel"; //parameters : eco, comfort
 	
+	// Dimmable Light
+	const CTPC_SETONOFFLIGHT = "setOnOffLight"; //parameters : on, off
+	const CTPC_RSHREMAININGTIME = "refreshRemainingTime";
+	const CTPC_SETAUTOTURNOFFDELAY = "setAutomaticTurnOffDelayConfiguration"; //parameters : int seconde
+	const CTPC_SETINTENSITY = "setIntensity"; //parameters : 1, 100 
+	const CTPC_SETOCCUPANCYACTIVATION= "setOccupancyActivation"; //parameters : active, inactive 
+
 	// Atlantic ballon d'eau chaude
 	const CTPC_RSHWATERCONS = "refreshWaterConsumption";
 	const CTPC_RSHAWAYDUR = "refreshAwayModeDuration";

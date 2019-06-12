@@ -3,6 +3,9 @@ require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 require_once dirname(__FILE__) . "/../../3rdparty/cozytouch/constants/CozyTouchConstants.class.php";
 require_once dirname(__FILE__) . "/../class/CozyTouchManager.class.php";
 
+if (!class_exists('CozytouchAtlanticDimmableLight')) {
+	require_once dirname(__FILE__) . "/CozytouchAtlanticDimmableLight.class.php";
+}
 class CozytouchAtlanticHeatSystemWithAjustTemp extends AbstractCozytouchDevice
 {
 	//[{order},{beforeLigne},{afterLigne}]
@@ -50,23 +53,33 @@ class CozytouchAtlanticHeatSystemWithAjustTemp extends AbstractCozytouchDevice
 		foreach ($device->getSensors() as $sensor)
 		{
 			$sensorURL = $sensor->getURL();
-			$sensors[] = array($sensorURL,$sensor->getModel());
-			log::add('cozytouch', 'info', 'Sensor : '.$sensorURL);
-			// state du capteur
-			foreach ($sensor->getStates() as $state)
+			$sensorModel = $sensor->getModel();
+			if($sensorModel== CozyTouchDeviceToDisplay::CTDTD_ATLANTICDIMMABLELIGHT)
 			{
-				if(in_array($state->name,$states))
+				$sensor->setVar(CozyTouchDeviceInfo::CTDI_LABEL,"Lumière ".$device->getVar(CozyTouchDeviceInfo::CTDI_LABEL));
+				CozytouchAtlanticDimmableLight::BuildEqLogic($sensor);
+				break;
+			}
+			else
+			{
+				$sensors[] = array($sensorURL,$sensor->getModel());
+				log::add('cozytouch', 'info', 'Sensor : '.$sensorURL);
+				// state du capteur
+				foreach ($sensor->getStates() as $state)
 				{
-					log::add('cozytouch', 'info', 'State : '.$state->name);
-		
-					$cmdId = $sensorURL.'_'.$state->name;
-					$type ="info";
-					$subType = CozyTouchStateName::CTSN_TYPE[$state->name];
-					$name = CozyTouchStateName::CTSN_LABEL[$state->name];
-					$dashboard =CozyTouchCmdDisplay::DISPLAY_DASH[$subType];
-					$mobile =CozyTouchCmdDisplay::DISPLAY_MOBILE[$subType];
-					$value =$subType=="numeric"?0:($subType=="string"?'value':0);
-					self::upsertCommand($eqLogic,$cmdId,$type,$subType,$name,1,$value,$dashboard,$mobile,$i+1);
+					if(in_array($state->name,$states))
+					{
+						log::add('cozytouch', 'info', 'State : '.$state->name);
+			
+						$cmdId = $sensorURL.'_'.$state->name;
+						$type ="info";
+						$subType = CozyTouchStateName::CTSN_TYPE[$state->name];
+						$name = CozyTouchStateName::CTSN_LABEL[$state->name];
+						$dashboard =CozyTouchCmdDisplay::DISPLAY_DASH[$subType];
+						$mobile =CozyTouchCmdDisplay::DISPLAY_MOBILE[$subType];
+						$value =$subType=="numeric"?0:($subType=="string"?'value':0);
+						self::upsertCommand($eqLogic,$cmdId,$type,$subType,$name,1,$value,$dashboard,$mobile,$i+1);
+					}
 				}
 			}
 		}

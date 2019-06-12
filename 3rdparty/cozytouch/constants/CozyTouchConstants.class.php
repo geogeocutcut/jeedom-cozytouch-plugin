@@ -449,7 +449,7 @@ class CozyTouchStateName
 		
 		self::CTSN_LIGHTSTATE=>"Lumière",
 		self::CTSN_LIGHTINTENSITY =>"Intensité",
-		self::CTSN_AUTOTURNOFF =>"Timer",
+		self::CTSN_AUTOTURNOFF =>"Timer Extinction",
 		self::CTSN_REMAININGTIME=>"Remaining",
 		self::CTSN_OCCUPANCYACTIVATION=>"Automatique",
 		self::CTSN_NIGHTOCCUPANCYACTIVATION=>"Automatique Nuit"
@@ -691,6 +691,16 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_TEMP,
 			CozyTouchStateName::CTSN_OCCUPANCY,
 			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION],
+			
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICDIMMABLELIGHT=>[
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_ONOFF,
+			CozyTouchStateName::CTSN_LIGHTSTATE,
+			CozyTouchStateName::CTSN_LIGHTINTENSITY,
+			CozyTouchStateName::CTSN_AUTOTURNOFF,
+			CozyTouchStateName::CTSN_REMAININGTIME,
+			CozyTouchStateName::CTSN_OCCUPANCYACTIVATION,
+			CozyTouchStateName::CTSN_NIGHTOCCUPANCYACTIVATION],
 
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER=>[
 			CozyTouchStateName::CTSN_NAME,

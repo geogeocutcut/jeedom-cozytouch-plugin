@@ -50,6 +50,10 @@ if (!class_exists('CozytouchAtlanticZoneControlZone')){
 	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticZoneControlZone.class.php";
 }
 
+if (!class_exists('CozytouchAtlanticDimmableLight')){
+	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticDimmableLight.class.php";
+}
+
 class CozyTouchManager
 {
     private static $_client = null;
@@ -229,6 +233,10 @@ class CozyTouchManager
 		{
 			$value = ($state->value=='on');
 		}
+		else if($state->name==CozyTouchStateName::CTSN_LIGHTSTATE)
+		{
+			$value = ($state->value=='on');
+		}
 		else if($state->name==CozyTouchStateName::CTSN_BOOSTONOFF)
 		{
 			$value = ($state->value=='on');
@@ -260,6 +268,14 @@ class CozyTouchManager
 		else if($state->name==CozyTouchStateName::CTSN_OCCUPANCY)
 		{
 			$value = ($state->value=='noPersonInside');
+		}
+		else if($state->name==CozyTouchStateName::CTSN_OCCUPANCYACTIVATION)
+		{
+			$value = ($state->value=='active');
+		}
+		else if($state->name==CozyTouchStateName::CTSN_NIGHTOCCUPANCYACTIVATION)
+		{
+			$value = ($state->value=='active');
 		}
 		else if($state->name==CozyTouchStateName::CTSN_VENTILATIONMODE)
 		{
@@ -318,6 +334,9 @@ class CozyTouchManager
 				break;
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONECTRLZONE:
 				CozytouchAtlanticZoneControlZone::execute($cmd,$_options);
+				break;
+			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICDIMMABLELIGHT:
+				CozytouchAtlanticDimmableLight::execute($cmd,$_options);
 				break;
     			
     	}

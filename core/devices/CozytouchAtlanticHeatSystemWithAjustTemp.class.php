@@ -56,7 +56,7 @@ class CozytouchAtlanticHeatSystemWithAjustTemp extends AbstractCozytouchDevice
 			$sensorModel = $sensor->getModel();
 			if($sensorModel== CozyTouchDeviceToDisplay::CTDTD_ATLANTICDIMMABLELIGHT)
 			{
-				$sensor->setVar(CozyTouchDeviceInfo::CTDI_LABEL,"Lumière ".$device->getVar(CozyTouchDeviceInfo::CTDI_LABEL));
+				$sensor->setVar(CozyTouchDeviceInfo::CTDI_LABEL,"LumiÃ¨re ".$device->getVar(CozyTouchDeviceInfo::CTDI_LABEL));
 				CozytouchAtlanticDimmableLight::BuildEqLogic($sensor);
 				break;
 			}

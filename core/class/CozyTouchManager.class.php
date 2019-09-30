@@ -188,7 +188,6 @@ class CozyTouchManager
 							CozytouchAtlanticHeatSystemWithAjustTemp::refresh_thermostat($eqLogicTmp);
 							break;
 						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER:
-						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERV2AEX :
 							CozytouchAtlanticHotWater::refresh_isheating($eqLogicTmp);
 							CozytouchAtlanticHotWater::refresh_boost($eqLogicTmp);
 							CozytouchAtlanticHotWater::refresh_hotwatercoeff($eqLogicTmp);
@@ -318,7 +317,6 @@ class CozyTouchManager
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERFLATC2 :
 				CozytouchAtlanticHotWaterFlatC2::execute($cmd,$_options);
     			break;
-			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERV2AEX :
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERV3 :
 				CozytouchAtlanticHotWaterV3::execute($cmd,$_options);
 				break;

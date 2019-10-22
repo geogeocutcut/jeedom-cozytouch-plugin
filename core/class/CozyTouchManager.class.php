@@ -22,6 +22,10 @@ if (!class_exists('CozytouchAtlanticHeatSystemWithAjustTemp')) {
 if (!class_exists('CozytouchAtlanticHotWater')) {
 	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticHotWater.class.php";
 }
+
+if (!class_exists('CozytouchAtlanticHotWaterV2AEX')) {
+	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticHotWaterV2AEX.class.php";
+}
 if (!class_exists('CozytouchAtlanticHotWaterV3')) {
 	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticHotWaterV3.class.php";
 }
@@ -102,6 +106,9 @@ class CozyTouchManager
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERSPLIT:
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERCETHIV4 :
 					CozytouchAtlanticHotWater::BuildEqLogic($device);
+					break;
+				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERV2AEX:
+					CozytouchAtlanticHotWaterV2AEX::BuildEqLogic($device);
 					break;
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERCES4:
 					CozytouchAtlanticHotWaterCES4::BuildEqLogic($device);
@@ -192,6 +199,12 @@ class CozyTouchManager
 							CozytouchAtlanticHotWater::refresh_boost($eqLogicTmp);
 							CozytouchAtlanticHotWater::refresh_hotwatercoeff($eqLogicTmp);
 							CozytouchAtlanticHotWater::refresh_thermostat($eqLogicTmp);
+							break;
+						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERV2AEX :
+							CozytouchAtlanticHotWaterV2AEX::refresh_isheating($eqLogicTmp);
+							CozytouchAtlanticHotWaterV2AEX::refresh_boost($eqLogicTmp);
+							CozytouchAtlanticHotWaterV2AEX::refresh_hotwatercoeff($eqLogicTmp);
+							CozytouchAtlanticHotWaterV2AEX::refresh_thermostat($eqLogicTmp);
 							break;
 						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERSPLIT:
 						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERCETHIV4 :
@@ -310,6 +323,9 @@ class CozyTouchManager
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERSPLIT :
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERCETHIV4 :
 				CozyTouchAtlanticHotWater::execute($cmd,$_options);
+				break;
+			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERV2AEX :
+				CozyTouchAtlanticHotWaterV2AEX::execute($cmd,$_options);
 				break;
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERCES4 :
 				CozytouchAtlanticHotWaterCES4::execute($cmd,$_options);

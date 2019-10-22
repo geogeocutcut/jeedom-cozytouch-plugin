@@ -745,7 +745,6 @@ class CozyTouchDeviceStateName
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERV2AEX=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_CONNECT,
-			CozyTouchStateName::CTSN_TEMP,
 			CozyTouchStateName::CTSN_BOOSTMODEDURATION,
 			CozyTouchStateName::CTSN_DHWMODE,
 			CozyTouchStateName::CTSN_TARGETTEMP,

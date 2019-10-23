@@ -146,6 +146,10 @@ dans le dashboard :
 -   **Ballon d’eau chaude Atlantic connecté directement sur le bridge
     Cozytouch** :
 
+    - Atlantic thermodynamique Odyssee
+    - Atlantic Aquacosy 200 AV
+    - Thermor Malicio 2
+    - Atlantic Aeromax 4
 <div style="text-align:center">
 <img  src="../images/hotwater.PNG" alt="..."></div>
 
@@ -186,9 +190,14 @@ dans le dashboard :
 
 -   **PAC zone control** :
 
+    - Pac clim zone control 2.0
+
 <div style="text-align:center">
 <img  src="../images/zonemain.PNG" alt="...">
 <img  src="../images/zonezone.PNG" alt="..."></div>
+
+
+
 
 FAQ
 ===
@@ -198,6 +207,13 @@ FAQ
 
 Changelog
 ========= 
+
+Version : 2.0.3
+---------------
+
+-   Gestion de nouveaux équipements
+
+    -   Zone Control Odysee Pi
 
 Version : 2.0.2
 ---------------

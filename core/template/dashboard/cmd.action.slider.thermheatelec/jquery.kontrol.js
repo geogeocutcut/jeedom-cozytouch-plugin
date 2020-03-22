@@ -592,7 +592,7 @@
                             String(Math.abs(this.o.max)).length
                             , String(Math.abs(this.o.min)).length
                             , 2
-                            ) + 4;
+                            ) + 2;
 
             this.o.displayInput
                 && this.i.css({
@@ -607,7 +607,7 @@
                         ,'font' : 'bold ' + ((this.o.width / s) >> 0) + 'px Arial'
                         ,'text-align' : 'center'
                         ,'color' : this.o.fgColor
-                        ,'padding' : '0px'
+                        ,'padding' : '0px !important'
                         ,'-webkit-appearance': 'none'
                         })
                 || this.i.css({

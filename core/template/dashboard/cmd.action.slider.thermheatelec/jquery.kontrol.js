@@ -520,7 +520,7 @@
                             if ($.inArray(kc,[37,38,39,40]) > -1) {
                                 e.preventDefault();
 
-                                var v = parseInt(s.$.val()) + kv[kc] * m;
+                                var v = parseFloat(s.$.val()) + kv[kc] * m;
 
                                 s.o.stopper
                                 && (v = max(min(v, s.o.max), s.o.min));

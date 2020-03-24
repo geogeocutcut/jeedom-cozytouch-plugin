@@ -483,7 +483,7 @@
                             var ori = e.originalEvent
                                 ,deltaX = ori.detail || ori.wheelDeltaX
                                 ,deltaY = ori.detail || ori.wheelDeltaY
-                                ,v = parseInt(s.$.val()) + (deltaX>0 || deltaY>0 ? 1 : deltaX<0 || deltaY<0 ? -1 : 0);
+                                ,v = parseFloat(s.$.val()) + (deltaX>0 || deltaY>0 ? 0.5 : deltaX<0 || deltaY<0 ? -0.5 : 0);
 
                             if (
                                 s.cH
@@ -592,7 +592,7 @@
                             String(Math.abs(this.o.max)).length
                             , String(Math.abs(this.o.min)).length
                             , 2
-                            ) + 4;
+                            ) + 2;
 
             this.o.displayInput
                 && this.i.css({

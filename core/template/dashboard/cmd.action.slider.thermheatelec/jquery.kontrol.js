@@ -592,7 +592,7 @@
                             String(Math.abs(this.o.max)).length
                             , String(Math.abs(this.o.min)).length
                             , 2
-                            ) + 2;
+                            ) + 4;
 
             this.o.displayInput
                 && this.i.css({

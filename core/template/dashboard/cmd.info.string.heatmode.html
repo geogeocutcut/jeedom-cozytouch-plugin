@@ -4,18 +4,20 @@
         <span style="font-size: 3.5em;" id="iconCmd#id#"></span>
     </center>
     <script>
-       if ('#state#' == 'off' || '#state#' == 'stop') {
-            $('#iconCmd#id#').append('<img src="plugins/cozytouch/core/template/images/radiateur_arret.png">');
-        } else if ('#state#' == 'frostprotection') {
-            $('#iconCmd#id#').append('<img src="plugins/cozytouch/core/template/images/radiateur_hg.png">');
-        } else if ('#state#' == 'eco') {
-            $('#iconCmd#id#').append('<img src="plugins/cozytouch/core/template/images/radiateur_eco.png">');
-        } else if ('#state#' == 'comfort-2') {
-          	$('#iconCmd#id#').append('<img src="plugins/cozytouch/core/template/images/radiateur_confort-2.png">');
-        } else if ('#state#' == 'comfort-1') {
-          	$('#iconCmd#id#').append('<img src="plugins/cozytouch/core/template/images/radiateur_confort-1.png">');
-        } else {
-            $('#iconCmd#id#').append('<img src="plugins/cozytouch/core/template/images/radiateur_confort.png">');
+        jeedom.cmd.update['#id#'] = function(_options){
+            if ('#state#' == 'off' || '#state#' == 'stop') {
+                $('#iconCmd#id#').append('<img src="plugins/cozytouch/core/template/images/radiateur_arret.png">');
+            } else if ('#state#' == 'frostprotection') {
+                $('#iconCmd#id#').append('<img src="plugins/cozytouch/core/template/images/radiateur_hg.png">');
+            } else if ('#state#' == 'eco') {
+                $('#iconCmd#id#').append('<img src="plugins/cozytouch/core/template/images/radiateur_eco.png">');
+            } else if ('#state#' == 'comfort-2') {
+                $('#iconCmd#id#').append('<img src="plugins/cozytouch/core/template/images/radiateur_confort-2.png">');
+            } else if ('#state#' == 'comfort-1') {
+                $('#iconCmd#id#').append('<img src="plugins/cozytouch/core/template/images/radiateur_confort-1.png">');
+            } else {
+                $('#iconCmd#id#').append('<img src="plugins/cozytouch/core/template/images/radiateur_confort.png">');
+            }
         }
     </script>
 </div>

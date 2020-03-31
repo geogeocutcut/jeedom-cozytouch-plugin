@@ -607,7 +607,7 @@
                         ,'font' : 'bold ' + ((this.o.width / s) >> 0) + 'px Arial'
                         ,'text-align' : 'center'
                         ,'color' : 'pink'
-                        ,'padding' : '0px !important'
+                        ,'padding' : '10px !important'
                         ,'-webkit-appearance': 'none'
                         })
                 || this.i.css({

@@ -3,7 +3,7 @@
 	"name" : "CozyTouch",
 	"licence" : "AGPL",
 	"author" : "geoblack",
-	"require" : "2.4",
+	"require" : "4.0",
 	"category":"wellness",
 	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile"],
 	"issue" : "https://github.com/geogeocutcut/jeedom-cozytouch-plugin/issues",

@@ -1,21 +1,26 @@
-<div style="width:100px;min-height:130px;" class="cmd #history# tooltips cmd-widget" data-type="info" data-subtype="numeric" data-cmd_id="#id#" title="#collectDate#">
+<div style="width:100px;min-height:130px;" class="cmd cmd-widget #history#" 
+    data-type="info" data-subtype="string" 
+    data-cmd_id="#id#" data-cmd_uid="#uid#" data-eqLogic_id="#eqLogic_id#" title="#collectDate#">
     <center>
         <span style="font-weight: bold;font-size : 12px;">#name#</span><br/>
-        <span style="font-size: 3.5em;" id="iconCmd#id#"></span>
+        <span style="font-size: 3.5em;" class="iconCmd#id#"></span>
     </center>
     <script>
-       if ('#state#' == 'off') {
-            $('#iconCmd#id#').append('<img style="width:105px;height: 100px;" src="plugins/cozytouch/core/template/images/zonectrlzone_off.png">');
-        } else if ('#state#' == 'heating_manu') {
-            $('#iconCmd#id#').append('<img style="width:105px;height: 100px;" src="plugins/cozytouch/core/template/images/zonectrlzone_heat_manu.png">');
-        } else if ('#state#' == 'heating_prog') {
-            $('#iconCmd#id#').append('<img style="width:105px;height: 100px;" src="plugins/cozytouch/core/template/images/zonectrlzone_heat_prog.png">');
-        } else if ('#state#' == 'cooling_manu') {
-            $('#iconCmd#id#').append('<img style="width:105px;height: 100px;" src="plugins/cozytouch/core/template/images/zonectrlzone_cool_manu.png">');
-        } else if ('#state#' == 'cooling_prog') {
-            $('#iconCmd#id#').append('<img style="width:105px;height: 100px;" src="plugins/cozytouch/core/template/images/zonectrlzone_cool_prog.png">');
-        } else {
-            $('#iconCmd#id#').append('<img style="width:105px;height: 100px;" src="plugins/cozytouch/core/template/images/zonectrlzone_off.png">');
+        jeedom.cmd.update['#id#'] = function(_options){
+            if (_options.display_value == 'off') {
+                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img style="width:105px;height: 100px;" src="plugins/cozytouch/core/template/images/zonectrlzone_off.png">');
+            } else if (_options.display_value == 'heating_manu') {
+                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img style="width:105px;height: 100px;" src="plugins/cozytouch/core/template/images/zonectrlzone_heat_manu.png">');
+            } else if (_options.display_value == 'heating_prog') {
+                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img style="width:105px;height: 100px;" src="plugins/cozytouch/core/template/images/zonectrlzone_heat_prog.png">');
+            } else if (_options.display_value == 'cooling_manu') {
+                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img style="width:105px;height: 100px;" src="plugins/cozytouch/core/template/images/zonectrlzone_cool_manu.png">');
+            } else if (_options.display_value == 'cooling_prog') {
+                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img style="width:105px;height: 100px;" src="plugins/cozytouch/core/template/images/zonectrlzone_cool_prog.png">');
+            } else {
+                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img style="width:105px;height: 100px;" src="plugins/cozytouch/core/template/images/zonectrlzone_off.png">');
+            }
         }
+        jeedom.cmd.update['#id#']({display_value:'#state#'});
     </script>
 </div>

@@ -1,21 +1,26 @@
-<div style="width:90px;min-height:120px;" class="cmd #history# tooltips cmd-widget" data-type="info" data-subtype="numeric" data-cmd_id="#id#" title="#collectDate#">
+<div style="width:90px;min-height:120px;" class="cmd cmd-widget #history#" 
+    data-type="info" data-subtype="string" 
+    data-cmd_id="#id#" data-cmd_uid="#uid#" data-eqLogic_id="#eqLogic_id#" title="#collectDate#">
     <center>
         <span style="font-weight: bold;font-size : 12px;">#name#</span><br/>
-        <span style="font-size: 3.5em;" id="iconCmd#id#"></span>
+        <span style="font-size: 3.5em;" class="iconCmd#id#"></span>
     </center>
     <script>
-       if ('#state#' == 'off' || '#state#' == 'stop') {
-            $('#iconCmd#id#').append('<img src="plugins/cozytouch/core/template/images/radiateur_arret.png">');
-        } else if ('#state#' == 'frostprotection') {
-            $('#iconCmd#id#').append('<img src="plugins/cozytouch/core/template/images/radiateur_hg.png">');
-        } else if ('#state#' == 'eco') {
-            $('#iconCmd#id#').append('<img src="plugins/cozytouch/core/template/images/radiateur_eco.png">');
-        } else if ('#state#' == 'comfort-2') {
-          	$('#iconCmd#id#').append('<img src="plugins/cozytouch/core/template/images/radiateur_confort-2.png">');
-        } else if ('#state#' == 'comfort-1') {
-          	$('#iconCmd#id#').append('<img src="plugins/cozytouch/core/template/images/radiateur_confort-1.png">');
-        } else {
-            $('#iconCmd#id#').append('<img src="plugins/cozytouch/core/template/images/radiateur_confort.png">');
+        jeedom.cmd.update['#id#'] = function(_options){
+            if (_options.display_value == 'off' || _options.display_value == 'stop') {
+                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img src="plugins/cozytouch/core/template/images/radiateur_arret.png">');
+            } else if (_options.display_value == 'frostprotection') {
+                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img src="plugins/cozytouch/core/template/images/radiateur_hg.png">');
+            } else if (_options.display_value == 'eco') {
+                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img src="plugins/cozytouch/core/template/images/radiateur_eco.png">');
+            } else if (_options.display_value == 'comfort-2') {
+                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img src="plugins/cozytouch/core/template/images/radiateur_confort-2.png">');
+            } else if (_options.display_value == 'comfort-1') {
+                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img src="plugins/cozytouch/core/template/images/radiateur_confort-1.png">');
+            } else {
+                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img src="plugins/cozytouch/core/template/images/radiateur_confort.png">');
+            }
         }
+        jeedom.cmd.update['#id#']({display_value:'#state#'});
     </script>
 </div>

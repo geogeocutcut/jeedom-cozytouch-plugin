@@ -745,7 +745,7 @@
                             ,'border' : 0
                             ,'background' : 'none'
                             ,'color' : s.o.fgColor
-                            ,'padding' : '0px'
+                            ,'padding' : '0px !important'
                             ,'-webkit-appearance': 'none'
                             });
                     });
@@ -893,7 +893,7 @@
                 this.$.css({
                         'margin' : '0px'
                         ,'border' : 0
-                        ,'padding' : '0px'
+                        ,'padding' : '0px !important'
                         });
 
                 this.i.each(
@@ -905,7 +905,7 @@
                             ,'font' : s.fontSize+'px Arial' //this.fontSize
                             ,'color' : s.o.fgColor
                             ,'margin' : '0px'
-                            ,'padding' : '0px'
+                            ,'padding' : '0px !important'
                             ,'-webkit-appearance': 'none'
                             ,'text-align' : 'center'
                             });

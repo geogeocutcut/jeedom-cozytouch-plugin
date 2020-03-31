@@ -603,11 +603,11 @@
                         ,'margin-top' : ((this.o.width / 3) >> 0) + 'px'
                         ,'margin-left' : '-' + ((this.o.width * 3 / 4 + 2) >> 0) + 'px'
                         ,'border' : 0
-                        ,'background' : 'none'
-                        ,'font' : 'bold ' + ((this.o.width / s) >> 0) + 'px Arial'
+                        ,'background' : 'pink'
+                        ,'font' : ' ' + ((this.o.width / s) >> 0) + 'px Arial'
                         ,'text-align' : 'center'
-                        ,'color' : 'pink'
-                        ,'padding' : '10px !important'
+                        ,'color' : this.o.fgColor
+                        ,'padding' : '0px !important'
                         ,'-webkit-appearance': 'none'
                         })
                 || this.i.css({

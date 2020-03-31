@@ -606,7 +606,7 @@
                         ,'background' : 'none'
                         ,'font' : 'bold ' + ((this.o.width / s) >> 0) + 'px Arial'
                         ,'text-align' : 'center'
-                        ,'color' : this.o.fgColor
+                        ,'color' : 'pink'
                         ,'padding' : '0px !important'
                         ,'-webkit-appearance': 'none'
                         })

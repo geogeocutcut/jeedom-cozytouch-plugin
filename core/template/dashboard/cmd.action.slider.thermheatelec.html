@@ -16,13 +16,13 @@
         jeedom.cmd.update['#id#'] = function(_options){
            
             if (parseInt(_options.display_value) > 21) {
-                $('#iconCmd#uid#').append('<i class="icon jeedom-thermo-chaud"></i>');
+                $('#iconCmd#uid#').empty().append('<i class="icon jeedom-thermo-chaud"></i>');
             }
             if (parseInt(_options.display_value) >= 19 && parseInt(_options.display_value) <= 21) {
-                 $('#iconCmd#uid#').append('<i class="icon jeedom-thermo-moyen"></i>');
+                 $('#iconCmd#uid#').empty().append('<i class="icon jeedom-thermo-moyen"></i>');
             }
             if (parseInt(_options.display_value) < 19) {
-                $('#iconCmd#uid#').append('<i class="icon jeedom-thermo-froid"></i>');
+                $('#iconCmd#uid#').empty().append('<i class="icon jeedom-thermo-froid"></i>');
             }
         }
         $.include(['plugins/cozytouch/core/template/dashboard/cmd.action.slider/jquery.kontrol.js'], function() {

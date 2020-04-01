@@ -492,7 +492,7 @@
 
                             s.val(v);
                         }
-                , kval, to, m = 1, kv = {37:-1, 38:1, 39:1, 40:-1};
+                , kval, to, m = 0.5, kv = {37:-0.5, 38:0.5, 39:0.5, 40:-0.5};
 
             this.$
                 .bind(
@@ -622,7 +622,7 @@
         };
 
         this.angle = function (v) {
-            return (v - this.o.min) * this.angleArc / 2*(this.o.max - this.o.min);
+            return 1.0*(v - this.o.min) * this.angleArc / (1.0*(this.o.max - this.o.min));
         };
 
         this.draw = function () {

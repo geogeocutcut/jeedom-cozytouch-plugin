@@ -210,7 +210,7 @@ class CozytouchAtlanticHeatSystemWithAjustTemp extends AbstractCozytouchDevice
     		case CozyTouchDeviceEqCmds::SET_THERMOSTAT:
     			$min = $cmd->getConfiguration('minValue');
     			$max = $cmd->getConfiguration('maxValue');
-    			if (!isset($_options['slider']) || $_options['slider'] == '' || !is_numeric(intval($_options['slider']))) {
+    			if (!isset($_options['slider']) || $_options['slider'] == '' || !is_numeric(floatval($_options['slider']))) {
     				$_options['slider'] = (($max - $min) / 2) + $min;
     			}
     			if ($_options['slider'] > $max) {
@@ -218,7 +218,8 @@ class CozytouchAtlanticHeatSystemWithAjustTemp extends AbstractCozytouchDevice
     			}
     			if ($_options['slider'] < $min) {
     				$_options['slider'] = $min;
-    			}
+				}
+				log::add('cozytouch', 'debug', 'slider : '.$_options['slider']);
     			$eqLogic->getCmd(null, 'order')->event($_options['slider']);
     			
     			self::setTemperature($device_url,floatval($_options['slider']));

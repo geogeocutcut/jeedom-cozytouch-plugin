@@ -622,7 +622,7 @@
         };
 
         this.angle = function (v) {
-            return (v - this.o.min) * this.angleArc / (this.o.max - this.o.min);
+            return (v - this.o.min) * this.angleArc / 2*(this.o.max - this.o.min);
         };
 
         this.draw = function () {

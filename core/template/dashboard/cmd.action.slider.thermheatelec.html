@@ -11,6 +11,19 @@
         </div>
     </div>
     <script>
+
+        jeedom.cmd.update['#id#'] = function(_options){
+           
+            if (parseInt(_options.display_value) > 21) {
+                $('#iconCmd#uid#').append('<i class="icon jeedom-thermo-chaud"></i>');
+            }
+            if (parseInt(_options.display_value) >= 19 && parseInt(_options.display_value) <= 21) {
+                 $('#iconCmd#uid#').append('<i class="icon jeedom-thermo-moyen"></i>');
+            }
+            if (parseInt(_options.display_value) < 19) {
+                $('#iconCmd#uid#').append('<i class="icon jeedom-thermo-froid"></i>');
+            }
+        }
         $.include(['plugins/cozytouch/core/template/dashboard/cmd.action.slider/jquery.kontrol.js'], function() {
         $(".cmd[data-cmd_uid=#uid#] .dial").dial({
             fgColor: "#FFFFFF",
@@ -21,7 +34,6 @@
                     },
                     draw : function(){
                         setTimeout(function() {
-                        $(".cmd[data-cmd_uid=#uid#] .dial").css('padding', '0px !important');
                         $(".cmd[data-cmd_uid=#uid#] .dial").css('margin-top', '0px');
                         setTimeout(function() {
                              $(".cmd[data-cmd_uid=#uid#] .dial").css('margin-top', '33px');
@@ -29,17 +41,8 @@
                          }, 200);
                     }
             });
-           
-            if (parseInt('#state#') > 21) {
-                $('#iconCmd#uid#').append('<i class="icon jeedom-thermo-chaud"></i>');
-            }
-            if (parseInt('#state#') >= 19 && parseInt('#state#') <= 21) {
-                 $('#iconCmd#uid#').append('<i class="icon jeedom-thermo-moyen"></i>');
-            }
-            if (parseInt('#state#') < 19) {
-                $('#iconCmd#uid#').append('<i class="icon jeedom-thermo-froid"></i>');
-            }
         });
+        jeedom.cmd.update['#id#']({display_value:'#state#'});
     </script>
 
 </div>

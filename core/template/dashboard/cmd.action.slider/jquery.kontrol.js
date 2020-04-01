@@ -483,7 +483,7 @@
                             var ori = e.originalEvent
                                 ,deltaX = ori.detail || ori.wheelDeltaX
                                 ,deltaY = ori.detail || ori.wheelDeltaY
-                                ,v = parseInt(s.$.val()) + (deltaX>0 || deltaY>0 ? 1 : deltaX<0 || deltaY<0 ? -1 : 0);
+                                ,v = parseFloat(s.$.val()) + (deltaX>0 || deltaY>0 ? 0.5 : deltaX<0 || deltaY<0 ? -0.5 : 0);
 
                             if (
                                 s.cH
@@ -520,7 +520,7 @@
                             if ($.inArray(kc,[37,38,39,40]) > -1) {
                                 e.preventDefault();
 
-                                var v = parseInt(s.$.val()) + kv[kc] * m;
+                                var v = parseFloat(s.$.val()) + kv[kc] * m;
 
                                 s.o.stopper
                                 && (v = max(min(v, s.o.max), s.o.min));
@@ -603,11 +603,11 @@
                         ,'margin-top' : ((this.o.width / 3) >> 0) + 'px'
                         ,'margin-left' : '-' + ((this.o.width * 3 / 4 + 2) >> 0) + 'px'
                         ,'border' : 0
-                        ,'background' : 'none'
+                        ,'background' : 'pink'
                         ,'font' : 'bold ' + ((this.o.width / s) >> 0) + 'px Arial'
                         ,'text-align' : 'center'
                         ,'color' : this.o.fgColor
-                        ,'padding' : '0px'
+                        ,'padding' : '0px !important'
                         ,'-webkit-appearance': 'none'
                         })
                 || this.i.css({
@@ -745,7 +745,7 @@
                             ,'border' : 0
                             ,'background' : 'none'
                             ,'color' : s.o.fgColor
-                            ,'padding' : '0px'
+                            ,'padding' : '0px !important'
                             ,'-webkit-appearance': 'none'
                             });
                     });
@@ -893,7 +893,7 @@
                 this.$.css({
                         'margin' : '0px'
                         ,'border' : 0
-                        ,'padding' : '0px'
+                        ,'padding' : '0px !important'
                         });
 
                 this.i.each(
@@ -905,7 +905,7 @@
                             ,'font' : s.fontSize+'px Arial' //this.fontSize
                             ,'color' : s.o.fgColor
                             ,'margin' : '0px'
-                            ,'padding' : '0px'
+                            ,'padding' : '0px !important'
                             ,'-webkit-appearance': 'none'
                             ,'text-align' : 'center'
                             });

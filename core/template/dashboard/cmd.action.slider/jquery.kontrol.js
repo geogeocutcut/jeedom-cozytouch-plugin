@@ -461,8 +461,8 @@
                     a += this.PI2;
                 }
 
-                ret = ~~ (0.5 + (a * (this.o.max - this.o.min) / this.angleArc))
-                    + this.o.min;
+                ret = (~~ (2*((0.5 + (a * (this.o.max - this.o.min) / this.angleArc))
+                + this.o.min)))*0.5;
             }
 
             this.o.stopper
@@ -622,7 +622,9 @@
         };
 
         this.angle = function (v) {
-            return 1.0*(v - this.o.min) * this.angleArc / (1.0*(this.o.max - this.o.min));
+            var ret = 1.0*(v - this.o.min) * this.angleArc / (1.0*(this.o.max - this.o.min));
+            console.log("angle : "+ret);
+            return ret; 
         };
 
         this.draw = function () {

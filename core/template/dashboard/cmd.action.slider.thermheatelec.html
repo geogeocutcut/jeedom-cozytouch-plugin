@@ -2,14 +2,30 @@
     <span id="iconCmd#uid#" class="pull-left" style="position : relative;font-size: 6em;height:100px;"></span>
     <div>
         <div style="margin-top : 20px;" >
-            <input type="text" class="dial" value="#state#" data-min="#minValue#" data-max="#maxValue#" data-width="100" data-height="100"/>
+            <input type="text" class="dial" value="#state#" 
+            style="padding : 0px !important" 
+            data-min="#minValue#" data-max="#maxValue#" 
+            data-width="100" data-height="100"/>
         </div>
         <div style="position: relative; top: -20px; left : 60px;">
             #unite#
         </div>
     </div>
     <script>
-        $.include(['plugins/cozytouch/core/template/dashboard/cmd.action.slider.thermheatelec/jquery.kontrol.js'], function() {
+
+        jeedom.cmd.update['#id#'] = function(_options){
+           
+            if (parseInt(_options.display_value) > 21) {
+                $('#iconCmd#uid#').empty().append('<i class="icon jeedom-thermo-chaud"></i>');
+            }
+            if (parseInt(_options.display_value) >= 19 && parseInt(_options.display_value) <= 21) {
+                 $('#iconCmd#uid#').empty().append('<i class="icon jeedom-thermo-moyen"></i>');
+            }
+            if (parseInt(_options.display_value) < 19) {
+                $('#iconCmd#uid#').empty().append('<i class="icon jeedom-thermo-froid"></i>');
+            }
+        }
+        $.include(['plugins/cozytouch/core/template/dashboard/cmd.action.slider/jquery.kontrol.js'], function() {
         $(".cmd[data-cmd_uid=#uid#] .dial").dial({
             fgColor: "#FFFFFF",
                     bgColor: '#cmdColor#',
@@ -26,17 +42,8 @@
                          }, 200);
                     }
             });
-           
-            if (parseInt('#state#') > 21) {
-                $('#iconCmd#uid#').append('<i class="icon jeedom-thermo-chaud"></i>');
-            }
-            if (parseInt('#state#') >= 19 && parseInt('#state#') <= 21) {
-                 $('#iconCmd#uid#').append('<i class="icon jeedom-thermo-moyen"></i>');
-            }
-            if (parseInt('#state#') < 19) {
-                $('#iconCmd#uid#').append('<i class="icon jeedom-thermo-froid"></i>');
-            }
         });
+        jeedom.cmd.update['#id#']({display_value:'#state#'});
     </script>
 
 </div>

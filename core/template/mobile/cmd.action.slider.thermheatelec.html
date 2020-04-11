@@ -2,14 +2,16 @@
     <span id="iconCmd#uid#" class="pull-left" style="position : relative;font-size: 5em;height:100px;"></span>
     <div>
         <div style="margin-top : 5px;">
-            <input type="text" class="dial" data-role="none" value="#state#" data-min="#minValue#" data-max="#maxValue#" data-width="90" data-height="90" />
+            <input type="text" class="dial" data-role="none" 
+            value="#state#" data-min="#minValue#" data-max="#maxValue#" 
+            data-width="90" data-height="90" />
         </div>
         <div style="position: relative; top: -22px; left : 44px;">
             #unite#
         </div>
     </div>
     <script>
-        $.include(['plugins/cozytouch/core/template/mobile/cmd.action.slider.thermheatelec/jquery.kontrol.js'], function() {
+        $.include(['plugins/cozytouch/core/template/mobile/cmd.action.slider/jquery.kontrol.js'], function() {
             $(".cmd[data-cmd_uid=#uid#] .dial").dial({
                 fgColor: "#FFFFFF",
                 bgColor: '#cmdColor#',

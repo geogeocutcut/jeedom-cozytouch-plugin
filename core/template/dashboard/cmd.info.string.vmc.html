@@ -1,25 +1,26 @@
-<div style="width:100px;min-height:100px;" class="cmd #history# tooltips cmd-widget" data-type="info" data-subtype="numeric" data-cmd_id="#id#" title="#collectDate#">
+<div style="width:100px;min-height:100px;" class="cmd cmd-widget #history#" 
+    data-type="info" data-subtype="string" 
+    data-cmd_id="#id#" data-cmd_uid="#uid#" 
+    data-eqLogic_id="#eqLogic_id#" title="#collectDate#">
     <center>
-        <span style="font-size: 3.5em;" id="iconCmd#id#"></span>
+        <span style="font-size: 3.5em;" class="iconCmd#id#"></span>
     </center>
     <script>
-       if ('#state#' == 'boost') {
-            $('#iconCmd#id#').append('<img style="width:100px;height: 100px;" src="plugins/cozytouch/core/template/images/vent_boost.png">');
-        } 
-      	else if ('#state#' == 'refresh'){
-            $('#iconCmd#id#').append('<img style="width:100px;height: 100px;" src="plugins/cozytouch/core/template/images/vent_refresh.png">');
+        jeedom.cmd.update['#id#'] = function(_options){
+            if (_options.display_value == 'boost') {
+                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img src="plugins/cozytouch/core/template/images/vent_boost.png">');
+            } else if (_options.display_value == 'refresh') {
+                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img src="plugins/cozytouch/core/template/images/vent_refresh.png">');
+            } else if (_options.display_value == 'prog') {
+                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img src="plugins/cozytouch/core/template/images/vent_prog.png">');
+            } else if (_options.display_value == 'manual') {
+                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img src="plugins/cozytouch/core/template/images/vent_manual.png">');
+            } else if (_options.display_value == 'high') {
+                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img src="plugins/cozytouch/core/template/images/vent_high.png">');
+            } else {
+                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img src="plugins/cozytouch/core/template/images/vent_auto.png">');
+            }
         }
-      	else if ('#state#' == 'prog'){
-            $('#iconCmd#id#').append('<img style="width:100px;height: 100px;" src="plugins/cozytouch/core/template/images/vent_prog.png">');
-        }
-      	else if ('#state#' == 'manual'){
-            $('#iconCmd#id#').append('<img style="width:100px;height: 100px;" src="plugins/cozytouch/core/template/images/vent_manual.png">');
-        }
-      	else if ('#state#' == 'high'){
-            $('#iconCmd#id#').append('<img style="width:100px;height: 100px;" src="plugins/cozytouch/core/template/images/vent_high.png">');
-        }
-      	else {
-            $('#iconCmd#id#').append('<img style="width:100px;height: 100px;" src="plugins/cozytouch/core/template/images/vent_auto.png">');
-        }
+        jeedom.cmd.update['#id#']({display_value:'#state#'});
     </script>
 </div>

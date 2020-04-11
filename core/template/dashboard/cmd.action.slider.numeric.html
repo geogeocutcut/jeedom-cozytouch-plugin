@@ -12,13 +12,13 @@
      <script>
       $('.cmd[data-cmd_uid=#uid#] .bt_plus').on('click', function () {
        	var max = parseInt("#maxValues#") || 4;
-        var value = parseInt($('.cmd[data-cmd_uid=#uid#] .value').val()) + 1;
+        var value = parseFloat($('.cmd[data-cmd_uid=#uid#] .value').val()) + 0.5;
        	jeedom.cmd.update['#id#']({display_value:parseFloat((value>max)?max:value)});
         $('.cmd[data-cmd_uid=#uid#] .value').trigger('change');
       });
       $('.cmd[data-cmd_uid=#uid#] .bt_minus').on('click', function () {
        	var min = parseInt("#minValue#") || 2;
-        var value = parseInt($('.cmd[data-cmd_uid=#uid#] .value').val()) - 1;
+        var value = parseFloat($('.cmd[data-cmd_uid=#uid#] .value').val()) - 0.5;
        jeedom.cmd.update['#id#']({display_value:parseFloat((value<min)?min:value)});
        $('.cmd[data-cmd_uid=#uid#] .value').trigger('change');
      });

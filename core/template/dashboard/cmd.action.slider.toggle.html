@@ -1,68 +1,66 @@
 <div class="cmd cmd-widget" data-type="action" data-subtype="slider" data-cmd_id="#id#" data-cmd_uid="#uid#" data-version="#version#" >
     <center>
- <div class="cmdName" style="margin : 0px 5px 5px 15px;font-weight: bold;font-size : 12px;#hideCmdName#">#name_display#</div>
-      <input class="Toggle#uid#" type="checkbox" id="switch#id#"/>
+ 		<div class="cmdName" style="margin : 0px 5px 5px 15px;font-weight: bold;font-size : 12px;#hideCmdName#">#name_display#</div>
+      	<input class="Toggle#uid#" type="checkbox" id="switch#id#"/>
         <label for="switch#id#" class="cmdName#id# ch#id#"></label>
 
     </center>
     <style>
-input[class=Toggle#uid#]{
-	height: 0;
-	width: 0;
-	visibility: hidden;
-}
-.cmdName#id# {
-	cursor: pointer;
-	text-indent: -9999px;
-	width: 50px;
-	height: 30px;
-background:#cmdColor#;
-//	background: grey;
-//	display: block;
-	border-radius: 50px;
-	position: relative;
-}
-label.ch#id#:after {
-	content: '';
-	position: absolute;
-	top: 5px;
-	left: 5px;
-	width: 20px;
-	height: 20px;
-	background: #fff;
-	border-radius: 40px;
-	transition: 0.3s;
-}
+		input[class=Toggle#uid#]{
+			height: 0;
+			width: 0;
+			visibility: hidden;
+		}
+		.cmdName#id# {
+			cursor: pointer;
+			text-indent: -9999px;
+			width: 50px;
+			height: 30px;
+			background:grey;
+			border-radius: 50px;
+			position: relative;
+		}
+		label.ch#id#:after {
+			content: '';
+			position: absolute;
+			top: 5px;
+			left: 5px;
+			width: 20px;
+			height: 20px;
+			background: #fff;
+			border-radius: 40px;
+			transition: 0.3s;
+		}
 
-input:checked + label.ch#id# {
-	background: #bada55;
-}
+		input:checked + label.ch#id# {
+			background: #bada55;
+		}
 
-input:checked + label.ch#id#:after {
-	left: calc(100% - 5px);
-	transform: translateX(-100%);
-}
+		input:checked + label.ch#id#:after {
+			left: calc(100% - 5px);
+			transform: translateX(-100%);
+		}
 
-label.ch#id#:active:after {
-	width: 30px;
-}
-      </style>
+		label.ch#id#:active:after {
+			width: 30px;
+		}
+    </style>
     <script>
-
- $('.Toggle#id#').empty();
-if ('#state#' == '0' || '#state#' == 0 || '#state#' == '') {
-                 $('.Toggle#uid#').prop('checked', false);
-        }else {
-               $('.Toggle#uid#').prop('checked', true);
-          }
-             
-      $('.Toggle#uid#').on('click', function() {
-             if ( $('.Toggle#uid#').is( ":checked" ) ){
-                jeedom.cmd.execute({id: '#id#', value: ('1')});
-            } else {
-                jeedom.cmd.execute({id: '#id#', value: ('0')});
-          }
-        });
-      
+		jeedom.cmd.update['#id#'] = function(_options){
+			$('.Toggle#id#').empty();
+			if (_options.display_value == '0' || _options.display_value == 0 || _options.display_value == '') {
+				$('.Toggle#uid#').prop('checked', false);
+			}else {
+				$('.Toggle#uid#').prop('checked', true);
+			}
+		}
+		jeedom.cmd.update['#id#']({display_value:'#state#',valueDate:'#valueDate#',collectDate:'#collectDate#',alertLevel:'#alertLevel#'});
+		$('.Toggle#uid#').on('click', function() {
+			if ( $('.Toggle#uid#').is( ":checked" ) ){
+				jeedom.cmd.execute({id: '#id#', value: ('1')});
+			} else {
+				jeedom.cmd.execute({id: '#id#', value: ('0')});
+			}
+		});
     </script>
 </div>

@@ -10,8 +10,8 @@ class CozytouchAtlanticHotWaterV2AEX extends AbstractCozytouchDevice
 	const DISPLAY = [
         CozyTouchStateName::EQ_HOTWATERCOEFF=>[3,1,1],
 		CozyTouchStateName::CTSN_DHWMODE=>[4,0,1],
-        CozyTouchStateName::EQ_ISHOTWATERHEATING=>[5,1,1],
-		CozyTouchStateName::CTSN_MIDDLETEMP=>[10,1,0],
+        CozyTouchStateName::EQ_ISHOTWATERHEATING=>[5,1,0],
+		CozyTouchStateName::CTSN_MIDDLETEMP=>[10,0,0],
 		CozyTouchStateName::CTSN_TARGETTEMP=>[11,0,0],
 		CozyTouchStateName::CTSN_WATERCONSUMPTION=>[13,0,1],
 		CozyTouchStateName::CTSN_ELECNRJCONSUMPTION=>[14,1,0],

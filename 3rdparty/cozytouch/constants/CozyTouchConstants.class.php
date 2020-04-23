@@ -59,7 +59,11 @@ class CozyTouchDeviceToDisplay
 	const CTDTD_ATLANTICELECTRICHEATEROCCUPANCYSENSOR = "io:OccupancyIOSystemDeviceSensor";
 	const CTDTD_ATLANTICELECTRICHEATERELECTRICITYSENSOR = "io:CumulatedElectricalEnergyConsumptionIOSystemDeviceSensor";
 	const CTDTD_ATLANTICDIMMABLELIGHT = "io:AtlanticDimmableLightIOComponent";
-	
+
+	const CTDTD_ATLANTICTOWELDRYER= "io:AtlanticElectricalTowelDryerIOComponent";
+	const CTDTD_ATLANTICLIGHT = "io:LightIOSystemDeviceSensor";
+	const CTDTD_ATLANTICRELATIVEHUMIDITY = "io:RelativeHumidityIOSystemDeviceSensor";
+
 	const CTDTD_ATLANTICHOTWATER ="io:AtlanticDomesticHotWaterProductionIOComponent";
 	const CTDTD_ATLANTICHOTWATERSPLIT ="io:AtlanticDomesticHotWaterProductionV2_SPLIT_IOComponent";
 	const CTDTD_ATLANTICHOTWATERCES4 ="io:AtlanticDomesticHotWaterProductionV2_CE_S4_IOComponent";
@@ -87,6 +91,7 @@ class CozyTouchDeviceToDisplay
 	const CTDTD_DEVICEMODEL = [
 		self::CTDTD_ATLANTICELECTRICHEATER,
 		self::CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP,
+		self::CTDTD_ATLANTICTOWELDRYER,
 		self::CTDTD_ATLANTICHOTWATER,
 		self::CTDTD_ATLANTICHOTWATERSPLIT,
 		self::CTDTD_ATLANTICHOTWATERCETHIV4,
@@ -116,6 +121,10 @@ class CozyTouchDeviceToDisplay
 		self::CTDTD_ATLANTICELECTRICHEATEROCCUPANCYSENSOR,
 		self::CTDTD_ATLANTICELECTRICHEATERELECTRICITYSENSOR,
 		self::CTDTD_ATLANTICDIMMABLELIGHT,
+		self::CTDTD_ATLANTICTOWELDRYER,
+		self::CTDTD_ATLANTICLIGHT,
+		self::CTDTD_ATLANTICRELATIVEHUMIDITY,
+
 		self::CTDTD_ATLANTICHOTWATER,
 		self::CTDTD_ATLANTICHOTWATERSPLIT,
 		self::CTDTD_ATLANTICHOTWATERCETHIV4,
@@ -156,6 +165,16 @@ class CozyTouchStateName
 	const CTSN_TEMPPROBECALIBR = "io:TemperatureProbeCalibrationOffsetState";
 	const CTSN_OCCUPANCY = "core:OccupancyState";
 	const CTSN_ELECNRJCONSUMPTION = "core:ElectricEnergyConsumptionState";
+
+	// Seche serviette
+	const CTSN_BOOSTDURATIONUSERPARAM = "io:BoostDurationUserParameterState";
+	const CTSN_BOOSTDURATIONMAX = "io:BoostDurationMaxState";
+	const CTSN_DRYINGDURATION = "io:DryingDurationState";
+	const CTSN_DRYINGDURATIONUSERPARAM = "io:DryingDurationUserParameterState";
+	const CTSN_DRYINGDURATIONMAX = "io:DryingDurationMaxState";
+	const CTSN_TOWELDRYERTEMPORARY = "io:TowelDryerTemporaryStateState";
+	const CTSN_LUMINANCE = "core:LuminanceState";
+	const CTSN_RELATIVEHUMIDITY = "core:RelativeHumidityState";
 
 	//Dimmable light
 	const CTSN_LIGHTSTATE ="core:LightState";
@@ -273,6 +292,7 @@ class CozyTouchStateName
 		self::CTSN_PASSAPCCOOLINGPROFILE=>"string",
 
 		self::CTSN_LIGHTSTATE=>"string",
+		self::CTSN_TOWELDRYERTEMPORARY => "string",
 
 		self::EQ_VMCMODE=>"string",
 		self::EQ_ZONECTRLMODE=>"string",
@@ -284,6 +304,15 @@ class CozyTouchStateName
 		self::CTSN_EFFTEMPSETPOINT=>"numeric",
 		self::CTSN_TEMPPROBECALIBR=>"numeric",
 		self::CTSN_BOOSTMODEDURATION=>"numeric",
+		
+		self::CTSN_BOOSTDURATIONUSERPARAM =>"numeric",
+		self::CTSN_BOOSTDURATIONMAX =>"numeric",
+		self::CTSN_DRYINGDURATION =>"numeric",
+		self::CTSN_DRYINGDURATIONUSERPARAM =>"numeric",
+		self::CTSN_DRYINGDURATIONMAX =>"numeric",
+		self::CTSN_LUMINANCE =>"numeric",
+		self::CTSN_RELATIVEHUMIDITY =>"numeric",
+
 		self::CTSN_TEMP=>"numeric",
 		self::CTSN_WATERCONSUMPTION=>"numeric",
 		self::CTSN_AWAYMODEDURATION=>"numeric",
@@ -362,6 +391,7 @@ class CozyTouchStateName
 		self::CTSN_ONOFF=>"On/Off",
 		self::CTSN_TARGETHEATLEVEL=>"Mode",
 		self::CTSN_DHWMODE=>"Mode",
+		self::CTSN_TOWELDRYERTEMPORARY => "io:TowelDryerTemporaryStateState",
 
 		self::CTSN_TARGETTEMP=>"Temp. Cible",
 		self::CTSN_COMFROOMTEMP=>"Temp. Comfort",
@@ -370,6 +400,15 @@ class CozyTouchStateName
 		self::CTSN_EFFTEMPSETPOINT=>"Effective",
 		self::CTSN_TEMPPROBECALIBR=>"Calibrage",
 		self::CTSN_BOOSTMODEDURATION=>"Boost Durée",
+
+		self::CTSN_BOOSTDURATIONUSERPARAM =>"Durée boost param",
+		self::CTSN_BOOSTDURATIONMAX =>"Durée boost max",
+		self::CTSN_DRYINGDURATION =>"Durée séchage",
+		self::CTSN_DRYINGDURATIONUSERPARAM =>"Durée séchage param",
+		self::CTSN_DRYINGDURATIONMAX =>"Durée séchage max",
+		self::CTSN_LUMINANCE =>"Luminance",
+		self::CTSN_RELATIVEHUMIDITY =>"Humidité",
+
 		self::CTSN_TEMP=>"Température",
 		self::CTSN_MIDDLETEMP=>"Température",
 		self::CTSN_WATERCONSUMPTION=>"Eau chaude",
@@ -488,6 +527,24 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_REMAININGTIME,
 			CozyTouchStateName::CTSN_OCCUPANCYACTIVATION,
 			CozyTouchStateName::CTSN_NIGHTOCCUPANCYACTIVATION],
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICTOWELDRYER=>[
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_OPEMODE,
+			CozyTouchStateName::CTSN_CONNECT,
+			CozyTouchStateName::CTSN_ONOFF,
+			CozyTouchStateName::CTSN_TARGETHEATLEVEL,
+			CozyTouchStateName::CTSN_TARGETTEMP,
+			CozyTouchStateName::CTSN_ECOROOMTEMP,
+			CozyTouchStateName::CTSN_DEROGTARGETTEMP,
+			CozyTouchStateName::CTSN_EFFTEMPSETPOINT,
+			CozyTouchStateName::CTSN_TEMPPROBECALIBR,
+			CozyTouchStateName::CTSN_BOOSTMODEDURATION,
+			CozyTouchStateName::CTSN_BOOSTDURATIONUSERPARAM,
+			CozyTouchStateName::CTSN_BOOSTDURATIONMAX,
+			CozyTouchStateName::CTSN_DRYINGDURATION,
+			CozyTouchStateName::CTSN_DRYINGDURATIONUSERPARAM,
+			CozyTouchStateName::CTSN_DRYINGDURATIONMAX,
+			CozyTouchStateName::CTSN_TOWELDRYERTEMPORARY],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_TEMP,
@@ -666,6 +723,10 @@ class CozyTouchDeviceStateName
 
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATEROCCUPANCYSENSOR=>[
 			CozyTouchStateName::CTSN_OCCUPANCY],
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICLIGHT=>[
+			CozyTouchStateName::CTSN_LUMINANCE],
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICRELATIVEHUMIDITY=>[
+			CozyTouchStateName::CTSN_RELATIVEHUMIDITY],
 
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATERELECTRICITYSENSOR=>[
 			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION],
@@ -704,7 +765,24 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_TEMP,
 			CozyTouchStateName::CTSN_OCCUPANCY,
 			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION],
-			
+		
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICTOWELDRYER=>[
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_CONNECT,
+			CozyTouchStateName::CTSN_OPEMODE,
+			CozyTouchStateName::CTSN_ONOFF,
+			CozyTouchStateName::CTSN_TARGETHEATLEVEL,
+			CozyTouchStateName::CTSN_TARGETTEMP,
+			CozyTouchStateName::CTSN_ECOROOMTEMP,
+			CozyTouchStateName::CTSN_DEROGTARGETTEMP,
+			CozyTouchStateName::CTSN_EFFTEMPSETPOINT,
+			CozyTouchStateName::CTSN_TEMPPROBECALIBR,
+			CozyTouchStateName::CTSN_TEMP,
+			CozyTouchStateName::CTSN_OCCUPANCY,
+			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION,
+			CozyTouchStateName::CTSN_LUMINANCE,
+			CozyTouchStateName::CTSN_RELATIVEHUMIDITY],
+
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICDIMMABLELIGHT=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_ONOFF,

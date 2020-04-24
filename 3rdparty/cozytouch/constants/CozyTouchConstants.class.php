@@ -403,7 +403,7 @@ class CozyTouchStateName
 
 		self::CTSN_BOOSTDURATIONUSERPARAM =>"Durée boost param",
 		self::CTSN_BOOSTDURATIONMAX =>"Durée boost max",
-		self::CTSN_DRYINGDURATION =>"Durée séchage",
+		self::CTSN_DRYINGDURATION =>"Séchage Durée",
 		self::CTSN_DRYINGDURATIONUSERPARAM =>"Durée séchage param",
 		self::CTSN_DRYINGDURATIONMAX =>"Durée séchage max",
 		self::CTSN_LUMINANCE =>"Luminance",
@@ -781,7 +781,15 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_OCCUPANCY,
 			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION,
 			CozyTouchStateName::CTSN_LUMINANCE,
-			CozyTouchStateName::CTSN_RELATIVEHUMIDITY],
+			CozyTouchStateName::CTSN_RELATIVEHUMIDITY,
+		
+			CozyTouchStateName::CTSN_BOOSTMODEDURATION,
+			CozyTouchStateName::CTSN_BOOSTDURATIONUSERPARAM,
+			CozyTouchStateName::CTSN_BOOSTDURATIONMAX,
+			CozyTouchStateName::CTSN_DRYINGDURATION,
+			CozyTouchStateName::CTSN_DRYINGDURATIONUSERPARAM,
+			CozyTouchStateName::CTSN_DRYINGDURATIONMAX,
+			CozyTouchStateName::CTSN_TOWELDRYERTEMPORARY],
 
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICDIMMABLELIGHT=>[
 			CozyTouchStateName::CTSN_NAME,
@@ -1023,6 +1031,7 @@ class CozyTouchDeviceEqCmds
 	const SET_MANUECOINACTIVE="setManualEcoInactive";
 	const SET_BOOSTDURATION="setBoostModeDuration";
 	const SET_BOOST='setBoost';
+	const SET_DRY='setDry';
 	const SET_AWAY='setAway';
 	const SET_AWAYDURATION='setAwayDuration';
 	const SET_EXPECTEDSHOWER='setExpectedNumberOfShower';
@@ -1054,6 +1063,14 @@ class CozyTouchDeviceEqCmds
 			self::SET_COMFORT2,
 			self::SET_COMFORT1,
 			self::SET_COMFORT
+		],
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICTOWELDRYER=>[
+			self::SET_STANDBY,
+			self::SET_EXTERNAL,
+			self::SET_INTERNAL,
+			self::SET_AUTO,
+			self::SET_BOOST,
+			self::SET_DRY,
 		],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP=>[
 			self::SET_STANDBY,
@@ -1141,6 +1158,7 @@ class CozyTouchDeviceEqCmds
 		self::SET_MANUECOINACTIVE=>"Manuel",
 		self::SET_BOOSTDURATION=>"Boost",
 		self::SET_BOOST=>"Boost",
+		self::SET_DRY=>"Séchage",
 		self::SET_ONOFF=>"Off",
 
 		self::SET_VENTBOOST=>"Boost Maison",
@@ -1157,8 +1175,6 @@ class CozyTouchDeviceEqCmds
 		self::SET_ZONECTRLZONEOFF=>"Off",
 		self::SET_ZONECTRLZONEMANU=>"Manual",
 		self::SET_ZONECTRLZONEPROGRAM=>"Program"
-
-
 	];
 }
 
@@ -1169,6 +1185,7 @@ class CozyTouchDeviceActions
 	const CTPC_OFF = "off"; 
 	
 	const CTPC_SETMODE = "setOperatingMode"; // parameters : standby / basic / internal / external / auto
+	const CTPC_SETTOWELDRYINGMODE = "setTowelDryerOperatingMode"; // parameters : standby /   external / internal / auto / boost / drying
 	const CTPC_SETTARGETTEMP = "setTargetTemperature"; //parameters : 18
 	const CTPC_SETDEROGTEMP = "setDerogatedTargetTemperature"; //parameters : 18
 	const CTPC_SETCOMTEMP = "setComfortTemperature"; //parameters : 18
@@ -1186,6 +1203,12 @@ class CozyTouchDeviceActions
 	const CTPC_RSHEFFTEMP = "refreshEffectiveTemperatureSetpoint"; //parameters : 3,5  // => 18-3,5
 	const CTPC_RSHHEATINGLVL = "refreshHeatingLevel"; //parameters : eco, comfort
 	
+	// towel
+	const CTPC_SETBOOSTDURATION = "setTowelDryerBoostModeDuration";
+	const CTPC_SETDRYDURATION = "setDryingDuration";
+	const CTPC_SETDRYERTEMPORARYMODE = "setTowelDryerTemporaryState"; // boost, permanentHeating, drying
+	const CTPC_RSHBOOSTDURATION ="refreshBoostModeDuration";
+	const CTPC_RSHDRYINGDURATION ="refreshDryingDuration";
 	// Dimmable Light
 	const CTPC_SETONOFFLIGHT = "setOnOffLight"; //parameters : on, off
 	const CTPC_RSHREMAININGTIME = "refreshRemainingTime";

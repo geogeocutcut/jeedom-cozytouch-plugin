@@ -97,11 +97,11 @@ class AbstractCozytouchDevice
 	{
 
 		log::add('cozytouch', 'info', 'command '.$name.'  : creation ou update en cours');
-		$cmd = $eqLogic->getCmd($type, $cmdId);
+        $cmd = $eqLogic->getCmd($type, $cmdId);
         if (!is_object($cmd)) 
         {
 			$cmd = new cozytouchCmd();
-		}
+        }
 		$cmd->setEqLogic_id($eqLogic->getId());
 		$cmd->setLogicalId($cmdId);
 		$cmd->setType($type);
@@ -148,7 +148,7 @@ class AbstractCozytouchDevice
         {
             $command = new CozyTouchCommand();
             $command->name=$cmd['name'];
-            if($cmd['values'] != null)
+            if($cmd['values'] !== null)
             {
                 $command->parameters[]=$cmd['values'];
             }

@@ -105,7 +105,7 @@ function updateDisplayPlugin(_callback) {
             for (var i  in eqLogics) {
                 htmlSideBar += '<li class="cursor li_eqLogic" data-eqLogic_id="' + eqLogics[i].id + '"><a>' + eqLogics[i].humanSidebar + '</a></li>';
                 // Définition du format des icones de la page principale - ne pas modifier
-                htmlContainer += '<div class="eqLogicDisplayCard cursor" data-eqLogic_id="' + eqLogics[i].id + '" style="background-color : #ffffff; height : 200px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >';
+                htmlContainer += '<div class="eqLogicDisplayCard cursor" data-eqLogic_id="' + eqLogics[i].id + '" style="width : auto !important; background-color : #ffffff; height : 200px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >';
                 htmlContainer += "<center>";
                 // lien vers l'image de votre icone
                 htmlContainer += '<img src="plugins/cozytouch/doc/images/cozytouch_icon.png" height="105" width="95" />';

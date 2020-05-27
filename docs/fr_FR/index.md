@@ -207,6 +207,13 @@ FAQ
 
 Changelog
 ========= 
+Version : 2.1.0 - 24/04/2020
+---------------
+-   Compatibilité jeedom V4 : migration des widgets.
+
+-   Gestion de nouveaux équipements
+
+    -   Atlantic : Seche Serviette Sensium
 
 Version : 2.0.3
 ---------------

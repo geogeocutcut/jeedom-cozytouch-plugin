@@ -58,6 +58,10 @@ if (!class_exists('CozytouchAtlanticDimmableLight')){
 	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticDimmableLight.class.php";
 }
 
+if (!class_exists('CozytouchAtlanticTowelDryer')){
+	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticTowelDryer.class.php";
+}
+
 class CozyTouchManager
 {
     private static $_client = null;
@@ -101,6 +105,9 @@ class CozyTouchManager
 					break;
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP:
 					CozytouchAtlanticHeatSystemWithAjustTemp::BuildEqLogic($device);
+					break;
+				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICTOWELDRYER:
+					CozytouchAtlanticTowelDryer::BuildEqLogic($device);
 					break;
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER:
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERSPLIT:
@@ -191,6 +198,11 @@ class CozyTouchManager
 				if (is_object($eqLogicTmp)) {
 					$device_type = $eqLogicTmp->getConfiguration('device_model');
 					switch($device_type){
+						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICTOWELDRYER:
+							CozytouchAtlanticTowelDryer::refresh_boost($eqLogicTmp);
+							CozytouchAtlanticTowelDryer::refresh_dry($eqLogicTmp);
+							CozytouchAtlanticTowelDryer::refresh_thermostat($eqLogicTmp);
+							break;
 						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP:
 							CozytouchAtlanticHeatSystemWithAjustTemp::refresh_thermostat($eqLogicTmp);
 							break;
@@ -231,13 +243,14 @@ class CozyTouchManager
 							CozytouchAtlanticZoneControlZone::refresh_mode($eqLogicTmp);
 							break;
 					}
+					$eqLogicTmp->refreshWidget();
 				}
 			}
         } 
 		catch (Exception $e) 
 		{
     
-    	}
+		}
 	}
 	
 	public static function get_state_value($state)
@@ -315,10 +328,12 @@ class CozyTouchManager
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATER:
 				CozytouchAtlanticHeatSystem::execute($cmd,$_options);
     			break;
+			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICTOWELDRYER:
+				CozytouchAtlanticTowelDryer::execute($cmd,$_options);
+    			break;
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP:
 				CozytouchAtlanticHeatSystemWithAjustTemp::execute($cmd,$_options);
     			break;
-    			
     		case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER :
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERSPLIT :
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERCETHIV4 :
@@ -355,7 +370,8 @@ class CozyTouchManager
 				CozytouchAtlanticDimmableLight::execute($cmd,$_options);
 				break;
     			
-    	}
+		}
+		$eqLogic->refreshWidget();
 	}
 }
 ?>

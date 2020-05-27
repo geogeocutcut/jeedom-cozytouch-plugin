@@ -88,6 +88,12 @@ class CozyTouchDeviceToDisplay
 	const CTDTD_ATLANTICPASSAPCZONECTRLMAIN="io:AtlanticPassAPCZoneControlMainComponent";
 	const CTDTD_ATLANTICPASSAPCZONECTRLZONE="io:AtlanticPassAPCZoneControlZoneComponent";
 
+	const CTDTD_ATLANTICPASSAPCBOILER="io:AtlanticPassAPCBoilerMainComponent";
+	const CTDTD_TOTALFOSSILENERGYCONSUMPTION="io:TotalFossilEnergyConsumptionSensor";
+	const CTDTD_DHWRELATEDFOSSILENERGYCONSUMPTION="io:DHWRelatedFossilEnergyConsumptionSensor";
+	const CTDTD_HEATINGRELATEDFOSSILENERGYCONSUMPTION="io:HeatingRelatedFossilEnergyConsumptionSensor";
+	const CTDTD_ATLANTICPASSAPCHEATINGZONE="io:AtlanticPassAPCHeatingZoneComponent";
+
 	const CTDTD_DEVICEMODEL = [
 		self::CTDTD_ATLANTICELECTRICHEATER,
 		self::CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP,
@@ -211,7 +217,7 @@ class CozyTouchStateName
 	const CTSN_AIRDEMANDE ="core:AirDemandState";
 	const CTSN_VENTILATIONCONFIG ="io:VentilationConfigurationModeState";
 	const CTSN_AIRDEMANDEMODE ="io:AirDemandModeState";
-	const CTSN_VENTILATIONMODE ="io:VentilationModeState"; // Atention {"prog": "off",	"endOfLineTest": "off",	"test": "off","month": 12,"cooling": "off","leapYear": "off","day": 18,"dayNight": "night"	}
+	const CTSN_VENTILATIONMODE ="io:VentilationModeState"; // Attention {"prog": "off",	"endOfLineTest": "off",	"test": "off","month": 12,"cooling": "off","leapYear": "off","day": 18,"dayNight": "night"	}
 	const CTSN_CO2CONCENTRATION = "core:CO2ConcentrationState";
 
 
@@ -258,7 +264,9 @@ class CozyTouchStateName
 	const CTSN_MINCOOLTARGETTEMP="core:MinimumCoolingTargetTemperatureState";
 	const CTSN_MAXCOOLTARGETTEMP="core:MaximumCoolingTargetTemperatureState";
 	
-	
+	const CTSN_FOSSILENERGYCONSUMPTION="core:FossilEnergyConsumptionState";
+	const CTSN_HEATINGCOMFORTMODEAVAILABILITY="io:HeatingComfortModeAvailabilityState";
+	const CTSN_ACIVEHETAINGPROGRAM="core:ActiveHeatingTimeProgramState";
 
 	const EQ_VMCMODE ="vmcMode";
 	const EQ_VMCTEMPINSUFFLE="vmcTempInsuffle";
@@ -328,7 +336,6 @@ class CozyTouchStateName
 		self::CTSN_WATERTEMP=>"numeric",
 		self::CTSN_WATERTARGETTEMP=>"numeric",
 		self::CTSN_EXPECTEDNBSHOWER=>"numeric",
-		self::CTSN_WATERTARGETTEMP=>"numeric",
 		self::CTSN_CTRLWATERTARGETTEMP=>"numeric",
 		self::CTSN_MIDDLEWATERTEMPIN=>"numeric",
 		self::CTSN_NBSHOWERREMAINING=>"numeric",

@@ -339,7 +339,7 @@ class CozyTouchDeviceConfig
                         "type" => "numeric",
                         "label" => "Température 2"
                     ]
-                    ],
+                ],
                 CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATEROCCUPANCYSENSOR => [
                     CozyTouchStateName::CTSN_OCCUPANCY+"#1" => [
                         "type" => "binary",

@@ -366,6 +366,104 @@ class CozyTouchDeviceConfig
                 ]
             ],
             "commands" => [
+                CozyTouchDeviceEqCmds::SET_STANDBY => [
+                    "label" => "StandBy"
+                ],
+                CozyTouchDeviceEqCmds::SET_EXTERNAL => [
+                    "label" => "Externe"
+                ],
+                CozyTouchDeviceEqCmds::SET_INTERNAL => [
+                    "label" => "Interne"
+                ],
+                CozyTouchDeviceEqCmds::SET_AUTO => [
+                    "label" => "Auto"
+                ],
+                CozyTouchDeviceEqCmds::SET_BOOST => [
+                    "label" => "Boost",
+                    "type" => "toggle" // => création consigne + toggle
+                ],
+                CozyTouchDeviceEqCmds::SET_DRY => [
+                    "label" => "Dry",
+                    "type" => "toggle" // => création consigne + toggle
+                ]
+            ],
+            "display" => [
+                CozyTouchStateName::CTSN_TARGETHEATLEVEL => [
+                    "dashbord" => "heatmode",
+                    "mobile" => "heatmode",
+                    "beforeline" => 0,
+                    "afterline" => 1
+                ],
+                CozyTouchDeviceEqCmds::SET_STANDBY => [
+                    "beforeline" => 1,
+                    "afterline" => 0
+                ],
+                CozyTouchDeviceEqCmds::SET_EXTERNAL => [
+                    "beforeline" => 0,
+                    "afterline" => 0
+                ],
+                CozyTouchDeviceEqCmds::SET_INTERNAL => [
+                    "beforeline" => 0,
+                    "afterline" => 1
+                ],
+                CozyTouchDeviceEqCmds::SET_AUTO => [
+                    "beforeline" => 1,
+                    "afterline" => 0
+                ],
+                CozyTouchDeviceEqCmds::SET_BOOST => [
+                    "beforeline" => 0,
+                    "afterline" => 0
+                ],
+                CozyTouchDeviceEqCmds::SET_DRY => [
+                    "beforeline" => 0,
+                    "afterline" => 1
+                ],
+            ]
+        ],
+        CozyTouchDeviceToDisplay::CTDTD_ATLANTICDIMMABLELIGHT=>[
+            
+            "label" => "Radiateur dimmable",
+            "states" => [
+                CozyTouchStateName::CTSN_NAME => [
+                    "type" => "string",
+                    "label" => "Label"
+                ],
+                CozyTouchStateName::CTSN_CONNECT => [
+                    "type" => "binary",
+                    "label" => "Connect"
+                ],
+                CozyTouchStateName::CTSN_ONOFF => [
+                    "type" => "binary",
+                    "label" => "OnOff"
+                ],
+                CozyTouchStateName::CTSN_LIGHTSTATE => [
+                    "type" => "string",
+                    "label" => "Lumière"
+                ],
+                CozyTouchStateName::CTSN_LIGHTINTENSITY => [
+                    "type" => "numeric",
+                    "label" => "Intensité"
+                ],
+                CozyTouchStateName::CTSN_AUTOTURNOFF => [
+                    "type" => "numeric",
+                    "label" => "Timer Extinction"
+                ],
+                CozyTouchStateName::CTSN_REMAININGTIME => [
+                    "type" => "numeric",
+                    "label" => "Remaining"
+                ],
+                CozyTouchStateName::CTSN_OCCUPANCYACTIVATION => [
+                    "type" => "binary",
+                    "label" => "Automatique"
+                ],
+                CozyTouchStateName::CTSN_NIGHTOCCUPANCYACTIVATION => [
+                    "type" => "binary",
+                    "label" => "Automatique Nuit"
+                ]
+            ],
+            "sensors" => [
+            ],
+            "commands" => [
                 CozyTouchDeviceEqCmds::SET_OFF => [
                     "label" => "Off"
                 ],

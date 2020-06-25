@@ -464,54 +464,28 @@ class CozyTouchDeviceConfig
             "sensors" => [
             ],
             "commands" => [
-                CozyTouchDeviceEqCmds::SET_OFF => [
+                CozyTouchDeviceActions::CTPC_SETONOFFLIGHT => [
                     "label" => "Off"
                 ],
-                CozyTouchDeviceEqCmds::SET_FROSTPROTECT => [
+                CozyTouchDeviceActions::CTPC_SETOCCUPANCYACTIVATION => [
                     "label" => "Hors gel"
                 ],
-                CozyTouchDeviceEqCmds::SET_ECO => [
+                CozyTouchDeviceActions::CTPC_SETINTENSITY => [
                     "label" => "Eco"
-                ],
-                CozyTouchDeviceEqCmds::SET_COMFORT2 => [
-                    "label" => "Confort -2"
-                ],
-                CozyTouchDeviceEqCmds::SET_COMFORT1 => [
-                    "label" => "Confort -1"
-                ],
-                CozyTouchDeviceEqCmds::SET_COMFORT => [
-                    "label" => "Confort"
                 ]
             ],
             "display" => [
-                CozyTouchStateName::CTSN_TARGETHEATLEVEL => [
-                    "dashbord" => "heatmode",
-                    "mobile" => "heatmode",
-                    "beforeline" => 0,
-                    "afterline" => 1
-                ],
-                CozyTouchDeviceEqCmds::SET_OFF => [
-                    "beforeline" => 1,
-                    "afterline" => 1
-                ],
-                CozyTouchDeviceEqCmds::SET_FROSTPROTECT => [
-                    "beforeline" => 0,
-                    "afterline" => 0
-                ],
-                CozyTouchDeviceEqCmds::SET_ECO => [
-                    "beforeline" => 0,
-                    "afterline" => 1
-                ],
-                CozyTouchDeviceEqCmds::SET_COMFORT2 => [
+                
+                CozyTouchDeviceActions::CTPC_SETONOFFLIGHT => [
                     "beforeline" => 1,
                     "afterline" => 0
                 ],
-                CozyTouchDeviceEqCmds::SET_COMFORT1 => [
+                CozyTouchDeviceActions::CTPC_SETOCCUPANCYACTIVATION => [
                     "beforeline" => 0,
                     "afterline" => 0
                 ],
-                CozyTouchDeviceEqCmds::SET_COMFORT => [
-                    "beforeline" => 0,
+                CozyTouchDeviceActions::CTPC_SETINTENSITY => [
+                    "beforeline" => 1,
                     "afterline" => 1
                 ],
                 CozyTouchStateName::CTSN_CONNECT => [

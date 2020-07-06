@@ -51,6 +51,8 @@ class CozyTouchDeviceToDisplay
 	const CTDTD_HEATPUMPSYSTEM ="HeatPump";
 	const CTDTD_ZONECONTROLMAINSYSTEM ="AtlanticPassAPCZoneControl";
 	const CTDTD_ZONECONTROLZONESYSTEM ="AtlanticPassAPCHeatingAndCoolingZone";
+	const CTDTD_BOILERSYSTEM = "AtlanticPassAPCBoiler";
+	const CTDTD_BOILERZONESYSTEM = "AtlanticPassAPCHeatingZone";
 
 	const CTDTD_ATLANTICELECTRICHEATER = "io:AtlanticElectricalHeaterIOComponent";
 
@@ -65,6 +67,7 @@ class CozyTouchDeviceToDisplay
 	const CTDTD_ATLANTICRELATIVEHUMIDITY = "io:RelativeHumidityIOSystemDeviceSensor";
 
 	const CTDTD_ATLANTICHOTWATER ="io:AtlanticDomesticHotWaterProductionIOComponent";
+	// Atlantic calypso inverter split
 	const CTDTD_ATLANTICHOTWATERSPLIT ="io:AtlanticDomesticHotWaterProductionV2_SPLIT_IOComponent";
 	const CTDTD_ATLANTICHOTWATERCES4 ="io:AtlanticDomesticHotWaterProductionV2_CE_S4_IOComponent";
 	const CTDTD_ATLANTICHOTWATERFLATC2 ="io:AtlanticDomesticHotWaterProductionV2_CE_FLAT_C2_IOComponent";
@@ -88,12 +91,15 @@ class CozyTouchDeviceToDisplay
 	const CTDTD_ATLANTICPASSAPCZONECTRLMAIN="io:AtlanticPassAPCZoneControlMainComponent";
 	const CTDTD_ATLANTICPASSAPCZONECTRLZONE="io:AtlanticPassAPCZoneControlZoneComponent";
 
-	const CTDTD_ATLANTICPASSAPCBOILER="io:AtlanticPassAPCBoilerMainComponent";
-	const CTDTD_TOTALFOSSILENERGYCONSUMPTION="io:TotalFossilEnergyConsumptionSensor";
 	const CTDTD_DHWRELATEDFOSSILENERGYCONSUMPTION="io:DHWRelatedFossilEnergyConsumptionSensor";
-	const CTDTD_HEATINGRELATEDFOSSILENERGYCONSUMPTION="io:HeatingRelatedFossilEnergyConsumptionSensor";
-	const CTDTD_ATLANTICPASSAPCHEATINGZONE="io:AtlanticPassAPCHeatingZoneComponent";
 
+	// Atlantic NAIA 12
+	const CTDTD_ATLANTICPASSAPCBOILERMAIN="io:AtlanticPassAPCBoilerMainComponent";
+	const CTDTD_ATLANTICPASSAPCHEATINGZONE="io:AtlanticPassAPCHeatingZoneComponent";
+	const CTDTD_TOTALFOSSILENERGYCONSUMPTIONSENSOR="io:TotalFossilEnergyConsumptionSensor";
+	const CTDTD_HEATINGRELATEDFOSSILENERGYCONSUMPTIONSENSOR="HeatingRelatedFossilEnergyConsumptionSensor";
+
+	// Tous les modèles connus par le plugin
 	const CTDTD_DEVICEMODEL = [
 		self::CTDTD_ATLANTICELECTRICHEATER,
 		self::CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP,
@@ -107,17 +113,20 @@ class CozyTouchDeviceToDisplay
 		self::CTDTD_ATLANTICHOTWATERV2AEX,
 		self::CTDTD_ATLANTICHEATRECOVERYVENT,
 		self::CTDTD_ATLANTICPASSAPCHEATPUMPMAIN,
-		self::CTDTD_ATLANTICPASSAPCZONECTRLMAIN
+		self::CTDTD_ATLANTICPASSAPCZONECTRLMAIN,
+		self::CTDTD_ATLANTICPASSAPCBOILERMAIN
 	];
 
 	const CTDTD_NAME = [
 		self::CTDTD_HEATINGSYSTEM=>"Radiateur",
+	    self::CTDTD_BOILERSYSTEM=>"Chaudière",
+	    self::CTDTD_BOILERZONESYSTEM=>"Zone Chaudière",
 		self::CTDTD_WATERHEATINGSYSTEM=>"Chauffe eau",
 		self::CTDTD_VENTILATIONSYSTEM=>"VMC",
 		self::CTDTD_HEATPUMPSYSTEM=>"Pompe à chaleur",
 		self::CTDTD_ZONECONTROLMAINSYSTEM=>"PAC Centrale",
 		self::CTDTD_ZONECONTROLZONESYSTEM=>"PAC Zone",
-
+		self::CTDTD_ZONECONTROLZONESYSTEM=>"Chaudière"
 	];
 
 	const CTDTD_DEVICESANDSENSORS = [
@@ -151,7 +160,12 @@ class CozyTouchDeviceToDisplay
 		self::CTDTD_ATLANTICPASSAPCHEATINGCOOLINGZONE,
 		self::CTDTD_ATLANTICPASSAPCZONETEMPERATURESENSOR,
 		self::CTDTD_ATLANTICPASSAPCZONECTRLMAIN,
-		self::CTDTD_ATLANTICPASSAPCZONECTRLZONE
+		self::CTDTD_ATLANTICPASSAPCZONECTRLZONE,
+
+		self::CTDTD_ATLANTICPASSAPCBOILERMAIN,
+		self::CTDTD_ATLANTICPASSAPCHEATINGZONE,
+		self::CTDTD_TOTALFOSSILENERGYCONSUMPTIONSENSOR,
+		self::CTDTD_HEATINGRELATEDFOSSILENERGYCONSUMPTIONSENSOR
 	
 	];
 }
@@ -267,7 +281,7 @@ class CozyTouchStateName
 	const CTSN_FOSSILENERGYCONSUMPTION="core:FossilEnergyConsumptionState";
 	const CTSN_HEATINGCOMFORTMODEAVAILABILITY="io:HeatingComfortModeAvailabilityState";
 	const CTSN_ACIVEHETAINGPROGRAM="core:ActiveHeatingTimeProgramState";
-
+	
 	const EQ_VMCMODE ="vmcMode";
 	const EQ_VMCTEMPINSUFFLE="vmcTempInsuffle";
 	const EQ_VMCTEMPEXT="vmcTempExt";
@@ -389,7 +403,8 @@ class CozyTouchStateName
 		self::CTSN_AUTOTURNOFF =>"numeric",
 		self::CTSN_REMAININGTIME=>"numeric",
 		self::CTSN_OCCUPANCYACTIVATION=>"binary",
-		self::CTSN_NIGHTOCCUPANCYACTIVATION=>"binary"
+		self::CTSN_NIGHTOCCUPANCYACTIVATION=>"binary",
+
 	];
 
 	const CTSN_LABEL = [
@@ -501,7 +516,8 @@ class CozyTouchStateName
 		self::CTSN_AUTOTURNOFF =>"Timer Extinction",
 		self::CTSN_REMAININGTIME=>"Remaining",
 		self::CTSN_OCCUPANCYACTIVATION=>"Automatique",
-		self::CTSN_NIGHTOCCUPANCYACTIVATION=>"Automatique Nuit"
+		self::CTSN_NIGHTOCCUPANCYACTIVATION=>"Automatique Nuit",
+
 	];
 }
 
@@ -721,6 +737,7 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_MAXCOOLTARGETTEMP,
 			CozyTouchStateName::CTSN_DEROGATIONONOFF,
 			CozyTouchStateName::CTSN_CONNECT],
+
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICTEMPERATURESENSOR=>[
 			CozyTouchStateName::CTSN_TEMP],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONETEMPERATURESENSOR=>[
@@ -748,6 +765,29 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICC02SENSOR=>[
 			CozyTouchStateName::CTSN_CO2CONCENTRATION],
+		
+		// Liste des états du modèle pour l'ajout lors de la synchronisation
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCBOILERMAIN=>[
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_CONNECT,
+			CozyTouchStateName::CTSN_ZONESNUMBER,
+			CozyTouchStateName::CTSN_ABSENCESCHEDULINGMODE,
+			CozyTouchStateName::CTSN_ABSENCEHEATINGTARGETTEMP,
+			CozyTouchStateName::CTSN_ABSENCEENDDATETIME,
+			CozyTouchStateName::CTSN_PASSAPCOPERATINGMODE,
+			CozyTouchStateName::CTSN_LASTPASSAPCOPERATINGMODE
+		],
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATINGZONE=>[
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_CONNECT,
+			CozyTouchStateName::CTSN_PASSAPCHEATINGMODE,
+			CozyTouchStateName::CTSN_COMFORTHEATINGTARGETTEMP,
+			CozyTouchStateName::CTSN_ECOHEATINGTARGETTEMP,
+			CozyTouchStateName::CTSN_HEATINGONOFF,
+			CozyTouchStateName::CTSN_HEATINGTARGETTEMP,
+		    CozyTouchStateName::CTSN_DEROGTARGETTEMP,
+		    CozyTouchStateName::CTSN_DEROGATIONREMAININGTIME,
+		    CozyTouchStateName::CTSN_DEROGATIONONOFF]
 	];
 
 	const EQLOGIC_STATENAME = [
@@ -1003,7 +1043,34 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_MAXCOOLTARGETTEMP,
 			CozyTouchStateName::CTSN_DEROGATIONONOFF,
 			CozyTouchStateName::EQ_ZONECTRLMODE,
-			CozyTouchStateName::CTSN_CONNECT]
+			CozyTouchStateName::CTSN_CONNECT],
+
+		// Liste des états du modèle pour la génération générique
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCBOILERMAIN=>[
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_CONNECT,
+			CozyTouchStateName::CTSN_ZONESNUMBER,
+			CozyTouchStateName::CTSN_PASSAPCOPERATINGMODE,
+			CozyTouchStateName::CTSN_ABSENCESCHEDULINGMODE,
+			CozyTouchStateName::CTSN_ABSENCEHEATINGTARGETTEMP,
+			CozyTouchStateName::CTSN_ABSENCEENDDATETIME,
+			CozyTouchStateName::CTSN_LASTPASSAPCOPERATINGMODE,
+			CozyTouchStateName::CTSN_PASSAPCOPERATINGMODE
+		],
+
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATINGZONE=>[
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_CONNECT,
+			CozyTouchStateName::CTSN_PASSAPCHEATINGMODE,
+			CozyTouchStateName::CTSN_COMFORTHEATINGTARGETTEMP,
+			CozyTouchStateName::CTSN_ECOHEATINGTARGETTEMP,
+			CozyTouchStateName::CTSN_HEATINGONOFF,
+			CozyTouchStateName::CTSN_HEATINGTARGETTEMP,
+		    CozyTouchStateName::CTSN_DEROGTARGETTEMP,
+		    CozyTouchStateName::CTSN_DEROGATIONREMAININGTIME,
+		    CozyTouchStateName::CTSN_DEROGATIONONOFF,
+		    CozyTouchStateName::EQ_ZONECTRLMODE
+		]
 	];
 }
 
@@ -1145,7 +1212,16 @@ class CozyTouchDeviceEqCmds
 			self::SET_ZONECTRLZONEOFF,
 			self::SET_ZONECTRLZONEMANU,
 			self::SET_ZONECTRLZONEPROGRAM
-		]
+		],
+	    CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCBOILERMAIN=>[
+	        self::SET_OFF,
+	        self::SET_ZONECTRLHEAT
+	    ],
+	    CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATINGZONE=>[
+	        self::SET_ZONECTRLZONEOFF,
+	        self::SET_ZONECTRLZONEMANU,
+	        self::SET_ZONECTRLZONEPROGRAM
+	    ]
 	];
 	const ACTION_LABEL = [
 		self::SET_STANDBY=>"StandBy",

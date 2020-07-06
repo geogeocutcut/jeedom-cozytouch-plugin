@@ -61,6 +61,14 @@ if (!class_exists('CozytouchAtlanticDimmableLight')){
 if (!class_exists('CozytouchAtlanticTowelDryer')){
 	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticTowelDryer.class.php";
 }
+	
+if (!class_exists('CozytouchAtlanticAPCBoiler')){
+	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticAPCBoiler.class.php";
+}
+
+if (!class_exists('CozytouchAtlanticAPCHeatingZone')){
+	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticAPCHeatingZone.class.php";
+}
 
 class CozyTouchManager
 {
@@ -96,10 +104,12 @@ class CozyTouchManager
 
         foreach ($devices as $device) 
         {
-			
 			$deviceModel = $device->getVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME);
 			switch ($deviceModel)
 			{
+				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCBOILERMAIN:
+					CozytouchAtlanticAPCBoiler::BuildEqLogic($device);
+					break;
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATER:
 					CozytouchAtlanticHeatSystem::BuildEqLogic($device);
 					break;
@@ -242,6 +252,12 @@ class CozyTouchManager
 						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONECTRLZONE:
 							CozytouchAtlanticZoneControlZone::refresh_mode($eqLogicTmp);
 							break;
+						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCBOILERMAIN:
+						    CozytouchAtlanticAPCBoiler::refresh_mode($eqLogicTmp);
+						    break;
+						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATINGZONE:
+						    CozytouchAtlanticAPCHeatingZone::refresh_mode($eqLogicTmp);
+						    break;
 					}
 					$eqLogicTmp->refreshWidget();
 				}
@@ -312,6 +328,11 @@ class CozyTouchManager
 		{
 			log::add('cozytouch','debug','Ope mode info : '.json_encode($state->value));
 			$value = json_encode($state->value);
+		} 
+		else if($state->name==CozyTouchStateName::CTSN_ABSENCEENDDATETIME)
+		{
+			log::add('cozytouch','debug','Abs date : '.json_encode($state->value));
+			$value = sprintf("%02d", $state->value->{'day'}) . '/' . sprintf("%02d", $state->value->{'month'}) . '/'. $state->value->{'year'} . ' ' . sprintf("%02d", $state->value->{'hour'}).':'.sprintf("%02d", $state->value->{'minute'});
 		}
 		else
 		{
@@ -369,9 +390,13 @@ class CozyTouchManager
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICDIMMABLELIGHT:
 				CozytouchAtlanticDimmableLight::execute($cmd,$_options);
 				break;
-    			
+			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCBOILERMAIN:
+			    CozytouchAtlanticAPCBoiler::execute($cmd,$_options);
+			    break;
+			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATINGZONE:
+			    CozytouchAtlanticAPCHeatingZone::execute($cmd,$_options);
+			    break;
 		}
 		$eqLogic->refreshWidget();
 	}
 }
-?>

@@ -100,6 +100,10 @@ class CozyTouchResponseHandler {
 					$type=CozyTouchDeviceToDisplay::CTDTD_ZONECONTROLMAINSYSTEM;
 				else if(!(strpos($device->widget,CozyTouchDeviceToDisplay::CTDTD_ZONECONTROLZONESYSTEM)===false))
 					$type=CozyTouchDeviceToDisplay::CTDTD_ZONECONTROLZONESYSTEM;
+				else if(!(strpos($device->widget,CozyTouchDeviceToDisplay::CTDTD_BOILERSYSTEM)===false))
+				    $type=CozyTouchDeviceToDisplay::CTDTD_BOILERSYSTEM;
+			    else if(!(strpos($device->widget,CozyTouchDeviceToDisplay::CTDTD_BOILERZONESYSTEM)===false))
+			        $type=CozyTouchDeviceToDisplay::CTDTD_BOILERZONESYSTEM;
 					
 				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_TYPEDEVICE, $type);
 				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_SENSORS, array());

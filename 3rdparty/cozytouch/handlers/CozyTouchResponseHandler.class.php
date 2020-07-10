@@ -100,6 +100,8 @@ class CozyTouchResponseHandler {
 					$type=CozyTouchDeviceToDisplay::CTDTD_ZONECONTROLMAINSYSTEM;
 				else if(!(strpos($device->widget,CozyTouchDeviceToDisplay::CTDTD_ZONECONTROLZONESYSTEM)===false))
 					$type=CozyTouchDeviceToDisplay::CTDTD_ZONECONTROLZONESYSTEM;
+				else if(!(strpos($device->widget,CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCBOILERSYSTEM)===false))
+					$type=CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCBOILERSYSTEM;
 					
 				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_TYPEDEVICE, $type);
 				$deviceClss->setVar(CozyTouchDeviceInfo::CTDI_SENSORS, array());

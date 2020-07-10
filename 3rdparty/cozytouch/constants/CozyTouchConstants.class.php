@@ -47,10 +47,11 @@ class CozyTouchDeviceToDisplay
 	const CTDTD_HEATINGSYSTEM = "HeatingSystem";
 	const CTDTD_WATERHEATINGSYSTEM = "WaterHeatingSystem";
 	const CTDTD_VENTILATIONSYSTEM ="VentilationSystem";
-	// widget
+	// 
 	const CTDTD_HEATPUMPSYSTEM ="HeatPump";
 	const CTDTD_ZONECONTROLMAINSYSTEM ="AtlanticPassAPCZoneControl";
 	const CTDTD_ZONECONTROLZONESYSTEM ="AtlanticPassAPCHeatingAndCoolingZone";
+	const CTDTD_ATLANTICPASSAPCBOILERSYSTEM="AtlanticPassAPCBoiler";
 
 	const CTDTD_ATLANTICELECTRICHEATER = "io:AtlanticElectricalHeaterIOComponent";
 
@@ -118,7 +119,7 @@ class CozyTouchDeviceToDisplay
 		self::CTDTD_HEATPUMPSYSTEM=>"Pompe à chaleur",
 		self::CTDTD_ZONECONTROLMAINSYSTEM=>"PAC Centrale",
 		self::CTDTD_ZONECONTROLZONESYSTEM=>"PAC Zone",
-		self::CTDTD_ATLANTICPASSAPCBOILER=>"Chaudière"
+		self::CTDTD_ATLANTICPASSAPCBOILERSYSTEM=>"Chaudière"
 
 	];
 
@@ -333,7 +334,6 @@ class CozyTouchStateName
 		self::CTSN_WATERCONSUMPTION=>"numeric",
 		self::CTSN_AWAYMODEDURATION=>"numeric",
 		self::CTSN_DHWCAPACITY=>"numeric",
-		self::CTSN_ELECNRJCONSUMPTION=>"numeric",
 		self::EQ_HOTWATERCOEFF => "numeric",
 		self::CTSN_AIRDEMANDE => "numeric",
 		self::CTSN_CO2CONCENTRATION => "numeric",
@@ -358,6 +358,9 @@ class CozyTouchStateName
 		self::CTSN_COMFORTCOOLINGTARGETTEMP=>"numeric",
 		self::CTSN_ECOCOOLINGTARGETTEMP=>"numeric",
 		self::CTSN_DEROGATIONREMAININGTIME=>"numeric",
+
+		self::CTSN_ELECNRJCONSUMPTION=>"numeric",
+		self::CTSN_FOSSILENERGYCONSUMPTION=>"numeric",
 
 		self::EQ_VMCTEMPINSUFFLE => "numeric",
 		self::EQ_VMCTEMPEXT=>"numeric",
@@ -430,6 +433,7 @@ class CozyTouchStateName
 		self::CTSN_AWAYMODEDURATION=>"Absent Durée",
 		self::CTSN_DHWCAPACITY=>"Capacité Eau",
 		self::CTSN_ELECNRJCONSUMPTION=>"Conso Elec",
+		self::CTSN_FOSSILENERGYCONSUMPTION=>"Conso Elec",
 		self::CTSN_OCCUPANCY=>"Présence",
 		self::CTSN_CONNECT=>"Connect",
 
@@ -1312,7 +1316,7 @@ class CozyTouchDeviceActions
 	//      Ballon d'eau chaude
 	const CTPC_SETDHWONOFF="setDHWOnOffState";
 	const CTPC_SETBOOSTONOFF="setBoostOnOffState";
-
+	const CTPC_SETPASSAPCDHWMODE="setPassAPCDHWMode";
 	//		Heat system
 	const CTPC_SETECOHEATINGTARGET="setEcoHeatingTargetTemperature";
 	const CTPC_SETCOMFORTHEATINGTARGET="setComfortHeatingTargetTemperature";

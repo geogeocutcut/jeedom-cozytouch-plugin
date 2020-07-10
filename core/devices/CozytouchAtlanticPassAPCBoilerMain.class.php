@@ -3,6 +3,9 @@ require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 require_once dirname(__FILE__) . "/../../3rdparty/cozytouch/constants/CozyTouchConstants.class.php";
 require_once dirname(__FILE__) . "/../class/CozyTouchManager.class.php";
 
+if (!class_exists('CozytouchAtlanticAPCBoilerDHWComponent')) {
+	require_once dirname(__FILE__) . "/CozytouchAtlanticAPCBoilerDHWComponent.class.php";
+}
 if (!class_exists('CozytouchAtlanticPassAPCHeatingZone')) {
 	require_once dirname(__FILE__) . "/CozytouchAtlanticPassAPCHeatingZone.class.php";
 }
@@ -27,8 +30,7 @@ class CozytouchAtlanticPassAPCBoilerMain extends AbstractCozytouchDevice
     //[{order},{beforeLigne},{afterLigne}]
 	const DISPLAY = [
 		CozyTouchStateName::CTSN_CONNECT=>[99,1,1],
-		CozyTouchDeviceEqCmds::SET_OFF=>[30,1,0],
-		CozyTouchDeviceEqCmds::SET_ONOFF=>[31,0,1]
+		CozyTouchDeviceEqCmds::SET_ONOFF=>[1,0,1],
 		'refresh'=>[1,0,0]
     ];
     
@@ -46,9 +48,18 @@ class CozytouchAtlanticPassAPCBoilerMain extends AbstractCozytouchDevice
 			$sensor=$deviceSensors[$i];
 			$sensorURL = $sensor->getURL();
 			$sensorModel = $sensor->getModel();
-			// création des équipements
 			//  getModel()
-			// controllableName: io:AtlanticPassAPCDHWComponent,
+			// controllableName: 
+			//					 io:TotalFossilEnergyConsumptionSensor
+			//							core:FossilEnergyConsumptionState
+			//					 io:DHWRelatedFossilEnergyConsumptionSensor
+			//							core:FossilEnergyConsumptionState
+			//					 io:HeatingRelatedFossilEnergyConsumptionSensor
+			//							core:FossilEnergyConsumptionState
+
+			// création des équipements
+			//					 io:AtlanticPassAPCDHWComponent,
+
 			//					 io:AtlanticPassAPCHeatingAndCoolingZoneComponent
 			// 					 rattacher io:AtlanticPassAPCZoneTemperatureSensor à l'équipement précédent créé.
 			// sinon
@@ -56,30 +67,11 @@ class CozytouchAtlanticPassAPCBoilerMain extends AbstractCozytouchDevice
 			log::add('cozytouch', 'info', 'Sensor : '.$sensorURL);
 			switch($sensorModel)
 			{
-				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCOUTSIDETEMPERATURESENSOR :
+				case CozyTouchDeviceToDisplay::CTDTD_TOTALFOSSILENERGYCONSUMPTION :
 					// state du capteur
 					foreach ($sensor->getStates() as $state)
 					{
-						if($state->name==CozyTouchStateName::CTSN_TEMP)
-						{
-							log::add('cozytouch', 'info', 'State : '.$state->name);
-							$cmdId = $sensorURL.'_'.$state->name;
-							$type ="info";
-							$subType = CozyTouchStateName::CTSN_TYPE[$state->name];
-							$name = "Temp. extérieur";
-							$dashboard =CozyTouchCmdDisplay::DISPLAY_DASH[$subType];
-							$mobile =CozyTouchCmdDisplay::DISPLAY_MOBILE[$subType];
-							$value =$subType=="numeric"?0:($subType=="string"?'value':0);
-							self::upsertCommand($eqLogic,$cmdId,$type,$subType,$name,1,$value,$dashboard,$mobile,$i+1);
-							break;
-						}
-					}
-					break;
-				case CozyTouchDeviceToDisplay::CTDTD_TOTALENERGYCONSUMPTIONSENSOR :
-					// state du capteur
-					foreach ($sensor->getStates() as $state)
-					{
-						if($state->name==CozyTouchStateName::CTSN_ELECNRJCONSUMPTION)
+						if($state->name==CozyTouchStateName::CTSN_FOSSILENERGYCONSUMPTION)
 						{
 							log::add('cozytouch', 'info', 'State : '.$state->name);
 							$cmdId = $sensorURL.'_'.$state->name;
@@ -94,11 +86,11 @@ class CozytouchAtlanticPassAPCBoilerMain extends AbstractCozytouchDevice
 						}
 					}
 					break;
-				case CozyTouchDeviceToDisplay::CTDTD_DHWENERGYCONSUMPTIONSENSOR :
+				case CozyTouchDeviceToDisplay::CTDTD_DHWRELATEDFOSSILENERGYCONSUMPTION :
 					// state du capteur
 					foreach ($sensor->getStates() as $state)
 					{
-						if($state->name==CozyTouchStateName::CTSN_ELECNRJCONSUMPTION)
+						if($state->name==CozyTouchStateName::CTSN_FOSSILENERGYCONSUMPTION)
 						{
 							log::add('cozytouch', 'info', 'State : '.$state->name);
 							$cmdId = $sensorURL.'_'.$state->name;
@@ -113,11 +105,11 @@ class CozytouchAtlanticPassAPCBoilerMain extends AbstractCozytouchDevice
 						}
 					}
 					break;
-				case CozyTouchDeviceToDisplay::CTDTD_HEATINGENERGYCONSUMPTIONSENSOR :
+				case CozyTouchDeviceToDisplay::CTDTD_HEATINGRELATEDFOSSILENERGYCONSUMPTION :
 					// state du capteur
 					foreach ($sensor->getStates() as $state)
 					{
-						if($state->name==CozyTouchStateName::CTSN_ELECNRJCONSUMPTION)
+						if($state->name==CozyTouchStateName::CTSN_FOSSILENERGYCONSUMPTION)
 						{
 							log::add('cozytouch', 'info', 'State : '.$state->name);
 							$cmdId = $sensorURL.'_'.$state->name;
@@ -132,19 +124,23 @@ class CozytouchAtlanticPassAPCBoilerMain extends AbstractCozytouchDevice
 						}
 					}
 					break;
+
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCDHW :
-					CozytouchAtlanticHeatPumpDHWComponent::BuildEqLogic($sensor);
+					// setDHWOnOffState : on / off
+					// setPassAPCDHWMode : comfort / eco / internalScheduling
+
+					CozytouchAtlanticAPCBoilerDHWComponent::BuildEqLogic($sensor);
 					break;
-				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATINGCOOLINGZONE :
-					$j = $i+1;
-					if($j<$nbSesnsors && $deviceSensors[$j]->getModel()==CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONETEMPERATURESENSOR)
-					{
-						$sensorstemp = $sensor->getSensors();
-						$sensorstemp[] = $deviceSensors[$j];
-						$sensor->setVar(CozyTouchDeviceInfo::CTDI_SENSORS, $sensorstemp);
-					}
-					CozytouchAtlanticHeatPumpHeatZoneComponent::BuildEqLogic($sensor);
-					break;
+			// 	case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATINGZONE :
+			// 		$j = $i+1;
+			// 		if($j<$nbSesnsors && $deviceSensors[$j]->getModel()==CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONETEMPERATURESENSOR)
+			// 		{
+			// 			$sensorstemp = $sensor->getSensors();
+			// 			$sensorstemp[] = $deviceSensors[$j];
+			// 			$sensor->setVar(CozyTouchDeviceInfo::CTDI_SENSORS, $sensorstemp);
+			// 		}
+			// 		CozytouchAtlanticHeatPumpHeatZoneComponent::BuildEqLogic($sensor);
+			// 		break;
 			}
 			
 		}

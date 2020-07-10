@@ -17,7 +17,7 @@ if (!class_exists('CozyTouchCommands')) {
 
 class AbstractCozytouchDevice
 {
-    public static function BuildDefaultEqLogic($device)
+    public static function BuildDefaultEqLogic($device,$attached='')
     {
         $eqLogic = eqLogic::byLogicalId($device->getVar(CozyTouchDeviceInfo::CTDI_OID), 'cozytouch');
         if (!is_object($eqLogic)) {
@@ -28,6 +28,7 @@ class AbstractCozytouchDevice
             $eqLogic->setName($device->getVar(CozyTouchDeviceInfo::CTDI_LABEL));
             $eqLogic->setLogicalId($device->getVar(CozyTouchDeviceInfo::CTDI_OID));
 
+            $eqLogic->setConfiguration('attached_device', $attached);
             $eqLogic->setConfiguration('type_device', $device->getVar(CozyTouchDeviceInfo::CTDI_TYPEDEVICE));
             $eqLogic->setConfiguration('device_model', $device->getVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME));
             $eqLogic->setConfiguration('device_url', $device->getVar(CozyTouchDeviceInfo::CTDI_URL));

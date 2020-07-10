@@ -11,13 +11,9 @@ class CozytouchAtlanticHeatPumpDHWComponent extends AbstractCozytouchDevice
 	
 	const DISPLAY = [
 		CozyTouchStateName::CTSN_DHWONOFF=>[1,0,1],
-		//CozyTouchStateName::CTSN_PASSAPCDHWPROFILE=>[2,1,0],
-		//CozyTouchStateName::CTSN_PASSAPCDHWMODE=>[3,1,0],
-		//CozyTouchStateName::CTSN_PASSAPCDHWCONFIGURATION=>[4,1,0],
 		CozyTouchStateName::CTSN_ECOTARGETDHWTEMPERATURE=>[5,1,0],
 		CozyTouchStateName::CTSN_COMFORTTARGETDHWTEMPERATURE=>[6,0,0],
 		CozyTouchStateName::CTSN_TARGETDHWTEMPERATURE=>[7,0,1],
-		//CozyTouchStateName::CTSN_BOOSTONOFF=>[8,0,1],
 		CozyTouchDeviceEqCmds::SET_BOOST=>[12,0,0],
 		CozyTouchDeviceEqCmds::SET_ONOFF=>[13,0,0],
 		CozyTouchStateName::CTSN_CONNECT=>[99,1,1],
@@ -28,7 +24,7 @@ class CozytouchAtlanticHeatPumpDHWComponent extends AbstractCozytouchDevice
     {
 		$deviceURL = $device->getURL();
         log::add('cozytouch', 'info', 'creation (ou mise à jour) '.$device->getVar(CozyTouchDeviceInfo::CTDI_LABEL));
-		$eqLogic =self::BuildDefaultEqLogic($device);
+		$eqLogic =self::BuildDefaultEqLogic($device,'pump');
 		$eqLogic->setCategory('energy', 1);
 		$eqLogic->save();
 

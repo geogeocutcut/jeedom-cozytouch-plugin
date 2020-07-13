@@ -225,7 +225,7 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
 		
 		switch($value)
 		{
-			case 'auto';
+			case 'auto':
 				$cmd = Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_VENTILATIONMODE);
 				log::add('cozytouch', 'debug', __('Ventilation Demand Mode : ', __FILE__).$cmd->execCmd());
 				$config = Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_VENTILATIONCONFIG);

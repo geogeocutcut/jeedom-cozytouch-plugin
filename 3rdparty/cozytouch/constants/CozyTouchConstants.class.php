@@ -282,7 +282,7 @@ class CozyTouchStateName
 	const EQ_VMCTEMPEXT="vmcTempExt";
 	const EQ_HOTWATERCOEFF = "hotWaterCoefficient";
 	const EQ_ZONECTRLMODE ="zoneMode";
-	
+	const EQ_HOTWATERMODE = "hotwaterMode";
 	const EQ_ISHOTWATERHEATING ="isHotWaterHeating";
 
 	const CTSN_TYPE = [
@@ -313,6 +313,10 @@ class CozyTouchStateName
 
 		self::EQ_VMCMODE=>"string",
 		self::EQ_ZONECTRLMODE=>"string",
+		self::EQ_HOTWATERMODE=>"string",
+
+		self::CTSN_HEATINGCOMFORTMODEAVAILABILITY=>"string",
+		self::CTSN_ACIVEHETAINGPROGRAM=>"string",
 
 		self::CTSN_TARGETTEMP=>"numeric",
 		self::CTSN_COMFROOMTEMP=>"numeric",
@@ -502,7 +506,12 @@ class CozyTouchStateName
 
 		self::EQ_VMCMODE => "VMC Mode",
 		self::EQ_HOTWATERCOEFF => "Proportion eau chaude",
+		self::EQ_HOTWATERMODE => "Mode Virtuel",
+
 		
+		self::CTSN_HEATINGCOMFORTMODEAVAILABILITY=>"Mode Chauffage",
+		self::CTSN_ACIVEHETAINGPROGRAM=>"Programmation",
+
 		self::EQ_VMCTEMPINSUFFLE => "Temp insufflé",
 		self::EQ_VMCTEMPEXT=>"Temp extérieur",
 		self::EQ_ZONECTRLMODE=>"Mode",
@@ -1048,6 +1057,7 @@ class CozyTouchDeviceStateName
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATINGZONE=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_THERMALCONFIGURATION,
+			CozyTouchStateName::CTSN_PASSAPCOPERATINGMODE,
 			CozyTouchStateName::CTSN_HEATINGCOMFORTMODEAVAILABILITY,
 			CozyTouchStateName::CTSN_PASSAPCHEATINGMODE,
 			CozyTouchStateName::CTSN_PASSAPCHEATINGPROFILE,
@@ -1207,7 +1217,13 @@ class CozyTouchDeviceEqCmds
 			self::SET_ZONECTRLZONEOFF,
 			self::SET_ZONECTRLZONEMANU,
 			self::SET_ZONECTRLZONEPROGRAM
-		]
+		],
+		
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATINGZONE=>[
+			self::SET_ZONECTRLZONEOFF,
+			self::SET_ZONECTRLZONEMANU,
+			self::SET_ZONECTRLZONEPROGRAM
+		],
 	];
 	const ACTION_LABEL = [
 		self::SET_STANDBY=>"StandBy",

@@ -66,8 +66,8 @@ if (!class_exists('CozytouchAtlanticPassAPCBoilerMain')){
 	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticPassAPCBoilerMain.class.php";
 }
 
-if (!class_exists('CozytouchAtlanticAPCBoilerDHWComponent')){
-	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticAPCBoilerDHWComponent.class.php";
+if (!class_exists('CozytouchAtlanticPassAPCBoilerDHWComponent')){
+	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticPassAPCBoilerDHWComponent.class.php";
 }
 
 class CozyTouchManager
@@ -208,6 +208,7 @@ class CozyTouchManager
 				$eqLogicTmp = eqLogic::byLogicalId($device->getVar(CozyTouchDeviceInfo::CTDI_OID), 'cozytouch');
 				if (is_object($eqLogicTmp)) {
 					$device_type = $eqLogicTmp->getConfiguration('device_model');
+					$attached_device = $eqLogicTmp->getConfiguration('attached_device');
 					switch($device_type){
 						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICTOWELDRYER:
 							CozytouchAtlanticTowelDryer::refresh_boost($eqLogicTmp);
@@ -252,6 +253,12 @@ class CozyTouchManager
 							break;
 						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONECTRLZONE:
 							CozytouchAtlanticZoneControlZone::refresh_mode($eqLogicTmp);
+							break;	
+						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCDHW:
+							if($attached_device=='boiler')
+							{
+								CozytouchAtlanticPassAPCBoilerDHWComponent::refresh_hotwatermode($eqLogic);
+							}
 							break;	
 					}
 					$eqLogicTmp->refreshWidget();
@@ -386,7 +393,7 @@ class CozyTouchManager
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCDHW:
 				if($attached_device=='boiler')
 				{
-					CozytouchAtlanticAPCBoilerDHWComponent::execute($cmd,$_options);
+					CozytouchAtlanticPassAPCBoilerDHWComponent::execute($cmd,$_options);
 				}
 				else
 				{

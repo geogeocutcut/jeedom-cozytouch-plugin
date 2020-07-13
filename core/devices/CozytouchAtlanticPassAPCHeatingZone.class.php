@@ -8,11 +8,11 @@ class CozytouchAtlanticPassAPCHeatingZone extends AbstractCozytouchDevice
     //[{order},{beforeLigne},{afterLigne}]
 	const DISPLAY = [
 		CozyTouchStateName::CTSN_NAME=>[1,0,0],
+		CozyTouchStateName::EQ_ZONECTRLMODE=>[2,1,0],
 		CozyTouchStateName::CTSN_TEMP=>[3,1,0],
-		
-		CozyTouchDeviceActions::CTPC_SETTARGETTEMP=>[18,0,0],
-		CozyTouchDeviceActions::CTPC_SETECOHEATINGTARGET=>[19,0,0],
-		CozyTouchDeviceActions::CTPC_SETCOMFORTHEATINGTARGET=>[20,0,0],
+		CozyTouchDeviceActions::CTPC_SETTARGETTEMP=>[18,1,0],
+		CozyTouchDeviceActions::CTPC_SETECOHEATINGTARGET=>[19,1,0],
+		CozyTouchDeviceActions::CTPC_SETCOMFORTHEATINGTARGET=>[20,1,0],
 		
 		CozyTouchDeviceEqCmds::SET_ZONECTRLZONEOFF=>[30,1,0],// CTPC_SETAPCHEATINGMODE = stop vs on
 		CozyTouchDeviceEqCmds::SET_ZONECTRLZONEMANU=>[31,0,0],// CTPC_SETAPCHEATINGMODE = comfort
@@ -142,7 +142,7 @@ class CozytouchAtlanticPassAPCHeatingZone extends AbstractCozytouchDevice
 			$thermo->setValue($targettemp->getId());
 			$thermo->save();
 		}
-		
+		self::refresh_mode($eqLogic);
 		self::orderCommand($eqLogic);
     }
     
@@ -295,7 +295,6 @@ class CozytouchAtlanticPassAPCHeatingZone extends AbstractCozytouchDevice
 				}
 			}
 			
-			self::refresh_mode($eqLogic);
 	
 		} 
 		catch (Exception $e) {
@@ -310,139 +309,70 @@ class CozytouchAtlanticPassAPCHeatingZone extends AbstractCozytouchDevice
 		log::add('cozytouch', 'debug', 'Zone refresh mode : '.$deviceURL);
 		$main_mode = self::getOpeMod($deviceURL);
 		$mode=Cmd::byEqLogicIdAndLogicalId($eqDevice->getId(),$deviceURL.'_'.CozyTouchStateName::EQ_ZONECTRLMODE);
-		$temp_target=Cmd::byEqLogicIdAndLogicalId($eqDevice->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_TARGETTEMP);
-		$heat_temp_target=Cmd::byEqLogicIdAndLogicalId($eqDevice->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_HEATINGTARGETTEMP);
-		$cool_temp_target=Cmd::byEqLogicIdAndLogicalId($eqDevice->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_COOLINGTARGETTEMP);
-		if($main_mode=="heating")
-		{
-			$temp_target->setCollectDate('');
-			$temp_target->event($heat_temp_target->execCmd());
-		}
-		else
-		{
-			$temp_target->setCollectDate('');
-			$temp_target->event($cool_temp_target->execCmd());
-		}
-		
 		$mode_value = "";
 		if(is_object($mode))
 		{
-			if($main_mode=="heating")
+			
+			$heating_state=Cmd::byEqLogicIdAndLogicalId($eqDevice->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_HEATINGONOFF);
+			if(is_object($heating_state))
 			{
-				$heating_state=Cmd::byEqLogicIdAndLogicalId($eqDevice->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_HEATINGONOFF);
-				if(is_object($heating_state))
-				{
-					$is_heating=$heating_state->execCmd();
-				}
-				if($is_heating=="off")
-				{
-					$mode_value="off";
-				}
-				else
-				{
-					$profil=Cmd::byEqLogicIdAndLogicalId($eqDevice->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_PASSAPCHEATINGMODE)->execCmd();
-					if($profil=="internalScheduling")
-					{
-						$mode_value="heating_prog";
-					}
-					else
-					{
-						$mode_value="heating_manu";
-					}
-				}
+				$is_heating=$heating_state->execCmd();
+			}
+			if($is_heating=="off")
+			{
+				$mode_value="off";
 			}
 			else
 			{
-				$cooling_state=Cmd::byEqLogicIdAndLogicalId($eqDevice->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_COOLINGONOFF);
-				if(is_object($cooling_state))
+				$profil=Cmd::byEqLogicIdAndLogicalId($eqDevice->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_PASSAPCHEATINGMODE)->execCmd();
+				if($profil=="internalScheduling")
 				{
-					$is_cooling=$cooling_state->execCmd();
-				}
-				if($is_cooling=="off")
-				{
-					$mode_value="off";
+					$mode_value="heating_prog";
 				}
 				else
 				{
-					$profil=Cmd::byEqLogicIdAndLogicalId($eqDevice->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_PASSAPCCOOLINGMODE)->execCmd();
-					if($profil=="internalScheduling")
-					{
-						$mode_value="cooling_prog";
-					}
-					else
-					{
-						$mode_value="cooling_manu";
-					}
+					$mode_value="heating_manu";
 				}
 			}
+			
 			$mode->setCollectDate('');
 			$mode->event($mode_value);
 		}
 
-		//self::updateVisibility($eqDevice,$main_mode,$mode_value);
+		self::updateVisibility($eqDevice,$main_mode,$mode_value);
 	}
 
 	public static function updateVisibility($eqDevice,$mode_main,$mode_value)
 	{
 		$deviceURL = $eqDevice->getConfiguration('device_url');
 		log::add('cozytouch', 'debug', __('Visibility calculation ', __FILE__).$deviceURL);
-		$prog = $eqDevice->getCmd(null,CozyTouchDeviceEqCmds::SET_ZONECTRLZONEPROGRAM);
 		$consigne = $eqDevice->getCmd(null,CozyTouchDeviceActions::CTPC_SETTARGETTEMP );
 		$eco_heating = $eqDevice->getCmd(null,CozyTouchDeviceActions::CTPC_SETECOHEATINGTARGET );
 		$comfort_heating = $eqDevice->getCmd(null,CozyTouchDeviceActions::CTPC_SETCOMFORTHEATINGTARGET );
-		$eco_cooling = $eqDevice->getCmd(null,CozyTouchDeviceActions::CTPC_SETECOCOOLINGTARGET );
-		$comfort_cooling = $eqDevice->getCmd(null,CozyTouchDeviceActions::CTPC_SETCOMFORTCOOLINGTARGET  );
-		if($mode_main=="drying" || $mode_main=="auto")
+
+		
+		if($mode_value=="off")
 		{
-			$consigne->setIsVisible(1);
-			$prog->setIsVisible(0);
+			$consigne->setIsVisible(0);
 			$eco_heating->setIsVisible(0);
 			$comfort_heating->setIsVisible(0);
-			$eco_cooling->setIsVisible(0);
-			$comfort_cooling->setIsVisible(0);
 		}
-		else
+		else if($mode_value=="heating_manu")
 		{
-			$prog->setIsVisible(1);
-			if($mode_value=="off")
-			{
-				$consigne->setIsVisible(0);
-				$eco_heating->setIsVisible(0);
-				$comfort_heating->setIsVisible(0);
-				$eco_cooling->setIsVisible(0);
-				$comfort_cooling->setIsVisible(0);
-			}
-			else if($mode_value=="heating_manu" || $mode_value=="cooling_manu")
-			{
-				$consigne->setIsVisible(1);
-				$eco_heating->setIsVisible(0);
-				$comfort_heating->setIsVisible(0);
-				$eco_cooling->setIsVisible(0);
-				$comfort_cooling->setIsVisible(0);
-			}
-			else if($mode_value=="heating_prog")
-			{
-				$consigne->setIsVisible(0);
-				$eco_heating->setIsVisible(1);
-				$comfort_heating->setIsVisible(1);
-				$eco_cooling->setIsVisible(0);
-				$comfort_cooling->setIsVisible(0);
-			}
-			else if($mode_value=="cooling_prog")
-			{
-				$consigne->setIsVisible(0);
-				$eco_heating->setIsVisible(0);
-				$comfort_heating->setIsVisible(0);
-				$eco_cooling->setIsVisible(1);
-				$comfort_cooling->setIsVisible(1);
-			}
+			$consigne->setIsVisible(1);
+			$eco_heating->setIsVisible(0);
+			$comfort_heating->setIsVisible(0);
 		}
-		$prog->save();
+		else if($mode_value=="heating_prog")
+		{
+			$consigne->setIsVisible(0);
+			$eco_heating->setIsVisible(1);
+			$comfort_heating->setIsVisible(1);
+		}
+
 		$consigne->save();
 		$eco_heating->save();
 		$comfort_heating->save();
-		$eco_cooling->save();
-		$comfort_cooling->save();
 	}
 	//off / manu / prog
 	//set eco, comfort heating / eco, comfort cooling
@@ -450,7 +380,7 @@ class CozytouchAtlanticPassAPCHeatingZone extends AbstractCozytouchDevice
 	{
         $cmds = array(
             array(
-                "name"=>$mode=="heating"?CozyTouchDeviceActions::CTPC_SETHEATINGONOFF:CozyTouchDeviceActions::CTPC_SETCOOLINGONOFF,
+                "name"=>$mode==CozyTouchDeviceActions::CTPC_SETHEATINGONOFF,
                 "values"=>$value
 			)
         );
@@ -463,7 +393,7 @@ class CozytouchAtlanticPassAPCHeatingZone extends AbstractCozytouchDevice
 		self::setOnOffMode($device_url,"on",$mode);
         $cmds = array(
             array(
-                "name"=>$mode=="heating"?CozyTouchDeviceActions::CTPC_SETAPCHEATINGMODE:CozyTouchDeviceActions::CTPC_SETAPCCOOLINGMODE,
+                "name"=>CozyTouchDeviceActions::CTPC_SETAPCHEATINGMODE,
                 "values"=>"manu"
 			)
         );
@@ -477,7 +407,7 @@ class CozytouchAtlanticPassAPCHeatingZone extends AbstractCozytouchDevice
 		self::setOnOffMode($device_url,"on",$mode);
         $cmds = array(
             array(
-                "name"=>$mode=="heating"?CozyTouchDeviceActions::CTPC_SETAPCHEATINGMODE:CozyTouchDeviceActions::CTPC_SETAPCCOOLINGMODE,
+                "name"=>CozyTouchDeviceActions::CTPC_SETAPCHEATINGMODE,
                 "values"=>"internalScheduling"
 			)
         );

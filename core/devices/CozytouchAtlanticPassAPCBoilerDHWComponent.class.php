@@ -3,7 +3,7 @@ require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 require_once dirname(__FILE__) . "/../../3rdparty/cozytouch/constants/CozyTouchConstants.class.php";
 require_once dirname(__FILE__) . "/../class/CozyTouchManager.class.php";
 
-class CozytouchAtlanticAPCBoilerDHWComponent extends AbstractCozytouchDevice
+class CozytouchAtlanticPassAPCBoilerDHWComponent extends AbstractCozytouchDevice
 {
     const cold_water = 15;
 	//[{order},{beforeLigne},{afterLigne}]
@@ -12,6 +12,7 @@ class CozytouchAtlanticAPCBoilerDHWComponent extends AbstractCozytouchDevice
 	const DISPLAY = [
 		//CozyTouchStateName::CTSN_DHWONOFF=>[1,0,1],
 		//CozyTouchStateName::CTSN_PASSAPCDHWMODE=>[3,1,1],
+		CozyTouchStateName::EQ_HOTWATERMODE=>[3,1,1],
 		CozyTouchDeviceEqCmds::SET_OFF=>[13,1,0],
 		CozyTouchDeviceEqCmds::SET_COMFORT=>[14,0,0],
 		CozyTouchDeviceEqCmds::SET_ECO=>[15,0,0],
@@ -83,7 +84,22 @@ class CozytouchAtlanticAPCBoilerDHWComponent extends AbstractCozytouchDevice
 		$internal_button->setSubType('other');
 		$internal_button->save();
 
-        self::orderCommand($eqLogic);
+		$hot_mode = $eqLogic->getCmd(null,CozyTouchStateName::EQ_HOTWATERMODE );
+    	if (!is_object($hot_mode)) {
+    		$hot_mode = new cozytouchCmd();
+    		$hot_mode->setIsVisible(1);
+    	}
+    	$hot_mode->setEqLogic_id($eqLogic->getId());
+    	$hot_mode->setName(__('Mode hotwater', __FILE__));
+    	$hot_mode->setType('info');
+    	$hot_mode->setSubType('string');
+        $hot_mode->setLogicalId(CozyTouchStateName::EQ_HOTWATERMODE);
+    	$hot_mode->setTemplate('dashboard', 'hotwatermode');
+    	$hot_mode->setTemplate('mobile', 'hotwatermode');
+		$hot_mode->save();
+		self::orderCommand($eqLogic);
+		
+		self::refresh_hotwatermode($eqLogic);
 
     }
     
@@ -169,13 +185,52 @@ class CozytouchAtlanticAPCBoilerDHWComponent extends AbstractCozytouchDevice
 					}
 				}
 			}
-	
+			self::refresh_hotwatermode($eqLogic);
 		} 
 		catch (Exception $e) {
 	
         }
 	}
 
+	public static function refresh_hotwatermode($eqLogic)
+	{
+		$deviceURL = $eqLogic->getConfiguration('device_url');
+		$onoff_value=0;
+		$profil_value="";
+		$mode_value="";
+		$mode = Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),CozyTouchStateName::EQ_HOTWATERMODE);
+		$onoff = Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_DHWONOFF);
+		$profil = Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_PASSAPCDHWMODE);
+		if (is_object($mode) && is_object($onoff) && is_object($profil)) {
+			log::add('cozytouch', 'debug', __('Howater Previous Mode : ', __FILE__).$mode->execCmd());
+			$onoff_value=$onoff->execCmd();
+			$profil_value=$profil->execCmd();
+			if($onoff_value==1) {
+				switch($profil_value)
+				{
+					case "eco":
+						$mode_value="eco";
+						break;
+					case "comfort":
+						$mode_value="comfort";
+						break;
+					case "internalScheduling":
+							$mode_value="prog";
+							break;
+					default :
+						$mode_value="comfort";
+						break;
+				}
+			}
+			else {
+				$mode_value="off";
+			}
+
+			$mode->setCollectDate('');
+			$mode->event($mode_value);
+			log::add('cozytouch', 'debug', __('Howater Next Mode : ', __FILE__).$mode_value);
+		}
+    }
 	public static function setOff($device_url)
 	{
         $cmds = array(

@@ -3,8 +3,8 @@ require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 require_once dirname(__FILE__) . "/../../3rdparty/cozytouch/constants/CozyTouchConstants.class.php";
 require_once dirname(__FILE__) . "/../class/CozyTouchManager.class.php";
 
-if (!class_exists('CozytouchAtlanticAPCBoilerDHWComponent')) {
-	require_once dirname(__FILE__) . "/CozytouchAtlanticAPCBoilerDHWComponent.class.php";
+if (!class_exists('CozytouchAtlanticPassAPCBoilerDHWComponent')) {
+	require_once dirname(__FILE__) . "/CozytouchAtlanticPassAPCBoilerDHWComponent.class.php";
 }
 if (!class_exists('CozytouchAtlanticPassAPCHeatingZone')) {
 	require_once dirname(__FILE__) . "/CozytouchAtlanticPassAPCHeatingZone.class.php";
@@ -128,19 +128,18 @@ class CozytouchAtlanticPassAPCBoilerMain extends AbstractCozytouchDevice
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCDHW :
 					// setDHWOnOffState : on / off
 					// setPassAPCDHWMode : comfort / eco / internalScheduling
-
-					CozytouchAtlanticAPCBoilerDHWComponent::BuildEqLogic($sensor);
+					CozytouchAtlanticPassAPCBoilerDHWComponent::BuildEqLogic($sensor);
 					break;
-			// 	case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATINGZONE :
-			// 		$j = $i+1;
-			// 		if($j<$nbSesnsors && $deviceSensors[$j]->getModel()==CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONETEMPERATURESENSOR)
-			// 		{
-			// 			$sensorstemp = $sensor->getSensors();
-			// 			$sensorstemp[] = $deviceSensors[$j];
-			// 			$sensor->setVar(CozyTouchDeviceInfo::CTDI_SENSORS, $sensorstemp);
-			// 		}
-			// 		CozytouchAtlanticHeatPumpHeatZoneComponent::BuildEqLogic($sensor);
-			// 		break;
+				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATINGZONE :
+					$j = $i+1;
+					if($j<$nbSesnsors && $deviceSensors[$j]->getModel()==CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCZONETEMPERATURESENSOR)
+					{
+						$sensorstemp = $sensor->getSensors();
+						$sensorstemp[] = $deviceSensors[$j];
+						$sensor->setVar(CozyTouchDeviceInfo::CTDI_SENSORS, $sensorstemp);
+					}
+					CozytouchAtlanticPassAPCHeatingZone::BuildEqLogic($sensor);
+					break;
 			}
 			
 		}

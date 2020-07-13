@@ -6,9 +6,9 @@
 		jeedom.cmd.update['#id#'] = function(_options){
 			$(".iconCmd#uid#").empty();
 			if (parseInt(_options.display_value) == 1) {
-				$('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append("<img width=100px src='plugins/cozytouch/core/template/images/ChauffeEauOn.png'>");
+				$('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append("<img width=100px src='plugins/cozytouch/core/template/images/hotwater_on.png'>");
 			} else {
-				$('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append("<img width=100px src='plugins/cozytouch/core/template/images/ChauffeEauOff.png'>");
+				$('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append("<img width=100px src='plugins/cozytouch/core/template/images/hotwater_off.png'>");
 			}
 			$('.cmd[data-cmd_id=#id#]').attr('title','Valeur du '+_options.valueDate+', collectée le '+_options.collectDate);
 		}

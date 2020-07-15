@@ -70,6 +70,10 @@ if (!class_exists('CozytouchAtlanticPassAPCBoilerDHWComponent')){
 	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticPassAPCBoilerDHWComponent.class.php";
 }
 
+if (!class_exists('CozytouchAtlanticPassAPCHeatingZone')){
+	require_once dirname(__FILE__) . "/../devices/CozytouchAtlanticPassAPCHeatingZone.class.php";
+}
+
 class CozyTouchManager
 {
     private static $_client = null;
@@ -257,9 +261,15 @@ class CozyTouchManager
 						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCDHW:
 							if($attached_device=='boiler')
 							{
-								CozytouchAtlanticPassAPCBoilerDHWComponent::refresh_hotwatermode($eqLogic);
+								CozytouchAtlanticPassAPCBoilerDHWComponent::refresh_hotwatermode($eqLogicTmp);
 							}
 							break;	
+						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATINGZONE:
+							CozytouchAtlanticPassAPCHeatingZone::refresh_mode($eqLogicTmp);
+							break;
+						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCBOILER :
+							CozytouchAtlanticPassAPCBoilerMain::refresh_onoff($eqLogicTmp);
+							break;
 					}
 					$eqLogicTmp->refreshWidget();
 				}
@@ -291,7 +301,11 @@ class CozyTouchManager
 		}
 		else if($state->name==CozyTouchStateName::CTSN_HEATINGONOFF)
 		{
-			$value = ($state->value=='on');
+			$value = ($state->value=='on' );
+		}
+		else if($state->name==CozyTouchStateName::CTSN_HEATINGONOFF)
+		{
+			$value = ($state->value=='on' );
 		}
 		else if($state->name==CozyTouchStateName::CTSN_DEROGATIONONOFF)
 		{
@@ -389,7 +403,6 @@ class CozyTouchManager
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCBOILER:
 				CozytouchAtlanticPassAPCBoilerMain::execute($cmd,$_options);
 				break;
-
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCDHW:
 				if($attached_device=='boiler')
 				{
@@ -399,6 +412,9 @@ class CozyTouchManager
 				{
 					CozytouchAtlanticHeatPumpDHWComponent::execute($cmd,$_options);
 				}
+				break;
+			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATINGZONE:
+				CozytouchAtlanticPassAPCHeatingZone::execute($cmd,$_options);
 				break;
 		}
 		$eqLogic->refreshWidget();

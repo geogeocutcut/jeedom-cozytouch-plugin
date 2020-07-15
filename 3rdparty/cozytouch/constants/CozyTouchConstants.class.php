@@ -771,6 +771,9 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_CO2CONCENTRATION],
 
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCBOILER=>[
+			CozyTouchStateName::CTSN_HEATINGONOFF,
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_PASSAPCOPERATINGMODE,
 			CozyTouchStateName::CTSN_CONNECT],
 
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATINGZONE=>[
@@ -1057,7 +1060,6 @@ class CozyTouchDeviceStateName
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATINGZONE=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_THERMALCONFIGURATION,
-			CozyTouchStateName::CTSN_PASSAPCOPERATINGMODE,
 			CozyTouchStateName::CTSN_HEATINGCOMFORTMODEAVAILABILITY,
 			CozyTouchStateName::CTSN_PASSAPCHEATINGMODE,
 			CozyTouchStateName::CTSN_PASSAPCHEATINGPROFILE,
@@ -1073,7 +1075,9 @@ class CozyTouchDeviceStateName
 		],
 
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCBOILER=>[
+			CozyTouchStateName::CTSN_HEATINGONOFF,
 			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_PASSAPCOPERATINGMODE,
 			CozyTouchStateName::CTSN_CONNECT
 		]
 	];
@@ -1219,6 +1223,7 @@ class CozyTouchDeviceEqCmds
 			self::SET_ZONECTRLZONEPROGRAM
 		],
 		
+
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATINGZONE=>[
 			self::SET_ZONECTRLZONEOFF,
 			self::SET_ZONECTRLZONEMANU,

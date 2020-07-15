@@ -7,7 +7,6 @@ class CozytouchAtlanticPassAPCHeatingZone extends AbstractCozytouchDevice
 {
     //[{order},{beforeLigne},{afterLigne}]
 	const DISPLAY = [
-		CozyTouchStateName::CTSN_NAME=>[1,0,0],
 		CozyTouchStateName::EQ_ZONECTRLMODE=>[2,1,0],
 		CozyTouchStateName::CTSN_TEMP=>[3,1,0],
 		CozyTouchDeviceActions::CTPC_SETTARGETTEMP=>[18,1,0],
@@ -295,6 +294,7 @@ class CozytouchAtlanticPassAPCHeatingZone extends AbstractCozytouchDevice
 				}
 			}
 			
+			self::refresh_mode($eqLogic);
 	
 		} 
 		catch (Exception $e) {
@@ -312,7 +312,7 @@ class CozytouchAtlanticPassAPCHeatingZone extends AbstractCozytouchDevice
 		$mode_value = "";
 		if(is_object($mode))
 		{
-			
+			$is_heating="off";
 			$heating_state=Cmd::byEqLogicIdAndLogicalId($eqDevice->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_HEATINGONOFF);
 			if(is_object($heating_state))
 			{
@@ -344,13 +344,16 @@ class CozytouchAtlanticPassAPCHeatingZone extends AbstractCozytouchDevice
 
 	public static function updateVisibility($eqDevice,$mode_main,$mode_value)
 	{
+		
+		self::orderCommand($eqDevice);
+
 		$deviceURL = $eqDevice->getConfiguration('device_url');
-		log::add('cozytouch', 'debug', __('Visibility calculation ', __FILE__).$deviceURL);
+		log::add('cozytouch', 'debug', __('Visibility calculation ', __FILE__).$deviceURL.' mode : '.$mode_value .'/'.$mode_main);
 		$consigne = $eqDevice->getCmd(null,CozyTouchDeviceActions::CTPC_SETTARGETTEMP );
 		$eco_heating = $eqDevice->getCmd(null,CozyTouchDeviceActions::CTPC_SETECOHEATINGTARGET );
 		$comfort_heating = $eqDevice->getCmd(null,CozyTouchDeviceActions::CTPC_SETCOMFORTHEATINGTARGET );
 
-		
+
 		if($mode_value=="off")
 		{
 			$consigne->setIsVisible(0);
@@ -373,6 +376,7 @@ class CozytouchAtlanticPassAPCHeatingZone extends AbstractCozytouchDevice
 		$consigne->save();
 		$eco_heating->save();
 		$comfort_heating->save();
+		
 	}
 	//off / manu / prog
 	//set eco, comfort heating / eco, comfort cooling
@@ -380,7 +384,7 @@ class CozytouchAtlanticPassAPCHeatingZone extends AbstractCozytouchDevice
 	{
         $cmds = array(
             array(
-                "name"=>$mode==CozyTouchDeviceActions::CTPC_SETHEATINGONOFF,
+                "name"=>CozyTouchDeviceActions::CTPC_SETHEATINGONOFF,
                 "values"=>$value
 			)
         );
@@ -394,7 +398,7 @@ class CozytouchAtlanticPassAPCHeatingZone extends AbstractCozytouchDevice
         $cmds = array(
             array(
                 "name"=>CozyTouchDeviceActions::CTPC_SETAPCHEATINGMODE,
-                "values"=>"manu"
+                "values"=>"comfort"
 			)
         );
 		parent::genericApplyCommand($device_url,$cmds);

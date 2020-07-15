@@ -26,11 +26,15 @@ class CozytouchAtlanticPassAPCBoilerMain extends AbstractCozytouchDevice
 	// 		io:HeatingRelatedFossilEnergyConsumptionSensor
 	//			core:FossilEnergyConsumptionState
 
+	// Reste à faire le mode on/off => assez complexe 
+	// on => heating
+	// off => stop
+
     const cold_water = 15;
     //[{order},{beforeLigne},{afterLigne}]
 	const DISPLAY = [
+		CozyTouchDeviceEqCmds::SET_ONOFF=>[1,1,1],
 		CozyTouchStateName::CTSN_CONNECT=>[99,1,1],
-		CozyTouchDeviceEqCmds::SET_ONOFF=>[1,0,1],
 		'refresh'=>[1,0,0]
     ];
     
@@ -81,7 +85,7 @@ class CozytouchAtlanticPassAPCBoilerMain extends AbstractCozytouchDevice
 							$dashboard =CozyTouchCmdDisplay::DISPLAY_DASH[$subType];
 							$mobile =CozyTouchCmdDisplay::DISPLAY_MOBILE[$subType];
 							$value =$subType=="numeric"?0:($subType=="string"?'value':0);
-							self::upsertCommand($eqLogic,$cmdId,$type,$subType,$name,1,$value,$dashboard,$mobile,$i+1);
+							self::upsertCommand($eqLogic,$cmdId,$type,$subType,$name,1,$value,$dashboard,$mobile,10);
 							break;
 						}
 					}
@@ -100,7 +104,7 @@ class CozytouchAtlanticPassAPCBoilerMain extends AbstractCozytouchDevice
 							$dashboard =CozyTouchCmdDisplay::DISPLAY_DASH[$subType];
 							$mobile =CozyTouchCmdDisplay::DISPLAY_MOBILE[$subType];
 							$value =$subType=="numeric"?0:($subType=="string"?'value':0);
-							self::upsertCommand($eqLogic,$cmdId,$type,$subType,$name,1,$value,$dashboard,$mobile,$i+1);
+							self::upsertCommand($eqLogic,$cmdId,$type,$subType,$name,1,$value,$dashboard,$mobile,11);
 							break;
 						}
 					}
@@ -119,7 +123,7 @@ class CozytouchAtlanticPassAPCBoilerMain extends AbstractCozytouchDevice
 							$dashboard =CozyTouchCmdDisplay::DISPLAY_DASH[$subType];
 							$mobile =CozyTouchCmdDisplay::DISPLAY_MOBILE[$subType];
 							$value =$subType=="numeric"?0:($subType=="string"?'value':0);
-							self::upsertCommand($eqLogic,$cmdId,$type,$subType,$name,1,$value,$dashboard,$mobile,$i+1);
+							self::upsertCommand($eqLogic,$cmdId,$type,$subType,$name,1,$value,$dashboard,$mobile,12);
 							break;
 						}
 					}
@@ -143,6 +147,35 @@ class CozytouchAtlanticPassAPCBoilerMain extends AbstractCozytouchDevice
 			}
 			
 		}
+
+		$onoff_state = $eqLogic->getCmd(null, 'onoffstate');
+    	if (!is_object($onoff_state)) {
+    		$onoff_state = new cozytouchCmd();
+    		$onoff_state->setIsVisible(0);
+    	}
+
+    	$onoff_state->setEqLogic_id($eqLogic->getId());
+    	$onoff_state->setName(__('onoffstate', __FILE__));
+    	$onoff_state->setType('info');
+    	$onoff_state->setSubType('binary');
+    	$onoff_state->setIsHistorized(1);
+    	$onoff_state->setLogicalId('onoffstate');
+		$onoff_state->save();
+		
+		$onoff_toogle = $eqLogic->getCmd(null, CozyTouchDeviceEqCmds::SET_ONOFF);
+		if (!is_object($onoff_toogle)) {
+			$onoff_toogle = new cozytouchCmd();
+			$onoff_toogle->setLogicalId(CozyTouchDeviceEqCmds::SET_ONOFF);
+		}
+		$onoff_toogle->setEqLogic_id($eqLogic->getId());
+		$onoff_toogle->setName(__('Etat', __FILE__));
+		$onoff_toogle->setType('action');
+		$onoff_toogle->setSubType('slider');
+		$onoff_toogle->setTemplate('dashboard', 'toggle');
+		$onoff_toogle->setTemplate('mobile', 'toggle');
+		$onoff_toogle->setIsVisible(1);
+		$onoff_toogle->setValue($onoff_state->getId());
+		$onoff_toogle->save();
 
 		$eqLogic->setConfiguration('sensors',$sensors);
 
@@ -172,6 +205,10 @@ class CozytouchAtlanticPassAPCBoilerMain extends AbstractCozytouchDevice
 				$cmd->setDisplay('forceReturnLineBefore',self::DISPLAY[$key][1]);
 				$cmd->setDisplay('forceReturnLineAfter',self::DISPLAY[$key][2]);
 			}
+			elseif($key != CozyTouchStateName::CTSN_FOSSILENERGYCONSUMPTION)
+			{
+				$cmd->setIsVisible(0);
+			}
 			$cmd->save();
 		}
 	}
@@ -187,6 +224,11 @@ class CozytouchAtlanticPassAPCBoilerMain extends AbstractCozytouchDevice
 			case 'refresh':
 				log::add('cozytouch', 'debug', 'command : '.$device_url.' refresh');
 				break;
+
+			case CozyTouchDeviceEqCmds::SET_ONOFF:
+				log::add('cozytouch', 'debug', 'command : '.$device_url.' '.CozyTouchDeviceEqCmds::SET_ONOFF);
+				self::setOnOff($device_url,$_options['slider']);
+				break;	
 		}
 		if($refresh)
 		{
@@ -219,11 +261,65 @@ class CozytouchAtlanticPassAPCBoilerMain extends AbstractCozytouchDevice
 					}
 				}
 			}
-	
+			self::refresh_onoff($eqLogic);
 		} 
 		catch (Exception $e) {
 	
         }
+	}
+
+	public static function refresh_onoff($eqDevice) 
+    {
+		$deviceURL = $eqDevice->getConfiguration('device_url');
+
+		log::add('cozytouch', 'debug', 'Zone refresh mode : '.$deviceURL);
+		$mode=Cmd::byEqLogicIdAndLogicalId($eqDevice->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_PASSAPCOPERATINGMODE);
+		if(is_object($mode))
+		{
+			$mode_value = $mode->execCmd();
+			$heating_state=Cmd::byEqLogicIdAndLogicalId($eqDevice->getId(),'onoffstate');
+			if(is_object($heating_state))
+			{
+				if($mode_value=="heating")
+				{
+					$value=1;
+				}
+				else
+				{
+					$value=0;
+				}
+				$heating_state->setCollectDate('');
+				$heating_state->event($value);
+			}
+		}
+	}
+
+	public static function setOnOff($device_url,$value)
+	{
+		if($value>0)
+		{
+			$cmds = array(
+				array(
+					"name"=>CozyTouchDeviceActions::CTPC_SETAPCOPERATINGMODE,
+					"values"=>"heating"
+				)
+			);
+
+			parent::genericApplyCommand($device_url,$cmds);
+		}
+		else
+		{
+			$cmds = array(
+				array(
+					"name"=>CozyTouchDeviceActions::CTPC_SETAPCOPERATINGMODE,
+					"values"=>"stop"
+				)
+			);
+
+			parent::genericApplyCommand($device_url,$cmds);
+		}
+		
+		sleep(2);
 	}
 }
 ?>

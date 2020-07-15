@@ -197,7 +197,10 @@ dans le dashboard :
 <img  src="../images/zonezone.PNG" alt="..."></div>
 
 
+- **Autres** :
 
+    - Seche serviette Sensium de la marque Atlantic
+    - Chaudière Naia2 atlantic
 
 FAQ
 ===

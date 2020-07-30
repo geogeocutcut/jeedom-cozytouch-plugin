@@ -65,6 +65,9 @@ class CozyTouchDeviceToDisplay
 	const CTDTD_ATLANTICLIGHT = "io:LightIOSystemDeviceSensor";
 	const CTDTD_ATLANTICRELATIVEHUMIDITY = "io:RelativeHumidityIOSystemDeviceSensor";
 
+	const CTDTD_ATLANTICTOWELDRYERIC3= "io:AtlanticElectricalTowelDryer_IC3_IOComponent";
+	const CTDTD_WEATHERSYSTEMSENSOR= "core:WeatherSystemSensor";
+	
 	const CTDTD_ATLANTICHOTWATER ="io:AtlanticDomesticHotWaterProductionIOComponent";
 	const CTDTD_ATLANTICHOTWATERSPLIT ="io:AtlanticDomesticHotWaterProductionV2_SPLIT_IOComponent";
 	const CTDTD_ATLANTICHOTWATERCES4 ="io:AtlanticDomesticHotWaterProductionV2_CE_S4_IOComponent";

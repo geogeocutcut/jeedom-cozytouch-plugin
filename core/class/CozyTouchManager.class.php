@@ -215,6 +215,7 @@ class CozyTouchManager
 					$attached_device = $eqLogicTmp->getConfiguration('attached_device');
 					switch($device_type){
 						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICTOWELDRYER:
+						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICTOWELDRYERIC3:
 							CozytouchAtlanticTowelDryer::refresh_boost($eqLogicTmp);
 							CozytouchAtlanticTowelDryer::refresh_dry($eqLogicTmp);
 							CozytouchAtlanticTowelDryer::refresh_thermostat($eqLogicTmp);
@@ -362,6 +363,7 @@ class CozyTouchManager
 				CozytouchAtlanticHeatSystem::execute($cmd,$_options);
     			break;
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICTOWELDRYER:
+			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICTOWELDRYERIC3:
 				CozytouchAtlanticTowelDryer::execute($cmd,$_options);
     			break;
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP:

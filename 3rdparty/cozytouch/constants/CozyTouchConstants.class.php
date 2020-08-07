@@ -873,7 +873,7 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_DRYINGDURATIONMAX,
 			CozyTouchStateName::CTSN_TOWELDRYERTEMPORARY],
 
-		CozyTouchDeviceToDisplay::CTDTD_ATLANTICTOWELDRYERIC3R=>[
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICTOWELDRYERIC3=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_CONNECT,
 			CozyTouchStateName::CTSN_OPEMODE,
@@ -1199,18 +1199,14 @@ class CozyTouchDeviceEqCmds
 			self::SET_STANDBY,
 			self::SET_EXTERNAL,
 			self::SET_INTERNAL,
-			self::SET_AUTO,
-			self::SET_BOOST,
-			self::SET_DRY,
+			self::SET_AUTO
 		],
 		
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICTOWELDRYERIC3=>[
 			self::SET_STANDBY,
 			self::SET_EXTERNAL,
 			self::SET_INTERNAL,
-			self::SET_AUTO,
-			self::SET_BOOST,
-			self::SET_DRY,
+			self::SET_AUTO
 		],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATERAJUSTTEMP=>[
 			self::SET_STANDBY,

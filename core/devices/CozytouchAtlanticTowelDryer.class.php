@@ -3,6 +3,10 @@ require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 require_once dirname(__FILE__) . "/../../3rdparty/cozytouch/constants/CozyTouchConstants.class.php";
 require_once dirname(__FILE__) . "/../class/CozyTouchManager.class.php";
 
+if (!class_exists('CozytouchAtlanticDimmableLight')) {
+	require_once dirname(__FILE__) . "/CozytouchAtlanticDimmableLight.class.php";
+}
+
 class CozytouchAtlanticTowelDryer extends AbstractCozytouchDevice
 {
 	//[{order},{beforeLigne},{afterLigne}]
@@ -47,6 +51,7 @@ class CozytouchAtlanticTowelDryer extends AbstractCozytouchDevice
 			$sensorModel = $sensor->getModel();
 			$sensors[] = array($sensorURL,$sensor->getModel());
 			log::add('cozytouch', 'info', 'Sensor : '.$sensorURL);
+			
 			// state du capteur
 			foreach ($sensor->getStates() as $state)
 			{

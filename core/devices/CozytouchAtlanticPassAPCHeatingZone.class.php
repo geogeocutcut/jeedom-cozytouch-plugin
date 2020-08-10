@@ -68,7 +68,7 @@ class CozytouchAtlanticPassAPCHeatingZone extends AbstractCozytouchDevice
 		$cmd->setTemplate('mobile', 'zonectlzonemode');
 		$cmd->save();
 
-		self::refresh($eqLogic);
+		self::refresh($eqLogic,false);
 
 		// Consigne
 		$targettemp = $eqLogic->getCmd(null,$deviceURL.'_'.CozyTouchStateName::CTSN_TARGETTEMP );
@@ -269,7 +269,7 @@ class CozytouchAtlanticPassAPCHeatingZone extends AbstractCozytouchDevice
 		}
     }
 
-    protected static function refresh($eqLogic)
+    protected static function refresh($eqLogic,$refresh_mode =true)
 	{
 		log::add('cozytouch', 'debug', 'refresh : '.$eqLogic->getName());
 		try {
@@ -293,9 +293,10 @@ class CozytouchAtlanticPassAPCHeatingZone extends AbstractCozytouchDevice
 					}
 				}
 			}
-			
-			self::refresh_mode($eqLogic);
-	
+			if($refresh_mode)
+			{
+				self::refresh_mode($eqLogic);
+			}
 		} 
 		catch (Exception $e) {
 	

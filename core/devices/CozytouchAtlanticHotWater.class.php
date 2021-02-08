@@ -288,6 +288,7 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 		$cmd = Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_OPEMODECAPABILITIES);
 		if (is_object($cmd)) 
 		{
+			log::add('cozytouch', 'debug', __('Refresh is heating', __FILE__));
 			$tmp =json_decode($cmd->execCmd());
 			if($tmp->{'energyDemandStatus'}==1)
 			{

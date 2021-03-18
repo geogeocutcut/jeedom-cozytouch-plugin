@@ -3,11 +3,16 @@
 	"name" : "CozyTouch",
 	"licence" : "AGPL",
 	"author" : "geoblack",
+	"description" : {
+		"fr_FR": "Plugin permettant la communication avec certains équipements connectés avec le bridge Cozytouch"
+	},
 	"require" : "4.0",
 	"category":"wellness",
 	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile"],
 	"issue" : "https://github.com/geogeocutcut/jeedom-cozytouch-plugin/issues",
  	"changelog" : "https://geogeocutcut.github.io/jeedom-cozytouch-plugin/fr_FR/#changelog",
- 	"documentation" : "https://geogeocutcut.github.io/jeedom-cozytouch-plugin/fr_FR/"
-
+ 	"documentation" : "https://geogeocutcut.github.io/jeedom-cozytouch-plugin/fr_FR/",
+	 "link" : {
+		"forum":"https://community.jeedom.com/t/plugin-cozytouch/25066"
+	}
 }

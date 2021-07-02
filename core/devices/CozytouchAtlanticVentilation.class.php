@@ -444,10 +444,6 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
 					"day"=> date('j'),
 					"dayNight"=> "night"
 				]
-			),
-			array(
-				"name"=>CozyTouchDeviceActions::CTPC_SETVENTILATIONCONFIGMODE,
-				"values"=>'standard'
 			)
         );
         parent::genericApplyCommand($device_url,$cmds);
@@ -478,10 +474,6 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
 					"day"=> date('j'),
 					"dayNight"=> "night"
 				]
-			),
-			array(
-				"name"=>CozyTouchDeviceActions::CTPC_SETVENTILATIONCONFIGMODE,
-				"values"=>'standard'
 			)
         );
         parent::genericApplyCommand($device_url,$cmds);
@@ -512,10 +504,6 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
 					"day"=> date('j'),
 					"dayNight"=> "night"
 				]
-			),
-			array(
-				"name"=>CozyTouchDeviceActions::CTPC_SETVENTILATIONCONFIGMODE,
-				"values"=>'standard'
 			)
         );
         parent::genericApplyCommand($device_url,$cmds);

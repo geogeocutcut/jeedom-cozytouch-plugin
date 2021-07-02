@@ -140,6 +140,7 @@ class CozyTouchManager
 					CozytouchAtlanticVentilation::BuildEqLogic($device);
 					break;
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERV3:
+				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERV2MURAL:
 					CozytouchAtlanticHotWaterV3::BuildEqLogic($device);
 					break;
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICPASSAPCHEATPUMPMAIN:
@@ -381,6 +382,7 @@ class CozyTouchManager
 				CozytouchAtlanticHotWaterFlatC2::execute($cmd,$_options);
     			break;
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERV3 :
+			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERV2MURAL:
 				CozytouchAtlanticHotWaterV3::execute($cmd,$_options);
 				break;
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT :

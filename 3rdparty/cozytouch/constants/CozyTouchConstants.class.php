@@ -74,6 +74,7 @@ class CozyTouchDeviceToDisplay
 	const CTDTD_ATLANTICHOTWATERFLATC2 ="io:AtlanticDomesticHotWaterProductionV2_CE_FLAT_C2_IOComponent";
 	const CTDTD_ATLANTICHOTWATERCETHIV4 ="io:AtlanticDomesticHotWaterProductionV2_CETHI_V4_IOComponent";
 	const CTDTD_ATLANTICHOTWATERV3="io:AtlanticDomesticHotWaterProductionV3IOComponent";
+	const CTDTD_ATLANTICHOTWATERV2MURAL="io:AtlanticDomesticHotWaterProductionV2_MURAL_IOComponent";
 	const CTDTD_ATLANTICHOTWATERV2AEX="io:AtlanticDomesticHotWaterProductionV2_AEX_IOComponent";
 	const CTDTD_ATLANTICHOTWATERELECTRICITYSENSOR ="io:DHWCumulatedElectricalEnergyConsumptionIOSystemDeviceSensor";
 
@@ -109,6 +110,7 @@ class CozyTouchDeviceToDisplay
 		self::CTDTD_ATLANTICHOTWATERCES4,
 		self::CTDTD_ATLANTICHOTWATERFLATC2,
 		self::CTDTD_ATLANTICHOTWATERV3,
+		self::CTDTD_ATLANTICHOTWATERV2MURAL,
 		self::CTDTD_ATLANTICHOTWATERV2AEX,
 		self::CTDTD_ATLANTICHEATRECOVERYVENT,
 		self::CTDTD_ATLANTICPASSAPCHEATPUMPMAIN,
@@ -145,6 +147,7 @@ class CozyTouchDeviceToDisplay
 		self::CTDTD_ATLANTICHOTWATERCES4,
 		self::CTDTD_ATLANTICHOTWATERFLATC2,
 		self::CTDTD_ATLANTICHOTWATERV3,
+		self::CTDTD_ATLANTICHOTWATERV2MURAL,
 		self::CTDTD_ATLANTICHOTWATERV2AEX,
 		self::CTDTD_ATLANTICHOTWATERELECTRICITYSENSOR,
 		self::CTDTD_ATLANTICHEATRECOVERYVENT,
@@ -617,6 +620,16 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_DHWCAPACITY,
 			CozyTouchStateName::CTSN_OPEMODE,
 			CozyTouchStateName::CTSN_OPEMODECAPABILITIES],
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERV2MURAL=>[
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_TEMP,
+			CozyTouchStateName::CTSN_CONNECT,
+			CozyTouchStateName::CTSN_BOOSTMODEDURATION,
+			CozyTouchStateName::CTSN_DHWMODE,
+			CozyTouchStateName::CTSN_TARGETTEMP,
+			CozyTouchStateName::CTSN_DHWCAPACITY,
+			CozyTouchStateName::CTSN_OPEMODE,
+			CozyTouchStateName::CTSN_OPEMODECAPABILITIES],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERV2AEX=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_CONNECT,
@@ -937,6 +950,19 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_OPEMODECAPABILITIES,
 			CozyTouchStateName::EQ_ISHOTWATERHEATING],
 
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERV2MURAL=>[
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_CONNECT,
+			CozyTouchStateName::CTSN_TEMP,
+			CozyTouchStateName::CTSN_BOOSTMODEDURATION,
+			CozyTouchStateName::CTSN_DHWMODE,
+			CozyTouchStateName::CTSN_TARGETTEMP,
+			CozyTouchStateName::CTSN_DHWCAPACITY,
+			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION,
+			CozyTouchStateName::CTSN_OPEMODE,
+			CozyTouchStateName::CTSN_OPEMODECAPABILITIES,
+			CozyTouchStateName::EQ_ISHOTWATERHEATING],
+
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERV2AEX=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_CONNECT,
@@ -1233,6 +1259,11 @@ class CozyTouchDeviceEqCmds
 			self::SET_MANUECOINACTIVE
 		],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERV3=>[
+			self::SET_AUTOMODE,
+			self::SET_MANUECOACTIVE,
+			self::SET_MANUECOINACTIVE
+		],
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERV2MURAL=>[
 			self::SET_AUTOMODE,
 			self::SET_MANUECOACTIVE,
 			self::SET_MANUECOINACTIVE

@@ -1283,6 +1283,7 @@ class CozyTouchDeviceConfig
             ]
         ],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERV3,
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERV2MURAL,
         CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERV2AEX,
         
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHEATRECOVERYVENT,

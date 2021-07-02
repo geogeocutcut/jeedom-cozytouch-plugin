@@ -8,17 +8,17 @@
     <script>
         jeedom.cmd.update['#id#'] = function(_options){
             if (_options.display_value == 'boost') {
-                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img src="plugins/cozytouch/core/template/images/vent_boost.png">');
+                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img style="width:100px;min-height:100px;" src="plugins/cozytouch/core/template/images/vent_boost.png">');
             } else if (_options.display_value == 'refresh') {
-                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img src="plugins/cozytouch/core/template/images/vent_refresh.png">');
+                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img style="width:100px;min-height:100px;" src="plugins/cozytouch/core/template/images/vent_refresh.png">');
             } else if (_options.display_value == 'prog') {
-                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img src="plugins/cozytouch/core/template/images/vent_prog.png">');
+                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img style="width:100px;min-height:100px;" src="plugins/cozytouch/core/template/images/vent_prog.png">');
             } else if (_options.display_value == 'manual') {
-                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img src="plugins/cozytouch/core/template/images/vent_manual.png">');
+                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img style="width:100px;min-height:100px;" src="plugins/cozytouch/core/template/images/vent_manual.png">');
             } else if (_options.display_value == 'high') {
-                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img src="plugins/cozytouch/core/template/images/vent_high.png">');
+                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img style="width:100px;min-height:100px;" src="plugins/cozytouch/core/template/images/vent_high.png">');
             } else {
-                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img src="plugins/cozytouch/core/template/images/vent_auto.png">');
+                $('.cmd[data-cmd_id=#id#] .iconCmd#id#').empty().append('<img style="width:100px;min-height:100px;" src="plugins/cozytouch/core/template/images/vent_auto.png">');
             }
         }
         jeedom.cmd.update['#id#']({display_value:'#state#'});

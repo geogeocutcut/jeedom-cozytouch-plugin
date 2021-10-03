@@ -14,6 +14,8 @@ class CozyTouchApiClient
 	public $jsessionId ='';
 	public $userId ='';
 	public $userPassword='';
+	public $atlantic_token='';
+	public $atlantic_jwt='';
 	
 	public static $CURL_OPTS = array(
 			CURLOPT_CONNECTTIMEOUT => 10,
@@ -29,14 +31,49 @@ class CozyTouchApiClient
 			$this->userId=$params['userId'];
 		if(array_key_exists ( 'userPassword', $params )==true)
 			$this->userPassword=$params['userPassword'];
+		$this->getToken();
+		$this->getJwt();
 		$this->getJSessionId();
 		
 	}
-	
+
+	public function getToken() {
+		$post_data = array(
+				'grant_type' => 'password',
+				'username' => $this->userId,
+				'password' => $this->userPassword,
+		);
+		$opts = self::$CURL_OPTS;
+		
+		// Header Authorization : Basic czduc0RZZXdWbjVGbVV4UmlYN1pVSUM3ZFI4YTphSDEzOXZmbzA1ZGdqeDJkSFVSQkFTbmhCRW9h
+		// Content-Type : application/x-www-form-urlencoded
+		$curl_response = $this->makeRequest("token",'POST',$post_data,FALSE,FALSE,["Content-Type: application/x-www-form-urlencoded","Authorization: Basic ".CozyTouchServiceDiscovery::ATLANTIC_CLIENTID]);
+		if (!$curl_response)
+		{
+			log::add('cozytouch', 'info', 'pas de réponse');
+		}
+		
+		log::add('cozytouch', 'debug', $curl_response);
+		$result_arr = json_decode($curl_response);
+		log::add('cozytouch', 'debug', $result_arr);
+		$this->atlantic_token = $result_arr->access_token;
+	}
+
+	public function getJwt() {
+		$opts = self::$CURL_OPTS;
+		// Header Authorization : Bearer $this->token
+		$curl_response = $this->makeRequest("jwt",'GET',null,FALSE,FALSE,["Authorization: Bearer ".$this->atlantic_token]);
+		if (!$curl_response)
+		{
+			log::add('cozytouch', 'info', 'pas de réponse');
+		}
+		log::add('cozytouch', 'debug', $curl_response);
+		$this->atlantic_jwt = trim($curl_response, '"');
+	}
+
 	public function getJSessionId() {
 		$post_data = array(
-				'userId' => $this->userId,
-				'userPassword' => $this->userPassword
+				'jwt' => $this->atlantic_jwt,
 		);
 		$opts = self::$CURL_OPTS;
 		$curl_response = $this->makeRequest("login",'POST',$post_data,TRUE);
@@ -45,7 +82,7 @@ class CozyTouchApiClient
 		$this->jsessionId = implode($jsessionid);
 	}
 	
-	public function makeRequest($route, $method = 'GET', $data = array(),$header = FALSE,$format_JSON=FALSE){
+	public function makeRequest($route, $method = 'GET', $data = array(),$header = FALSE,$format_JSON=FALSE, $headers = array()){
 		$ch = curl_init();
 		$opts = self::$CURL_OPTS;
 		$url=CozyTouchServiceDiscovery::Resolve($route);
@@ -63,11 +100,12 @@ class CozyTouchApiClient
 					{
 						$opts[CURLOPT_POSTFIELDS] = json_encode($data);
 						$opts[CURLOPT_HTTPHEADER][] = "Content-Type: application/json";
-						log::add('cozytouch', 'debug', 'data '.$opts[CURLOPT_POSTFIELDS]);
+						log::add('cozytouch', 'debug', 'json '.$opts[CURLOPT_POSTFIELDS]);
 					}
 					else
 					{
 						$opts[CURLOPT_POSTFIELDS] = http_build_query($data);
+						log::add('cozytouch', 'debug', 'data '.$opts[CURLOPT_POSTFIELDS]);
 					}
 					break;
 			}
@@ -76,6 +114,15 @@ class CozyTouchApiClient
 		log::add('cozytouch', 'debug', 'call '.$url);
 		$opts[CURLOPT_URL] = $url;
 		$opts[CURLOPT_HTTPHEADER][]='Cookie: '.$this->jsessionId;
+		if(is_array($headers))
+		{
+			foreach($headers as $h)
+			{
+				$opts[CURLOPT_HTTPHEADER][]=$h;
+				
+				log::add('cozytouch', 'debug', 'header : '.$h);
+			}
+		}
 		$opts[CURLOPT_HEADER] = $header;
 		curl_setopt_array($ch, $opts);
 		$result = curl_exec($ch);

@@ -210,12 +210,15 @@ FAQ
 
 Changelog
 ========= 
+
 Version : 2.2.0 - 03/10/2021
 ---------------
+
 -   Nouvelle Gestion de l'authentification (Nécessite que la mise à jour du compte ait été faite dans l'application mobile Cozytouch)
 
 Version : 2.1.0 - 24/04/2020
 ---------------
+
 -   Compatibilité jeedom V4 : migration des widgets.
 
 -   Gestion de nouveaux équipements

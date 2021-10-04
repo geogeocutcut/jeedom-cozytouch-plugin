@@ -80,6 +80,19 @@ class CozyTouchApiClient
 		preg_match("/JSESSIONID=\\w{32}/u", $curl_response, $jsessionid);
 		
 		$this->jsessionId = implode($jsessionid);
+
+		if($this->jsessionId=='')
+		{
+			$post_data = array(				
+				'userId' => $this->userId,
+				'userPassword' => $this->userPassword
+			);
+			$opts = self::$CURL_OPTS;
+			$curl_response = $this->makeRequest("login",'POST',$post_data,TRUE);
+			preg_match("/JSESSIONID=\\w{32}/u", $curl_response, $jsessionid);
+			
+			$this->jsessionId = implode($jsessionid);
+		}
 	}
 	
 	public function makeRequest($route, $method = 'GET', $data = array(),$header = FALSE,$format_JSON=FALSE, $headers = array()){
@@ -134,6 +147,7 @@ class CozyTouchApiClient
 		if($this->jsessionId=='')
 		{
 			log::add('cozytouch', 'info', 'JSESSIONID vide');
+			return;
 		}
 		$curl_response = $this->makeRequest('setup','GET');
 		if (!$curl_response)
@@ -152,6 +166,7 @@ class CozyTouchApiClient
 		if($this->jsessionId=='')
 		{
 			//die('Not Authorised');
+			return;
 		}
 		$curl_response = $this->makeRequest('devices','GET');
 		if (!$curl_response)
@@ -166,6 +181,7 @@ class CozyTouchApiClient
 		if($this->jsessionId=='')
 		{
 			//die('Not Authorised');
+			return;
 		}
 		$curl_response = $this->makeRequest('deviceInfo','GET',["deviceURL"=>$device_url]);
 		if (!$curl_response)
@@ -179,6 +195,7 @@ class CozyTouchApiClient
 		if($this->jsessionId=='')
 		{
 			//die('Not Authorised');
+			return;
 		}
 		$curl_response = $this->makeRequest('apply','POST',$post_data,false,true);
 		if (!$curl_response)

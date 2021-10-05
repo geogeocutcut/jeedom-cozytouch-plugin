@@ -76,7 +76,9 @@ class CozyTouchDeviceToDisplay
 	const CTDTD_ATLANTICHOTWATERV3="io:AtlanticDomesticHotWaterProductionV3IOComponent";
 	const CTDTD_ATLANTICHOTWATERV2MURAL="io:AtlanticDomesticHotWaterProductionV2_MURAL_IOComponent";
 	const CTDTD_ATLANTICHOTWATERV2AEX="io:AtlanticDomesticHotWaterProductionV2_AEX_IOComponent";
+	const CTDTD_ATLANTICHOTWATERMBL="modbuslink:AtlanticDomesticHotWaterProductionMBLComponent";
 	const CTDTD_ATLANTICHOTWATERELECTRICITYSENSOR ="io:DHWCumulatedElectricalEnergyConsumptionIOSystemDeviceSensor";
+	const CTDTD_ATLANTICHOTWATERELECTRICITYMBLSENSOR ="modbuslink:DHWCumulatedElectricalEnergyConsumptionMBLSystemDeviceSenso";
 
 	const CTDTD_ATLANTICHEATRECOVERYVENT ="io:AtlanticHeatRecoveryVentilationIOComponent";
 	const CTDTD_ATLANTICC02SENSOR ="io:CO2IOSystemDeviceSensor";
@@ -111,6 +113,7 @@ class CozyTouchDeviceToDisplay
 		self::CTDTD_ATLANTICHOTWATERFLATC2,
 		self::CTDTD_ATLANTICHOTWATERV3,
 		self::CTDTD_ATLANTICHOTWATERV2MURAL,
+		self::CTDTD_ATLANTICHOTWATERMBL,
 		self::CTDTD_ATLANTICHOTWATERV2AEX,
 		self::CTDTD_ATLANTICHEATRECOVERYVENT,
 		self::CTDTD_ATLANTICPASSAPCHEATPUMPMAIN,
@@ -149,7 +152,9 @@ class CozyTouchDeviceToDisplay
 		self::CTDTD_ATLANTICHOTWATERV3,
 		self::CTDTD_ATLANTICHOTWATERV2MURAL,
 		self::CTDTD_ATLANTICHOTWATERV2AEX,
+		self::CTDTD_ATLANTICHOTWATERMBL,
 		self::CTDTD_ATLANTICHOTWATERELECTRICITYSENSOR,
+		self::CTDTD_ATLANTICHOTWATERELECTRICITYMBLSENSOR,
 		self::CTDTD_ATLANTICHEATRECOVERYVENT,
 		self::CTDTD_ATLANTICC02SENSOR,
 		
@@ -230,6 +235,11 @@ class CozyTouchStateName
 	const CTSN_MINISHOWERMANUAL = "core:MinimalShowerManualModeState";
 	const CTSN_MAXISHOWERMANUAL = "core:MaximalShowerManualModeState";
 	const CTSN_OPEMODECAPABILITIES = "io:OperatingModeCapabilitiesState"; // {"energyDemandStatus": 0,"relaunch": 1,"absence": 1,"rateManagement": 0}
+	const CTSN_MBLDHWBOOSTMODE = "modbuslink:DHWBoostModeState";
+	const CTSN_MBLDHWBOOSTMODE = "modbuslink:DHWAbsenceModeState";
+	const CTSN_MBLDHWMODE = "modbuslink:DHWModeState";
+	const CTSN_MBLDHWCAPACITY = "modbuslink:DHWCapacityState";
+	const CTSN_MBLMIDDLETEMP = "modbuslink:MiddleWaterTemperatureState";
 
 	const CTSN_AIRDEMANDE ="core:AirDemandState";
 	const CTSN_VENTILATIONCONFIG ="io:VentilationConfigurationModeState";

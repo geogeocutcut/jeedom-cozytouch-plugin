@@ -73,6 +73,7 @@ class CozyTouchDeviceToDisplay
 	const CTDTD_ATLANTICHOTWATERCES4 ="io:AtlanticDomesticHotWaterProductionV2_CE_S4_IOComponent";
 	const CTDTD_ATLANTICHOTWATERFLATC2 ="io:AtlanticDomesticHotWaterProductionV2_CE_FLAT_C2_IOComponent";
 	const CTDTD_ATLANTICHOTWATERCETHIV4 ="io:AtlanticDomesticHotWaterProductionV2_CETHI_V4_IOComponent";
+	const CTDTD_ATLANTICHOTWATERCV4E ="io:AtlanticDomesticHotWaterProductionV2_CV4E_IOComponent";
 	const CTDTD_ATLANTICHOTWATERV3="io:AtlanticDomesticHotWaterProductionV3IOComponent";
 	const CTDTD_ATLANTICHOTWATERV2MURAL="io:AtlanticDomesticHotWaterProductionV2_MURAL_IOComponent";
 	const CTDTD_ATLANTICHOTWATERV2AEX="io:AtlanticDomesticHotWaterProductionV2_AEX_IOComponent";
@@ -110,6 +111,7 @@ class CozyTouchDeviceToDisplay
 		self::CTDTD_ATLANTICHOTWATERSPLIT,
 		self::CTDTD_ATLANTICHOTWATERCETHIV4,
 		self::CTDTD_ATLANTICHOTWATERCES4,
+		self::CTDTD_ATLANTICHOTWATERCV4E,
 		self::CTDTD_ATLANTICHOTWATERFLATC2,
 		self::CTDTD_ATLANTICHOTWATERV3,
 		self::CTDTD_ATLANTICHOTWATERV2MURAL,
@@ -148,6 +150,7 @@ class CozyTouchDeviceToDisplay
 		self::CTDTD_ATLANTICHOTWATERSPLIT,
 		self::CTDTD_ATLANTICHOTWATERCETHIV4,
 		self::CTDTD_ATLANTICHOTWATERCES4,
+		self::CTDTD_ATLANTICHOTWATERCV4E,
 		self::CTDTD_ATLANTICHOTWATERFLATC2,
 		self::CTDTD_ATLANTICHOTWATERV3,
 		self::CTDTD_ATLANTICHOTWATERV2MURAL,
@@ -672,6 +675,17 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_TARGETTEMP,
 			CozyTouchStateName::CTSN_DHWCAPACITY,
 			CozyTouchStateName::CTSN_OPEMODECAPABILITIES],
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERCV4E=>[
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_MIDDLETEMP,
+			CozyTouchStateName::CTSN_CONNECT,
+			CozyTouchStateName::CTSN_BOOSTMODEDURATION,
+			CozyTouchStateName::CTSN_V40WATERVOLUME,
+			CozyTouchStateName::CTSN_AWAYMODEDURATION,
+			CozyTouchStateName::CTSN_DHWMODE,
+			CozyTouchStateName::CTSN_TARGETTEMP,
+			CozyTouchStateName::CTSN_DHWCAPACITY,
+			CozyTouchStateName::CTSN_OPEMODECAPABILITIES],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERFLATC2=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_CONNECT,
@@ -1000,6 +1014,20 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_OPEMODECAPABILITIES,
 			CozyTouchStateName::EQ_ISHOTWATERHEATING],
 
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERCV4E=>[
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_CONNECT,
+			CozyTouchStateName::CTSN_MIDDLETEMP,
+			CozyTouchStateName::CTSN_V40WATERVOLUME,
+			CozyTouchStateName::CTSN_BOOSTMODEDURATION,
+			CozyTouchStateName::CTSN_AWAYMODEDURATION,
+			CozyTouchStateName::CTSN_DHWMODE,
+			CozyTouchStateName::CTSN_TARGETTEMP,
+			CozyTouchStateName::CTSN_DHWCAPACITY,
+			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION,
+			CozyTouchStateName::CTSN_OPEMODECAPABILITIES,
+			CozyTouchStateName::EQ_ISHOTWATERHEATING],
+
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERCETHIV4=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_CONNECT,
@@ -1289,6 +1317,11 @@ class CozyTouchDeviceEqCmds
 			self::SET_MANUECOINACTIVE
 		],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERCETHIV4=>[
+			self::SET_AUTOMODE,
+			self::SET_MANUECOACTIVE,
+			self::SET_MANUECOINACTIVE
+		],
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERCV4E=>[
 			self::SET_AUTOMODE,
 			self::SET_MANUECOACTIVE,
 			self::SET_MANUECOINACTIVE

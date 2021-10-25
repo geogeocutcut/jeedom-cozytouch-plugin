@@ -685,7 +685,8 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_DHWMODE,
 			CozyTouchStateName::CTSN_TARGETTEMP,
 			CozyTouchStateName::CTSN_DHWCAPACITY,
-			CozyTouchStateName::CTSN_OPEMODECAPABILITIES],
+			CozyTouchStateName::CTSN_OPEMODECAPABILITIES
+		],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERFLATC2=>[
 			CozyTouchStateName::CTSN_NAME,
 			CozyTouchStateName::CTSN_CONNECT,

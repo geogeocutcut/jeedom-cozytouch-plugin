@@ -239,7 +239,7 @@ class CozyTouchStateName
 	const CTSN_MAXISHOWERMANUAL = "core:MaximalShowerManualModeState";
 	const CTSN_OPEMODECAPABILITIES = "io:OperatingModeCapabilitiesState"; // {"energyDemandStatus": 0,"relaunch": 1,"absence": 1,"rateManagement": 0}
 	const CTSN_MBLDHWBOOSTMODE = "modbuslink:DHWBoostModeState";
-	const CTSN_MBLDHWBOOSTMODE = "modbuslink:DHWAbsenceModeState";
+	const CTSN_MBLDHWABSENCEMODE = "modbuslink:DHWAbsenceModeState";
 	const CTSN_MBLDHWMODE = "modbuslink:DHWModeState";
 	const CTSN_MBLDHWCAPACITY = "modbuslink:DHWCapacityState";
 	const CTSN_MBLMIDDLETEMP = "modbuslink:MiddleWaterTemperatureState";

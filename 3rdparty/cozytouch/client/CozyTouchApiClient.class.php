@@ -178,14 +178,14 @@ class CozyTouchApiClient
 	}
 	
 	public function getSetup() {
-		var auth = false;
+		$auth = false;
 		if($this->jsessionId=='')
 		{
 			log::add('cozytouch', 'info', 'JSESSIONID vide');
 			$this->authenticate();
-			$this->auth = true;
+			$auth = true;
 		}
-		$curl_response = $this->makeAuthRequest($this->auth,'setup','GET');
+		$curl_response = $this->makeAuthRequest($auth,'setup','GET');
 		if (!$curl_response)
 		{
 			log::add('cozytouch', 'info', 'pas de réponse');
@@ -199,14 +199,14 @@ class CozyTouchApiClient
 
 	/*** */
 	public function getDevices($post_data=array()) {
-		var auth = false;
+		$auth = false;
 		if($this->jsessionId=='')
 		{
 			log::add('cozytouch', 'info', 'JSESSIONID vide');
 			$this->authenticate();
-			$this->auth = true;
+			$auth = true;
 		}
-		$curl_response = $this->makeAuthRequest($this->auth,'devices','GET');
+		$curl_response = $this->makeAuthRequest($auth,'devices','GET');
 		if (!$curl_response)
 		{
 			log::add('cozytouch', 'info', 'pas de réponse');
@@ -216,14 +216,14 @@ class CozyTouchApiClient
 	}
 	
 	public function getDeviceInfo($device_url,$controllableName) {
-		var auth = false;
+		$auth = false;
 		if($this->jsessionId=='')
 		{
 			log::add('cozytouch', 'info', 'JSESSIONID vide');
 			$this->authenticate();
-			$this->auth = true;
+			$auth = true;
 		}
-		$curl_response = $this->makeAuthRequest($this->auth,'deviceInfo','GET',["deviceURL"=>$device_url]);
+		$curl_response = $this->makeAuthRequest($auth,'deviceInfo','GET',["deviceURL"=>$device_url]);
 		if (!$curl_response)
 		{
 			log::add('cozytouch', 'info', 'pas de réponse');
@@ -232,14 +232,14 @@ class CozyTouchApiClient
 		return (new CozyTouchResponseHandler($result_arr))->getData('deviceInfo',$controllableName);
 	}
 	public function applyCommand($post_data=array()) {
-		var auth = false;
+		$auth = false;
 		if($this->jsessionId=='')
 		{
 			log::add('cozytouch', 'info', 'JSESSIONID vide');
 			$this->authenticate();
-			$this->auth = true;
+			$auth = true;
 		}
-		$curl_response = $this->makeAuthRequest($this->auth,'apply','POST',$post_data,false,true);
+		$curl_response = $this->makeAuthRequest($auth,'apply','POST',$post_data,false,true);
 		if (!$curl_response)
 		{
 			log::add('cozytouch', 'info', 'pas de réponse');

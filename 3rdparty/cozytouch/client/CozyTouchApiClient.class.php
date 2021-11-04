@@ -31,10 +31,15 @@ class CozyTouchApiClient
 			$this->userId=$params['userId'];
 		if(array_key_exists ( 'userPassword', $params )==true)
 			$this->userPassword=$params['userPassword'];
+		if(array_key_exists ( 'jsessionId', $params )==true)
+			$this->jsessionId=$params['jsessionId'];
+	}
+
+	public function authenticate() 
+	{
 		$this->getToken();
 		$this->getJwt();
 		$this->getJSessionId();
-		
 	}
 
 	public function getToken() {
@@ -69,6 +74,7 @@ class CozyTouchApiClient
 		}
 		log::add('cozytouch', 'debug', $curl_response);
 		$this->atlantic_jwt = trim($curl_response, '"');
+		
 	}
 
 	public function getJSessionId() {
@@ -93,9 +99,32 @@ class CozyTouchApiClient
 			
 			$this->jsessionId = implode($jsessionid);
 		}
+		
+		config::save('jsessionId', $this->jsessionId,'cozytouch');
 	}
-	
-	public function makeRequest($route, $method = 'GET', $data = array(),$header = FALSE,$format_JSON=FALSE, $headers = array()){
+
+	private function makeAuthRequest($retry = false, $route,  $method = 'GET', $data = array(),$header = FALSE,$format_JSON=FALSE, $headers = array())
+	{
+		log::add('cozytouch', 'debug','JSESSIONID : '.$this->jsessionId)
+		try
+		{
+			$res = $this->makeRequest($route, $method, $data,$header,$format_JSON, $headers)
+			return $res;
+		}
+		catch(Exception $ex)
+		{
+			log::add('cozytouch', 'info', $ex->getMessage());
+			if(!$retry)
+			{
+				$this->authenticate();
+				$res = $this->makeRequest($route, $method, $data,$header,$format_JSON, $headers)
+				return $res;
+				
+			}
+		}
+	}
+
+	private function makeRequest($route, $method = 'GET', $data = array(),$header = FALSE,$format_JSON=FALSE, $headers = array()){
 		$ch = curl_init();
 		$opts = self::$CURL_OPTS;
 		$url=CozyTouchServiceDiscovery::Resolve($route);
@@ -139,17 +168,24 @@ class CozyTouchApiClient
 		$opts[CURLOPT_HEADER] = $header;
 		curl_setopt_array($ch, $opts);
 		$result = curl_exec($ch);
+		if ($result === FALSE)  {
+			$e = new Exception(curl_errno($ch).' | '.curl_error($ch));
+			curl_close($ch);
+			throw $e;
+		}
 		curl_close($ch);
 		return $result;
 	}
 	
 	public function getSetup() {
+		var auth = false;
 		if($this->jsessionId=='')
 		{
 			log::add('cozytouch', 'info', 'JSESSIONID vide');
-			return;
+			$this->authenticate();
+			$this->auth = true;
 		}
-		$curl_response = $this->makeRequest('setup','GET');
+		$curl_response = $this->makeAuthRequest($this->auth,'setup','GET');
 		if (!$curl_response)
 		{
 			log::add('cozytouch', 'info', 'pas de réponse');
@@ -163,44 +199,50 @@ class CozyTouchApiClient
 
 	/*** */
 	public function getDevices($post_data=array()) {
+		var auth = false;
 		if($this->jsessionId=='')
 		{
-			//die('Not Authorised');
-			return;
+			log::add('cozytouch', 'info', 'JSESSIONID vide');
+			$this->authenticate();
+			$this->auth = true;
 		}
-		$curl_response = $this->makeRequest('devices','GET');
+		$curl_response = $this->makeAuthRequest($this->auth,'devices','GET');
 		if (!$curl_response)
 		{
-			//die('error occured');
+			log::add('cozytouch', 'info', 'pas de réponse');
 		}
 		$result_arr = json_decode($curl_response);
 		return (new CozyTouchResponseHandler($result_arr))->getData('devices');
 	}
 	
 	public function getDeviceInfo($device_url,$controllableName) {
+		var auth = false;
 		if($this->jsessionId=='')
 		{
-			//die('Not Authorised');
-			return;
+			log::add('cozytouch', 'info', 'JSESSIONID vide');
+			$this->authenticate();
+			$this->auth = true;
 		}
-		$curl_response = $this->makeRequest('deviceInfo','GET',["deviceURL"=>$device_url]);
+		$curl_response = $this->makeAuthRequest($this->auth,'deviceInfo','GET',["deviceURL"=>$device_url]);
 		if (!$curl_response)
 		{
-			//die('error occured');
+			log::add('cozytouch', 'info', 'pas de réponse');
 		}
 		$result_arr = json_decode($curl_response);
 		return (new CozyTouchResponseHandler($result_arr))->getData('deviceInfo',$controllableName);
 	}
 	public function applyCommand($post_data=array()) {
+		var auth = false;
 		if($this->jsessionId=='')
 		{
-			//die('Not Authorised');
-			return;
+			log::add('cozytouch', 'info', 'JSESSIONID vide');
+			$this->authenticate();
+			$this->auth = true;
 		}
-		$curl_response = $this->makeRequest('apply','POST',$post_data,false,true);
+		$curl_response = $this->makeAuthRequest($this->auth,'apply','POST',$post_data,false,true);
 		if (!$curl_response)
 		{
-			//die('error occured');
+			log::add('cozytouch', 'info', 'pas de réponse');
 		}
 		$result_arr = json_decode($curl_response);
 		log::add('cozytouch', 'debug', $curl_response);

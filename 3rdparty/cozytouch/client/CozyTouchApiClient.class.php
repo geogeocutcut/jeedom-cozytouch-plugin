@@ -113,7 +113,6 @@ class CozyTouchApiClient
 		}
 		catch(InvalidArgumentException $ex)
 		{
-			log::add('cozytouch', 'info', 'Problème authentification ...');
 			if(!$retry)
 			{
 				$this->authenticate();
@@ -124,7 +123,6 @@ class CozyTouchApiClient
 		}
 		catch(Exception $ex)
 		{
-			log::add('cozytouch', 'info', 'Problème ...');
 		}
 		return "";
 	}

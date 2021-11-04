@@ -473,7 +473,7 @@ class CozyTouchStateName
 		self::CTSN_HEATINGSTATUS=>"Heat status",
 		self::CTSN_DHWBOOSTMODE=>"Boost Mode",
 		self::CTSN_DHWABSENCEMODE=>"Absence Mode",
-		self::CTSN_MLBDHWBOOSTMODE=>"Boost Mode",
+		self::CTSN_MBLDHWBOOSTMODE=>"Boost Mode",
 		self::CTSN_MBLDHWABSENCEMODE=>"Absence Mode",
 		self::CTSN_NUMBERTANK=>"Nb Tank",
 		self::CTSN_V40WATERVOLUME=>"Volume Eau à 40",

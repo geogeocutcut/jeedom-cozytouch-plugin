@@ -702,6 +702,8 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_MBLMIDDLETEMP,
 			CozyTouchStateName::CTSN_MBLDHWMODE,
 			CozyTouchStateName::CTSN_MBLDHWCAPACITY,
+			CozyTouchStateName::CTSN_MBLDHWBOOSTMODE,
+			CozyTouchStateName::CTSN_MBLDHWABSENCEMODE,
 			CozyTouchStateName::CTSN_CONNECT,
 			CozyTouchStateName::CTSN_TARGETTEMP,
 			CozyTouchStateName::CTSN_OPEMODECAPABILITIES
@@ -1018,6 +1020,19 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION,
 			CozyTouchStateName::CTSN_OPEMODE,
 			CozyTouchStateName::CTSN_OPEMODECAPABILITIES,
+			CozyTouchStateName::EQ_ISHOTWATERHEATING],
+		
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERMBL=>[
+			CozyTouchStateName::CTSN_NAME,
+			CozyTouchStateName::CTSN_MBLMIDDLETEMP,
+			CozyTouchStateName::CTSN_MBLDHWMODE,
+			CozyTouchStateName::CTSN_MBLDHWCAPACITY,
+			CozyTouchStateName::CTSN_MBLDHWBOOSTMODE,
+			CozyTouchStateName::CTSN_MBLDHWABSENCEMODE,
+			CozyTouchStateName::CTSN_CONNECT,
+			CozyTouchStateName::CTSN_TARGETTEMP,
+			CozyTouchStateName::CTSN_OPEMODECAPABILITIES,
+			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION,
 			CozyTouchStateName::EQ_ISHOTWATERHEATING],
 
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERSPLIT=>[

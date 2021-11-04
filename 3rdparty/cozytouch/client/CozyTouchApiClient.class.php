@@ -105,7 +105,7 @@ class CozyTouchApiClient
 
 	private function makeAuthRequest($retry = false, $route,  $method = 'GET', $data = array(),$header = FALSE,$format_JSON=FALSE, $headers = array())
 	{
-		log::add('cozytouch', 'debug','JSESSIONID : '.$this->jsessionId);
+		log::add('cozytouch', 'debug',$this->jsessionId);
 		try
 		{
 			$res = $this->makeRequest($route, $method, $data,$header,$format_JSON, $headers);

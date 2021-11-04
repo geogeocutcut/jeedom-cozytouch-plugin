@@ -105,10 +105,10 @@ class CozyTouchApiClient
 
 	private function makeAuthRequest($retry = false, $route,  $method = 'GET', $data = array(),$header = FALSE,$format_JSON=FALSE, $headers = array())
 	{
-		log::add('cozytouch', 'debug','JSESSIONID : '.$this->jsessionId)
+		log::add('cozytouch', 'debug','JSESSIONID : '.$this->jsessionId);
 		try
 		{
-			$res = $this->makeRequest($route, $method, $data,$header,$format_JSON, $headers)
+			$res = $this->makeRequest($route, $method, $data,$header,$format_JSON, $headers);
 			return $res;
 		}
 		catch(Exception $ex)
@@ -117,7 +117,7 @@ class CozyTouchApiClient
 			if(!$retry)
 			{
 				$this->authenticate();
-				$res = $this->makeRequest($route, $method, $data,$header,$format_JSON, $headers)
+				$res = $this->makeRequest($route, $method, $data,$header,$format_JSON, $headers);
 				return $res;
 				
 			}

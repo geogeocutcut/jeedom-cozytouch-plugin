@@ -111,9 +111,9 @@ class CozyTouchApiClient
 			$res = $this->makeRequest($route, $method, $data,$header,$format_JSON, $headers);
 			return $res;
 		}
-		catch(Exception $ex)
+		catch(InvalidArgumentException $ex)
 		{
-			log::add('cozytouch', 'info', $ex->getMessage());
+			log::add('cozytouch', 'info', 'Problème authentification ...');
 			if(!$retry)
 			{
 				$this->authenticate();
@@ -122,6 +122,11 @@ class CozyTouchApiClient
 				
 			}
 		}
+		catch(Exception $ex)
+		{
+			log::add('cozytouch', 'info', 'Problème ...');
+		}
+		return "";
 	}
 
 	private function makeRequest($route, $method = 'GET', $data = array(),$header = FALSE,$format_JSON=FALSE, $headers = array()){
@@ -169,10 +174,28 @@ class CozyTouchApiClient
 		curl_setopt_array($ch, $opts);
 		$result = curl_exec($ch);
 		if ($result === FALSE)  {
+			log::add('cozytouch', 'debug', 'curl error ..... ');
 			$e = new Exception(curl_errno($ch).' | '.curl_error($ch));
 			curl_close($ch);
 			throw $e;
 		}
+
+		$http_code = intval(curl_getinfo($ch, CURLINFO_HTTP_CODE));
+		if($http_code==401)
+		{
+			log::add('cozytouch', 'debug', 'Problème authentification ..... ');
+			$e = new InvalidArgumentException();
+			curl_close($ch);
+			throw $e;
+		}
+		else if ($http_code>401)
+		{
+			log::add('cozytouch', 'debug', 'Problème autre ..... ');
+			$e = new Exception();
+			curl_close($ch);
+			throw $e;
+		}
+
 		curl_close($ch);
 		return $result;
 	}

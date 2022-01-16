@@ -80,8 +80,8 @@ class CozytouchAtlanticZoneControlZone extends AbstractCozytouchDevice
 		$targettemp = $eqLogic->getCmd(null,$deviceURL.'_'.CozyTouchStateName::CTSN_TARGETTEMP );
 		if(is_object($targettemp))
 		{
-			$mini = 18;
-			$maxi = 28;
+			$mini = 16;
+			$maxi = 30;
 
 			$thermo = $eqLogic->getCmd(null,CozyTouchDeviceActions::CTPC_SETTARGETTEMP );
 			if (!is_object($thermo)) {
@@ -104,8 +104,8 @@ class CozytouchAtlanticZoneControlZone extends AbstractCozytouchDevice
 		$targettemp = $eqLogic->getCmd(null,$deviceURL.'_'.CozyTouchStateName::CTSN_COMFORTHEATINGTARGETTEMP );
 		if(is_object($targettemp))
 		{
-			$mini = 18;
-			$maxi = 28;
+			$mini = 16;
+			$maxi = 30;
 
 			$thermo = $eqLogic->getCmd(null,CozyTouchDeviceActions::CTPC_SETCOMFORTHEATINGTARGET );
 			if (!is_object($thermo)) {
@@ -128,8 +128,8 @@ class CozytouchAtlanticZoneControlZone extends AbstractCozytouchDevice
 		$targettemp = $eqLogic->getCmd(null,$deviceURL.'_'.CozyTouchStateName::CTSN_ECOHEATINGTARGETTEMP );
 		if(is_object($targettemp))
 		{
-			$mini = 7;
-			$maxi = 25;
+			$mini = 16;
+			$maxi = 30;
 
 			$thermo = $eqLogic->getCmd(null,CozyTouchDeviceActions::CTPC_SETECOHEATINGTARGET );
 			if (!is_object($thermo)) {
@@ -153,7 +153,7 @@ class CozytouchAtlanticZoneControlZone extends AbstractCozytouchDevice
 		if(is_object($targettemp))
 		{
 			$mini = 18;
-			$maxi = 28;
+			$maxi = 30;
 
 			$thermo = $eqLogic->getCmd(null,CozyTouchDeviceActions::CTPC_SETCOMFORTCOOLINGTARGET );
 			if (!is_object($thermo)) {
@@ -176,8 +176,8 @@ class CozytouchAtlanticZoneControlZone extends AbstractCozytouchDevice
 		$targettemp = $eqLogic->getCmd(null,$deviceURL.'_'.CozyTouchStateName::CTSN_ECOCOOLINGTARGETTEMP );
 		if(is_object($targettemp))
 		{
-			$mini = 7;
-			$maxi = 25;
+			$mini = 18;
+			$maxi = 30;
 
 			$thermo = $eqLogic->getCmd(null,CozyTouchDeviceActions::CTPC_SETECOCOOLINGTARGET );
 			if (!is_object($thermo)) {

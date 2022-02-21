@@ -79,7 +79,7 @@ class CozyTouchDeviceToDisplay
 	const CTDTD_ATLANTICHOTWATERV2AEX="io:AtlanticDomesticHotWaterProductionV2_AEX_IOComponent";
 	const CTDTD_ATLANTICHOTWATERMBL="modbuslink:AtlanticDomesticHotWaterProductionMBLComponent";
 	const CTDTD_ATLANTICHOTWATERELECTRICITYSENSOR ="io:DHWCumulatedElectricalEnergyConsumptionIOSystemDeviceSensor";
-	const CTDTD_ATLANTICHOTWATERELECTRICITYMBLSENSOR ="modbuslink:DHWCumulatedElectricalEnergyConsumptionMBLSystemDeviceSenso";
+	const CTDTD_ATLANTICHOTWATERELECTRICITYMBLSENSOR ="modbuslink:DHWCumulatedElectricalEnergyConsumptionMBLSystemDeviceSensor";
 
 	const CTDTD_ATLANTICHEATRECOVERYVENT ="io:AtlanticHeatRecoveryVentilationIOComponent";
 	const CTDTD_ATLANTICC02SENSOR ="io:CO2IOSystemDeviceSensor";
@@ -244,6 +244,9 @@ class CozyTouchStateName
 	const CTSN_MBLDHWCAPACITY = "modbuslink:DHWCapacityState";
 	const CTSN_MBLMIDDLETEMP = "modbuslink:MiddleWaterTemperatureState";
 
+	const CTSN_MINTEMPMANUEL = "core:MinimalTemperatureManualModeState";
+	const CTSN_MAXTEMPMANUEL = "core:MaximalTemperatureManualModeState";
+	
 	const CTSN_AIRDEMANDE ="core:AirDemandState";
 	const CTSN_VENTILATIONCONFIG ="io:VentilationConfigurationModeState";
 	const CTSN_AIRDEMANDEMODE ="io:AirDemandModeState";
@@ -367,7 +370,9 @@ class CozyTouchStateName
 		self::CTSN_AIRDEMANDE => "numeric",
 		self::CTSN_CO2CONCENTRATION => "numeric",
 		self::CTSN_MIDDLETEMP=>"numeric",
-		self::CTSN_MBLMIDDLETEMP=>"numeric",
+		self::CTSN_MBLMIDDLETEMP =>"numeric",
+		self::CTSN_MINTEMPMANUEL =>"numeric",
+		self::CTSN_MAXTEMPMANUEL =>"numeric",
 
 		self::CTSN_NUMBERTANK=>"numeric",
 		self::CTSN_V40WATERVOLUME=>"numeric",
@@ -469,6 +474,8 @@ class CozyTouchStateName
 		self::CTSN_FOSSILENERGYCONSUMPTION=>"Conso Elec",
 		self::CTSN_OCCUPANCY=>"Présence",
 		self::CTSN_CONNECT=>"Connect",
+		self::CTSN_MINTEMPMANUEL =>"Température Min",
+		self::CTSN_MAXTEMPMANUEL =>"Température Max",
 
 		self::CTSN_HEATINGSTATUS=>"Heat status",
 		self::CTSN_DHWBOOSTMODE=>"Boost Mode",
@@ -705,7 +712,21 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_MBLDHWBOOSTMODE,
 			CozyTouchStateName::CTSN_MBLDHWABSENCEMODE,
 			CozyTouchStateName::CTSN_CONNECT,
-			CozyTouchStateName::CTSN_TARGETTEMP,
+			
+			CozyTouchStateName::CTSN_MIDDLETEMP,
+			CozyTouchStateName::CTSN_V40WATERVOLUME,
+			CozyTouchStateName::CTSN_WATERTEMP,
+			CozyTouchStateName::CTSN_WATERTARGETTEMP,
+			CozyTouchStateName::CTSN_EXPECTEDNBSHOWER,
+			CozyTouchStateName::CTSN_CTRLWATERTARGETTEMP,
+			CozyTouchStateName::CTSN_MIDDLEWATERTEMPIN,
+			CozyTouchStateName::CTSN_HEATINGSTATUS,
+			CozyTouchStateName::CTSN_NBSHOWERREMAINING,
+
+			CozyTouchStateName::CTSN_MINTEMPMANUEL,
+			CozyTouchStateName::CTSN_MAXTEMPMANUEL,
+			CozyTouchStateName::CTSN_MINISHOWERMANUAL,
+			CozyTouchStateName::CTSN_MAXISHOWERMANUAL,
 			CozyTouchStateName::CTSN_OPEMODECAPABILITIES
 		],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERFLATC2=>[
@@ -848,7 +869,8 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION],
 		CozyTouchDeviceToDisplay::CTDTD_HEATINGENERGYCONSUMPTIONSENSOR=>[
 			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION],
-
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERELECTRICITYMBLSENSOR=>[
+			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERELECTRICITYSENSOR=>[
 			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICC02SENSOR=>[
@@ -1030,7 +1052,15 @@ class CozyTouchDeviceStateName
 			CozyTouchStateName::CTSN_MBLDHWBOOSTMODE,
 			CozyTouchStateName::CTSN_MBLDHWABSENCEMODE,
 			CozyTouchStateName::CTSN_CONNECT,
-			CozyTouchStateName::CTSN_TARGETTEMP,
+			CozyTouchStateName::CTSN_WATERTEMP,
+			CozyTouchStateName::CTSN_WATERTARGETTEMP,
+			CozyTouchStateName::CTSN_EXPECTEDNBSHOWER,
+			CozyTouchStateName::CTSN_CTRLWATERTARGETTEMP,
+			CozyTouchStateName::CTSN_MIDDLEWATERTEMPIN,
+			CozyTouchStateName::CTSN_HEATINGSTATUS,
+			CozyTouchStateName::CTSN_NBSHOWERREMAINING,
+			CozyTouchStateName::CTSN_MINISHOWERMANUAL,
+			CozyTouchStateName::CTSN_MAXISHOWERMANUAL,
 			CozyTouchStateName::CTSN_OPEMODECAPABILITIES,
 			CozyTouchStateName::CTSN_ELECNRJCONSUMPTION,
 			CozyTouchStateName::EQ_ISHOTWATERHEATING],
@@ -1359,6 +1389,10 @@ class CozyTouchDeviceEqCmds
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERCV4E=>[
 			self::SET_AUTOMODE,
 			self::SET_MANUECOACTIVE,
+			self::SET_MANUECOINACTIVE
+		],
+		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERMBL=>[
+			self::SET_AUTOMODE,
 			self::SET_MANUECOINACTIVE
 		],
 		CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERFLATC2=>[

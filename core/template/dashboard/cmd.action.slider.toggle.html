@@ -57,9 +57,9 @@
 		jeedom.cmd.update['#id#']({display_value:'#state#',valueDate:'#valueDate#',collectDate:'#collectDate#',alertLevel:'#alertLevel#'});
 		$('.Toggle#uid#').on('click', function() {
 			if ( $('.Toggle#uid#').is( ":checked" ) ){
-				jeedom.cmd.execute({id: '#id#', value: ('1')});
+				jeedom.cmd.execute({id: '#id#', value: {slider:'1'}});
 			} else {
-				jeedom.cmd.execute({id: '#id#', value: ('0')});
+				jeedom.cmd.execute({id: '#id#', value: {slider:'0'}});
 			}
 		});
     </script>

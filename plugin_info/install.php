@@ -71,10 +71,10 @@ function cozytouch_remove() {
 	if (is_object($cron)) {
 		$cron->remove();
 	}
-	CozyTouchManager::resetCozyTouch();
-	config::remove('username', 'cozytouch');
-	config::remove('password', 'cozytouch');
-	config::remove('version', 'cozytouch');
+	// CozyTouchManager::resetCozyTouch();
+	// config::remove('username', 'cozytouch');
+	// config::remove('password', 'cozytouch');
+	// config::remove('version', 'cozytouch');
 }
 
 ?>

@@ -332,6 +332,9 @@ class CozytouchAtlanticHotWaterV2AEX extends AbstractCozytouchDevice
 		if (is_object($cmd)) {
 			$valuetmp['targettemp']=$cmd->execCmd();
         }
+		else {
+			$valuetmp['targettemp']=55;
+		}
         $cmd = Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),$deviceURL.'_'.CozyTouchStateName::CTSN_TEMP);
 		if (is_object($cmd)) {
 			$valuetmp['temp']=$cmd->execCmd();

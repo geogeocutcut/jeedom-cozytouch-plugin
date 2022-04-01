@@ -211,6 +211,12 @@ FAQ
 Changelog
 ========= 
 
+Version : 2.2.1 - 01/04/2022
+---------------
+
+-   Ajout nouvel equipement
+-   Compatibilité avec mise à jour jeedom
+
 Version : 2.2.0 - 03/10/2021
 ---------------
 

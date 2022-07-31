@@ -198,7 +198,7 @@ class CozytouchAtlanticPassAPCHeatingZone extends AbstractCozytouchDevice
 				}
 				
 				$eqLogic->getCmd(null, $device_url.'_'.CozyTouchStateName::CTSN_TARGETTEMP)->event($_options['slider']);
-				$target_temp_field = ($mode=="heating"?CozyTouchDeviceActions::CTPC_SETHEATINGTARGETTEMP:CozyTouchDeviceActions::CTPC_SETCOOLINGTARGETTEMP);
+				$target_temp_field = ($mode=="heating"?CozyTouchDeviceActions::CTPC_SETCOMFORTHEATINGTARGET:CozyTouchDeviceActions::CTPC_SETCOOLINGTARGETTEMP);
 				self::setTargetTempGeneric($device_url,$target_temp_field,$_options['slider']);
 				break;
 
@@ -423,6 +423,7 @@ class CozytouchAtlanticPassAPCHeatingZone extends AbstractCozytouchDevice
 
 	public static function setTargetTempGeneric($device_url,$temp_state,$value)
 	{
+		if(CozyTouchDeviceActions::CTPC_SETCOMFORTHEATINGTARGET)
 		$cmds = array(
             array(
                 "name"=>$temp_state,

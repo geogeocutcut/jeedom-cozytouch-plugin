@@ -128,6 +128,7 @@ class CozyTouchManager
 					CozytouchAtlanticTowelDryer::BuildEqLogic($device);
 					break;
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER:
+				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERV2:
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERSPLIT:
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERCETHIV4 :
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERCV4E :
@@ -382,6 +383,7 @@ class CozyTouchManager
 				CozytouchAtlanticHeatSystemWithAjustTemp::execute($cmd,$_options);
     			break;
     		case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATER :
+			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERV2 :
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERSPLIT :
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERCETHIV4 :
 			case CozyTouchDeviceToDisplay::CTDTD_ATLANTICHOTWATERCV4E :

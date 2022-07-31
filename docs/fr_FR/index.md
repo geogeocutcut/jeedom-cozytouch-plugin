@@ -198,7 +198,7 @@ dans le dashboard :
 
 
 - **Autres** :
-
+ 
     - Seche serviette Sensium de la marque Atlantic
     - Chaudière Naia2 atlantic
 

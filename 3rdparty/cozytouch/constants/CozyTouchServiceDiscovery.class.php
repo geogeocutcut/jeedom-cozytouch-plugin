@@ -1,13 +1,13 @@
 <?php
 class CozyTouchServiceDiscovery
 {
-	const ATLANTIC_CLIENTID = "czduc0RZZXdWbjVGbVV4UmlYN1pVSUM3ZFI4YTphSDEzOXZmbzA1ZGdqeDJkSFVSQkFTbmhCRW9h";
-	const ATLANTIC_BASE_URL = "https://api.groupe-atlantic.com";
+	const ATLANTIC_CLIENTID = "Q3RfMUpWeVRtSUxYOEllZkE3YVVOQmpGblpVYToyRWNORHpfZHkzNDJVSnFvMlo3cFNKTnZVdjBh";
+	const ATLANTIC_BASE_URL = "https://apis.groupe-atlantic.com";
 
 	const BASE_URL = "https://ha110-1.overkiz.com/enduser-mobile-web/enduserAPI";
 	Const END_POINT = [
 		"token"=>self::ATLANTIC_BASE_URL."/token",
-		"jwt"=>self::ATLANTIC_BASE_URL."/gacoma/gacomawcfservice/accounts/jwt",
+		"jwt"=>self::ATLANTIC_BASE_URL."/magellan/accounts/jwt",
 		"login"=>self::BASE_URL."/login",
 		"setup"=>self::BASE_URL."/setup",
 		"devices"=>self::BASE_URL."/setup/devices",

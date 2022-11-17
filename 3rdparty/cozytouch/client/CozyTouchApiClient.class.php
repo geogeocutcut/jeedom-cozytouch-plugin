@@ -45,7 +45,7 @@ class CozyTouchApiClient
 	public function getToken() {
 		$post_data = array(
 				'grant_type' => 'password',
-				'username' => $this->userId,
+				'username' => 'GA-PRIVATEPERSON/'.$this->userId,
 				'password' => $this->userPassword,
 		);
 		$opts = self::$CURL_OPTS;

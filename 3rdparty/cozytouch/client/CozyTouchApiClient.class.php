@@ -45,12 +45,12 @@ class CozyTouchApiClient
 	public function getToken() {
 		$post_data = array(
 				'grant_type' => 'password',
-				'username' => $this->userId,
+				'username' => 'GA-PRIVATEPERSON/'.$this->userId,
 				'password' => $this->userPassword,
 		);
 		$opts = self::$CURL_OPTS;
 		
-		// Header Authorization : Basic czduc0RZZXdWbjVGbVV4UmlYN1pVSUM3ZFI4YTphSDEzOXZmbzA1ZGdqeDJkSFVSQkFTbmhCRW9h
+		// Header Authorization : Basic Q3RfMUpWeVRtSUxYOEllZkE3YVVOQmpGblpVYToyRWNORHpfZHkzNDJVSnFvMlo3cFNKTnZVdjBh
 		// Content-Type : application/x-www-form-urlencoded
 		$curl_response = $this->makeRequest("token",'POST',$post_data,FALSE,FALSE,["Content-Type: application/x-www-form-urlencoded","Authorization: Basic ".CozyTouchServiceDiscovery::ATLANTIC_CLIENTID]);
 		if (!$curl_response)

@@ -23,14 +23,14 @@ if (!class_exists('CozyTouchManager')) {
 
 const COZY_VERSION = '2.0.1';
 function cozytouch_install() {
-	$cron = cron::byClassAndFunction('cozytouch', 'cron15');
+	$cron = cron::byClassAndFunction('CozyTouchManager', 'refresh_all');
 	if (!is_object($cron)) {
 		// Define a cron every 15 minutes based on the start of the plugin
 		// Very important so that all box do not make calls at the same time 
 		$minute = date("i") % 15;
 		$cron = new cron();
-		$cron->setClass('cozytouch');
-		$cron->setFunction('cron15');
+		$cron->setClass('CozyTouchManager');
+		$cron->setFunction('refresh_all');
 		$cron->setEnable(1);
 		$cron->setDeamon(0);
 		$cron->setSchedule($minute . '/15 * * * *');
@@ -47,14 +47,14 @@ function cozytouch_install() {
 }
 
 function cozytouch_update() {
-	$cron = cron::byClassAndFunction('cozytouch', 'cron15');
+	$cron = cron::byClassAndFunction('CozyTouchManager', 'refresh_all');
 	if (!is_object($cron)) {
 		// Define a cron every 15 minutes based on the start of the plugin
 		// Very important so that all box do not make calls at the same time 
 		$minute = date("i") % 15;
 		$cron = new cron();
-		$cron->setClass('cozytouch');
-		$cron->setFunction('cron15');
+		$cron->setClass('CozyTouchManager');
+		$cron->setFunction('refresh_all');
 		$cron->setEnable(1);
 		$cron->setDeamon(0);
 		$cron->setSchedule($minute . '/15 * * * *');
@@ -73,7 +73,7 @@ function cozytouch_update() {
 }
 
 function cozytouch_remove() {
-	$cron = cron::byClassAndFunction('cozytouch', 'cron15');
+	$cron = cron::byClassAndFunction('CozyTouchManager', 'refresh_all');
 	if (is_object($cron)) {
 		$cron->remove();
 	}

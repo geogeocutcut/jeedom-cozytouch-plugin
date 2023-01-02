@@ -49,10 +49,12 @@ class cozytouch extends eqLogic {
 
     }
     */
-	
+
+	/*
     public static function cron15() {
     	CozyTouchManager::refresh_all();
     }
+    */
     
     /*************************** Methode d'instance **************************/ 
  

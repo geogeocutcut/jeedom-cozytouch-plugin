@@ -15,6 +15,7 @@ class CozyTouchApiClient
 	public $userId ='';
 	public $userPassword='';
 	public $atlantic_token='';
+	public $atlantic_token_expire=0;
 	public $atlantic_jwt='';
 	
 	public static $CURL_OPTS = array(
@@ -23,7 +24,7 @@ class CozyTouchApiClient
 			CURLOPT_TIMEOUT        => 60,	
 			CURLOPT_SSL_VERIFYPEER => FALSE,
 			CURLOPT_HTTPHEADER     => array("Accept: application/json",
-				CURLOPT_COOKIESESSION  => TRUE)
+			CURLOPT_COOKIESESSION  => TRUE)
 	);
 	
 	function __construct($params = array()) {
@@ -43,38 +44,44 @@ class CozyTouchApiClient
 	}
 
 	public function getToken() {
-		$post_data = array(
-				'grant_type' => 'password',
-				'username' => 'GA-PRIVATEPERSON/'.$this->userId,
-				'password' => $this->userPassword,
-		);
-		$opts = self::$CURL_OPTS;
-		
-		// Header Authorization : Basic Q3RfMUpWeVRtSUxYOEllZkE3YVVOQmpGblpVYToyRWNORHpfZHkzNDJVSnFvMlo3cFNKTnZVdjBh
-		// Content-Type : application/x-www-form-urlencoded
-		$curl_response = $this->makeRequest("token",'POST',$post_data,FALSE,FALSE,["Content-Type: application/x-www-form-urlencoded","Authorization: Basic ".CozyTouchServiceDiscovery::ATLANTIC_CLIENTID]);
-		if (!$curl_response)
-		{
-			log::add('cozytouch', 'info', 'pas de réponse');
+		// If token has expired or is empty, we ask a new one
+		if(config::byKey('atlantic_token_expire', 'cozytouch', 0)<time()-5 || config::byKey('atlantic_token', 'cozytouch', '') == '')	{
+			$post_data = array(
+					'grant_type' => 'password',
+					'username' => 'GA-PRIVATEPERSON/'.$this->userId,
+					'password' => $this->userPassword,
+			);
+			$opts = self::$CURL_OPTS;
+			
+			// Header Authorization : Basic Q3RfMUpWeVRtSUxYOEllZkE3YVVOQmpGblpVYToyRWNORHpfZHkzNDJVSnFvMlo3cFNKTnZVdjBh
+			// Content-Type : application/x-www-form-urlencoded
+			$curl_response = $this->makeRequest("token",'POST',$post_data,FALSE,FALSE,["Content-Type: application/x-www-form-urlencoded","Authorization: Basic ".CozyTouchServiceDiscovery::ATLANTIC_CLIENTID]);
+			if (!$curl_response)
+			{
+				log::add('cozytouch', 'info', 'pas de réponse');
+			}
+
+			log::add('cozytouch', 'debug', $curl_response);
+			$result_arr = json_decode($curl_response);
+			log::add('cozytouch', 'debug', $result_arr);
+
+			config::save('atlantic_token', $result_arr->access_token,'cozytouch');
+			config::save('atlantic_token_expire', $result_arr->expires_in + time(),'cozytouch');
 		}
-		
-		log::add('cozytouch', 'debug', $curl_response);
-		$result_arr = json_decode($curl_response);
-		log::add('cozytouch', 'debug', $result_arr);
-		$this->atlantic_token = $result_arr->access_token;
+		$this->atlantic_token = config::byKey('atlantic_token', 'cozytouch');
+		$this->atlantic_token_expire = config::byKey('atlantic_token', 'cozytouch');
 	}
 
 	public function getJwt() {
-		$opts = self::$CURL_OPTS;
-		// Header Authorization : Bearer $this->token
-		$curl_response = $this->makeRequest("jwt",'GET',null,FALSE,FALSE,["Authorization: Bearer ".$this->atlantic_token]);
-		if (!$curl_response)
-		{
-			log::add('cozytouch', 'info', 'pas de réponse');
-		}
-		log::add('cozytouch', 'debug', $curl_response);
-		$this->atlantic_jwt = trim($curl_response, '"');
-		
+			$opts = self::$CURL_OPTS;
+			// Header Authorization : Bearer $this->token
+			$curl_response = $this->makeRequest("jwt",'GET',null,FALSE,FALSE,["Authorization: Bearer ".$this->atlantic_token]);
+			if (!$curl_response)
+			{
+				log::add('cozytouch', 'info', 'pas de réponse');
+			}
+			log::add('cozytouch', 'debug', $curl_response);
+			$this->atlantic_jwt = trim($curl_response, '"');
 	}
 
 	public function getJSessionId() {

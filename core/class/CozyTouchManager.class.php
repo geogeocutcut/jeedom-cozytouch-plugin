@@ -171,10 +171,6 @@ class CozyTouchManager
 		CozyTouchManager::refresh_all();
 	}
 	
-	public static function cron15() {
-    	CozyTouchManager::refresh_all();
-	}
-	
     public static function refresh_all() 
 	{
     	try {

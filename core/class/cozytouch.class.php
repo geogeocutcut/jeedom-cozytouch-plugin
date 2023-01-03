@@ -49,16 +49,17 @@ class cozytouch extends eqLogic {
 
     }
     */
-	
-    
+
+	/*
     public static function cron15() {
     	CozyTouchManager::refresh_all();
     }
+    */
     
     /*************************** Methode d'instance **************************/ 
  
     public function preConfig_password($value) {
-      return utf8_encode($value);
+        return utf8_encode($value);
     }
     /************************** Pile de mise  jour **************************/ 
     

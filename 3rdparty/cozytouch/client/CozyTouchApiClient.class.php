@@ -90,9 +90,15 @@ class CozyTouchApiClient
 		);
 		$opts = self::$CURL_OPTS;
 		$curl_response = $this->makeRequest("login",'POST',$post_data,TRUE);
-		preg_match("/JSESSIONID=\\w{32}/u", $curl_response, $jsessionid);
+		preg_match('/JSESSIONID=([^;]+)/u', $curl_response, $matches);
+		if (isset($matches[1])) {
+			$jsessionid = 'JSESSIONID='.$matches[1];
+		} else {
+			$jsessionid = '';
+			log::add('cozytouch', 'debug', "JSESSIONID not found");
+		}
 		
-		$this->jsessionId = implode($jsessionid);
+		$this->jsessionId = $jsessionid;
 
 		if($this->jsessionId=='')
 		{
@@ -102,9 +108,15 @@ class CozyTouchApiClient
 			);
 			$opts = self::$CURL_OPTS;
 			$curl_response = $this->makeRequest("login",'POST',$post_data,TRUE);
-			preg_match("/JSESSIONID=\\w{32}/u", $curl_response, $jsessionid);
+			preg_match('/JSESSIONID=([^;]+)/u', $curl_response, $matches);
+			if (isset($matches[1])) {
+				$jsessionid = 'JSESSIONID='.$matches[1];
+			} else {
+				$jsessionid = '';
+				log::add('cozytouch', 'debug', "JSESSIONID not found");
+			}
 			
-			$this->jsessionId = implode($jsessionid);
+			$this->jsessionId = $jsessionid;
 		}
 		
 		config::save('jsessionId', $this->jsessionId,'cozytouch');

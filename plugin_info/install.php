@@ -33,7 +33,7 @@ function cozytouch_install() {
 		$cron->setFunction('refresh');
 		$cron->setEnable(1);
 		$cron->setDeamon(0);
-		$cron->setSchedule($minute . '/15 * * * *');
+		$cron->setSchedule($minute . '-59/15 * * * *');
 		$cron->setTimeout(5);
 		$cron->save();
 	}
@@ -57,7 +57,7 @@ function cozytouch_update() {
 		$cron->setFunction('refresh');
 		$cron->setEnable(1);
 		$cron->setDeamon(0);
-		$cron->setSchedule($minute . '/15 * * * *');
+		$cron->setSchedule($minute . '-59/15 * * * *');
 		$cron->setTimeout(5);
 		$cron->save();
 	}

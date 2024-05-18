@@ -20,11 +20,11 @@ class CozyTouchApiClient
 	
 	public static $CURL_OPTS = array(
 			CURLOPT_CONNECTTIMEOUT => 10,
-			CURLOPT_RETURNTRANSFER => TRUE,
+			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_TIMEOUT        => 60,	
-			CURLOPT_SSL_VERIFYPEER => FALSE,
-			CURLOPT_HTTPHEADER     => array("Accept: application/json",
-			CURLOPT_COOKIESESSION  => TRUE)
+			CURLOPT_SSL_VERIFYPEER => false,
+			CURLOPT_HTTPHEADER     => array('Accept: application/json'),
+			CURLOPT_COOKIESESSION  => true)
 	);
 	
 	function __construct($params = array()) {
@@ -102,7 +102,7 @@ class CozyTouchApiClient
 				'jwt' => $this->atlantic_jwt,
 		);
 		$opts = self::$CURL_OPTS;
-		$curl_response = $this->makeRequest("login",'POST',$post_data,TRUE);
+		$curl_response = $this->makeRequest("login",'POST',$post_data,true);
 		preg_match('/JSESSIONID=([^;]+)/u', $curl_response, $matches);
 		if (isset($matches[1])) {
 			$jsessionid = 'JSESSIONID='.$matches[1];
@@ -121,7 +121,7 @@ class CozyTouchApiClient
 				'userPassword' => config::byKey('password', 'cozytouch')
 			);
 			$opts = self::$CURL_OPTS;
-			$curl_response = $this->makeRequest("login",'POST',$post_data,TRUE);
+			$curl_response = $this->makeRequest("login",'POST',$post_data,true);
 			preg_match('/JSESSIONID=([^;]+)/u', $curl_response, $matches);
 			if (isset($matches[1])) {
 				$jsessionid = 'JSESSIONID='.$matches[1];
@@ -180,7 +180,6 @@ class CozyTouchApiClient
 					if($format_JSON)
 					{
 						$opts[CURLOPT_POSTFIELDS] = json_encode($data);
-						$opts[CURLOPT_HTTPHEADER][] = "Content-Type: application/json";
 						log::add('cozytouch', 'debug', 'json '.$opts[CURLOPT_POSTFIELDS]);
 					}
 					else
@@ -199,8 +198,7 @@ class CozyTouchApiClient
 		{
 			foreach($headers as $h)
 			{
-				$opts[CURLOPT_HTTPHEADER][]=$h;
-				
+				$opts[CURLOPT_HTTPHEADER][]=$h;		
 				log::add('cozytouch', 'debug', 'header : '.$h);
 			}
 		}
@@ -208,7 +206,7 @@ class CozyTouchApiClient
 		curl_setopt_array($ch, $opts);
 		$result = curl_exec($ch);
 		log::add('cozytouch', 'debug', 'curl result : '. $result);
-		if ($result === FALSE)  {
+		if ($result === false)  {
 			log::add('cozytouch', 'debug', 'curl error ..... ');
 			$e = new Exception(curl_errno($ch).' | '.curl_error($ch));
 			curl_close($ch);

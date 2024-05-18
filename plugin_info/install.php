@@ -47,6 +47,19 @@ function cozytouch_install() {
 }
 
 function cozytouch_update() {
+	$toUpdate = array('vmc', 'hotwatermode', 'heatmode', 'zonectlzonemode', 'zonetctlmode', 'connect', 'hotwater_onoff', 'hotwater', 'tilecozy');
+    foreach (eqLogic::byType('cozytouch') as $eqLogic) {
+		foreach (cmd::byEqLogicId($eqLogic->getId(), 'info') as $cmd) {
+		    foreach (array('dashboard', 'mobile') as $version) {
+                $oldTemplate =$cmd->getTemplate($version,'default');			
+				if (in_array($oldTemplate, $toUpdate)) {
+					$cmd->setTemplate($version, 'cozytouch::' . $oldTemplate);
+					log::add('cozytouch','debug','Template ' . $oldTemplate . ' renamed to ' . $cmd->getTemplate($version,'default'););
+				}
+			}
+			$cmd->save();
+		}
+	}
 	$cron = cron::byClassAndFunction('cozytouch', 'refresh');
 	if (is_object($cron)) {
 		$cron->remove();

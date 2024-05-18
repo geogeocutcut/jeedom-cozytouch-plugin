@@ -57,8 +57,8 @@ class AbstractCozytouchDevice
                         $name = CozyTouchStateName::CTSN_LABEL[$state->name];
                         if(CozyTouchStateName::CTSN_CONNECT==$state->name)
                         {
-                            $dashboard ='connect';
-                            $mobile ='connect';
+                            $dashboard ='cozytouch::connect';
+                            $mobile ='cozytouch::connect';
                             $order =99;
                         }
                         else{

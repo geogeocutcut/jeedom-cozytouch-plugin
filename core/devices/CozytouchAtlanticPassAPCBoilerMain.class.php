@@ -171,8 +171,8 @@ class CozytouchAtlanticPassAPCBoilerMain extends AbstractCozytouchDevice
 		$onoff_toogle->setName(__('Etat', __FILE__));
 		$onoff_toogle->setType('action');
 		$onoff_toogle->setSubType('slider');
-		$onoff_toogle->setTemplate('dashboard', 'toggle');
-		$onoff_toogle->setTemplate('mobile', 'toggle');
+		$onoff_toogle->setTemplate('dashboard', 'cozytouch::toggle');
+		$onoff_toogle->setTemplate('mobile', 'cozytouch::toggle');
 		$onoff_toogle->setIsVisible(1);
 		$onoff_toogle->setValue($onoff_state->getId());
 		$onoff_toogle->save();

@@ -33,8 +33,8 @@ class CozytouchAtlanticHeatPumpDHWComponent extends AbstractCozytouchDevice
 		$onoff_state = $eqLogic->getCmd(null,$deviceURL.'_'.CozyTouchStateName::CTSN_DHWONOFF );
 		if(is_object($onoff_state))
 		{
-			$onoff_state->setTemplate('mobile', 'hotwater_onoff');
-			$onoff_state->setTemplate('dashboard', 'hotwater_onoff');
+			$onoff_state->setTemplate('mobile', 'cozytouch::hotwater_onoff');
+			$onoff_state->setTemplate('dashboard', 'cozytouch::hotwater_onoff');
 			$onoff_state->save();
 			$onoff_toogle = $eqLogic->getCmd(null, CozyTouchDeviceEqCmds::SET_ONOFF);
 			if (!is_object($onoff_toogle)) {
@@ -45,8 +45,8 @@ class CozytouchAtlanticHeatPumpDHWComponent extends AbstractCozytouchDevice
 			$onoff_toogle->setName(__('On/Off', __FILE__));
 			$onoff_toogle->setType('action');
 			$onoff_toogle->setSubType('slider');
-			$onoff_toogle->setTemplate('dashboard', 'toggle');
-			$onoff_toogle->setTemplate('mobile', 'toggle');
+			$onoff_toogle->setTemplate('dashboard', 'cozytouch::toggle');
+			$onoff_toogle->setTemplate('mobile', 'cozytouch::toggle');
 			$onoff_toogle->setIsVisible(1);
 			$onoff_toogle->setValue($onoff_state->getId());
 			$onoff_toogle->save();
@@ -64,8 +64,8 @@ class CozytouchAtlanticHeatPumpDHWComponent extends AbstractCozytouchDevice
 			$boost_toogle->setName(__('Boost', __FILE__));
 			$boost_toogle->setType('action');
 			$boost_toogle->setSubType('slider');
-			$boost_toogle->setTemplate('dashboard', 'toggle');
-			$boost_toogle->setTemplate('mobile', 'toggle');
+			$boost_toogle->setTemplate('dashboard', 'cozytouch::toggle');
+			$boost_toogle->setTemplate('mobile', 'cozytouch::toggle');
 			$boost_toogle->setIsVisible(1);
 			$boost_toogle->setValue($boost_state->getId());
 			$boost_toogle->save();

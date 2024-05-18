@@ -34,8 +34,8 @@ class CozytouchAtlanticPassAPCBoilerDHWComponent extends AbstractCozytouchDevice
 		$onoff_state = $eqLogic->getCmd(null,$deviceURL.'_'.CozyTouchStateName::CTSN_DHWONOFF );
 		if(is_object($onoff_state))
 		{
-			$onoff_state->setTemplate('mobile', 'hotwater_onoff');
-			$onoff_state->setTemplate('dashboard', 'hotwater_onoff');
+			$onoff_state->setTemplate('mobile', 'cozytouch::hotwater_onoff');
+			$onoff_state->setTemplate('dashboard', 'cozytouch::hotwater_onoff');
 			$onoff_state->save();
 		}
 
@@ -94,8 +94,8 @@ class CozytouchAtlanticPassAPCBoilerDHWComponent extends AbstractCozytouchDevice
     	$hot_mode->setType('info');
     	$hot_mode->setSubType('string');
         $hot_mode->setLogicalId(CozyTouchStateName::EQ_HOTWATERMODE);
-    	$hot_mode->setTemplate('dashboard', 'hotwatermode');
-    	$hot_mode->setTemplate('mobile', 'hotwatermode');
+    	$hot_mode->setTemplate('dashboard', 'cozytouch::hotwatermode');
+    	$hot_mode->setTemplate('mobile', 'cozytouch::hotwatermode');
 		$hot_mode->save();
 		self::orderCommand($eqLogic);
 		

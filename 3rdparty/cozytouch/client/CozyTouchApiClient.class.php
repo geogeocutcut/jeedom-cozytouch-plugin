@@ -24,8 +24,7 @@ class CozyTouchApiClient
 			CURLOPT_TIMEOUT        => 60,	
 			CURLOPT_SSL_VERIFYPEER => false,
 			CURLOPT_HTTPHEADER     => array('Accept: application/json'),
-			CURLOPT_COOKIESESSION  => true)
-	);
+			CURLOPT_COOKIESESSION  => true);
 	
 	function __construct($params = array()) {
 		if(array_key_exists ( 'userId', $params )==true) {

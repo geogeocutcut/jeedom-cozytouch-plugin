@@ -55,15 +55,18 @@ class cozytouch extends eqLogic {
         CozyTouchManager::refresh_all();
     }
     */
-    
-    /*************************** Methode d'instance **************************/ 
- 
-    public function refresh() {
-        CozyTouchManager::refresh_all();
+    public static function postConfig_password($value) {
+        $client = CozytouchManager::getClient();
+		$client->userPassword = $value;
+		config::save('atlantic_token', '','cozytouch');
+		config::save('atlantic_token_expire', 0,'cozytouch');
     }
 
-    public function preConfig_password($value) {
-        return utf8_encode($value);
+	public static function postConfig_username($value) {
+        $client = CozytouchManager::getClient();
+		$client->userId = $value;
+		config::save('atlantic_token', '','cozytouch');
+		config::save('atlantic_token_expire', 0,'cozytouch');
     }
 
     /************************** Pile de mise  jour **************************/ 
@@ -73,7 +76,7 @@ class cozytouch extends eqLogic {
      * action: l'action qui sera utilisé dans le fichier ajax du pulgin 
      * callback: fonction appelée coté client(JS) pour mettre é jour l'affichage 
      */ 
-    public function initStackData() {
+    public static function initStackData() {
         nodejs::pushUpdate('cozytouch::initStackDataEqLogic', array('plugin' => 'cozytouch', 'action' => 'saveStack', 'callback' => 'displayEqLogic'));
     }
     
@@ -82,7 +85,7 @@ class cozytouch extends eqLogic {
      * Entrée: 
      *      - $params: variable contenant les paramétres eqLogic
      */
-    public function stackData($params) {
+    public static function stackData($params) {
         if(is_object($params)) {
             $paramsArray = utils::o2a($params);
         }
@@ -93,10 +96,12 @@ class cozytouch extends eqLogic {
      * Entrée: 
      *      - $params: variable contenant les paramètres eqLogic
      */
-    public function saveStack($params) {
+    public static function saveStack($params) {
         // inserer ici le traitement pour sauvegarde de vos données en asynchrone
         
     }
+
+    /*************************** Methode d'instance **************************/
 
     /* fonction appelée avant le début de la séquence de sauvegarde */
     public function preSave() {
@@ -173,4 +178,3 @@ class cozytouchCmd extends cmd {
     
 }
 
-?>

@@ -179,6 +179,7 @@ class CozyTouchApiClient
 					if($format_JSON)
 					{
 						$opts[CURLOPT_POSTFIELDS] = json_encode($data);
+						$opts[CURLOPT_HTTPHEADER][] = "Content-Type: application/json";
 						log::add('cozytouch', 'debug', 'json '.$opts[CURLOPT_POSTFIELDS]);
 					}
 					else

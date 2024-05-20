@@ -1,19 +1,19 @@
 <?php
 /* This file is part of Jeedom.
- *
- * Jeedom is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Jeedom is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
- */
+*
+* Jeedom is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* Jeedom is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 include_file('core', 'authentification', 'php');
@@ -25,128 +25,32 @@ if (!isConnect()) {
 <form class="form-horizontal">
     <fieldset>
       <div class="form-group">
-          <label class="col-sm-2 control-label">{{Nom d'utilisateur}}</label>
-          <div class="col-sm-3">
-              <input type="text" class="configKey form-control" data-l1key="username" placeholder="Nom d'utilisateur"/>
+      <label class="col-md-4 control-label">{{Nom d'utilisateur}}
+        <sup><i class="fas fa-question-circle tooltips" title="{{Nom utilisateur compte Cozytouch}}"></i></sup>
+      </label>
+      <div class="col-md-4">
+        <input class="configKey form-control" data-l1key="username"/>
           </div>
       </div>
       <div class="form-group">
-          <label class="col-sm-2 control-label">{{Mot de passe}}</label>
-          <div class="col-sm-3">
-              <input type="password" class="configKey form-control" data-l1key="password" placeholder="mot de passe"/>
-          </div>
-      </div>
-      <div class="form-group">
-        <label class="col-lg-2 control-label">{{Synchroniser}}</label>
-        <div class="col-lg-2">
-            <a class="btn btn-success" id="bt_syncWithCozyTouch"><i class='fa fa-refresh'></i> {{Synchroniser mes équipements}}</a>
-        </div>
-        <label class="col-lg-2 control-label">{{Reset}}</label>
-        <div class="col-lg-2">
-            <a class="btn btn-danger" id="bt_resetCozyTouch"><i class='fa fa-trash'></i> {{Effacer mes équipements}}</a>
+      <label class="col-md-4 control-label">{{Mot de passe}}
+        <sup><i class="fas fa-question-circle tooltips" title="{{Mot de passe compte Cozytouch}}"></i></sup>
+      </label>
+      <div class="col-md-4" style="display:flex;">
+        <input type="password" class="configKey form-control" data-l1key="password"/>
+		<a class="btn btn-danger  " id="bt_show_pass"><i class="fas fa-eye"></i></a>
         </div>
       </div>
   </fieldset>
 </form>
-
 <script>
-    $('#bt_resetCozyTouch').on('click', function () {
-        $.ajax({// fonction permettant de faire de l'ajax
-            type: "POST", // methode de transmission des données au fichier php
-            url: "plugins/cozytouch/core/ajax/cozytouch.ajax.php", // url du fichier php
-            data: {
-                action: "resetCozyTouch",
-            },
-            dataType: 'json',
-            error: function (request, status, error) {
-                handleAjaxError(request, status, error);
-            },
-            success: function (data) { // si l'appel a bien fonctionné
-                if (data.state != 'ok') {
-                    $('#div_alert').showAlert({message: data.result, level: 'danger'});
-                    return;
-                }
-                $('#div_alert').showAlert({message: '{{Suppression  réussie}}', level: 'success'});
-            }
-        });
-    });
-    $('#bt_syncWithCozyTouch').on('click', function () {
-        $.ajax({// fonction permettant de faire de l'ajax
-            type: "POST", // methode de transmission des données au fichier php
-            url: "plugins/cozytouch/core/ajax/cozytouch.ajax.php", // url du fichier php
-            data: {
-                action: "syncWithCozyTouch",
-            },
-            dataType: 'json',
-            error: function (request, status, error) {
-                handleAjaxError(request, status, error);
-            },
-            success: function (data) { // si l'appel a bien fonctionné
-                if (data.state != 'ok') {
-                    $('#div_alert').showAlert({message: data.result, level: 'danger'});
-                    return;
-                }
-                $('#div_alert').showAlert({message: '{{Synchronisation réussie}}', level: 'success'});
-            }
-        });
-    });
+$("#bt_show_pass").on('mousedown', function(){
+    $("input[data-l1key='password']").attr('type', 'text');
+    $(this).find("i").removeClass('fa-eye').addClass('fa-eye-slash')
+
+})
+$("#bt_show_pass").on('mouseup mouseleave', function(){
+    $("input[data-l1key='password']").attr('type', 'password');
+    $(this).find("i").removeClass('fa-eye-slash').addClass('fa-eye')
+})
 </script>
-
-      
-<!--------------------- EXEMPLE DE PAGE DE CONFIGURATION ------------------------------
-<form class="form-horizontal">
-    <fieldset>
-        <div class="form-group">
-            <label class="col-lg-4 control-label">{{KNX BAOS IP}}</label>
-            <div class="col-lg-2">
-                <input class="configKey form-control" data-l1key="knxipbaosAddr" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-lg-4 control-label">{{KNX BAOS port}}</label>
-            <div class="col-lg-2">
-                <input class="configKey form-control" data-l1key="knxipbaosPort" value="80" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-lg-4 control-label">{{Modele}}</label>
-            <div class="col-lg-2">
-                <select class="configKey form-control" data-l1key="knxipbaosModel">
-                    <option value="knxipbaos771">KNX IP BAOS 771</option>
-                    <option value="knxipbaos772">KNX IP BAOS 772</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-lg-4 control-label">{{Synchronisation}}</label>
-            <div class="col-lg-2">
-              <a class="btn btn-default" id="bt_syncWithKnxipbaos"><i class="fa fa-retweet"></i> Synchroniser</a>
-          </div>
-      </div>
-  </fieldset>
-</form>
-
-<script>
-    $('#bt_syncWithKnxipbaos').on('click',function(){
- $.ajax({// fonction permettant de faire de l'ajax
-            type: "POST", // methode de transmission des données au fichier php
-            url: "plugins/knxipbaos/core/ajax/knxipbaos.ajax.php", // url du fichier php
-            data: {
-                action: "synchronisation",
-            },
-            dataType: 'json',
-            error: function (request, status, error) {
-                handleAjaxError(request, status, error);
-            },
-            success: function (data) { // si l'appel a bien fonctionné
-            if (data.state != 'ok') {
-                $('#div_alert').showAlert({message: data.result, level: 'danger'});
-                return;
-            }
-            $('#div_alert').showAlert({message: '{{Synchronisation réussie}}', level: 'success'});
-        }
-    });
-});
-</script>
-
---------------------- EXEMPLE DE PAGE DE CONFIGURATION ------------------------------>

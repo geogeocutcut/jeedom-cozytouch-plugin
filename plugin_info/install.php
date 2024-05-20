@@ -23,17 +23,17 @@ if (!class_exists('CozyTouchManager')) {
 
 const COZY_VERSION = '2.0.1';
 function cozytouch_install() {
-	$cron = cron::byClassAndFunction('cozytouch', 'refresh');
+	$cron = cron::byClassAndFunction('cozytouch', 'cozyRefresh');
 	if (!is_object($cron)) {
-		// Define a cron every 15 minutes based on the start of the plugin
+		// Define a cron every 15 minutes based on random value
 		// Very important so that all box do not make calls at the same time 
-		$minute = date("i") % 15;
+		$minute = rand(1, 14);
 		$cron = new cron();
 		$cron->setClass('cozytouch');
-		$cron->setFunction('refresh');
+		$cron->setFunction('cozyRefresh');
 		$cron->setEnable(1);
 		$cron->setDeamon(0);
-		$cron->setSchedule($minute . '/15 * * * *');
+		$cron->setSchedule($minute . '-59/15 * * * *');
 		$cron->setTimeout(5);
 		$cron->save();
 	}
@@ -47,17 +47,34 @@ function cozytouch_install() {
 }
 
 function cozytouch_update() {
+	$toUpdate = array('vmc', 'hotwatermode', 'heatmode', 'zonectlzonemode', 'zonetctlmode', 'connect', 'hotwater_onoff', 'hotwater', 'tilecozy');
+    foreach (eqLogic::byType('cozytouch') as $eqLogic) {
+		foreach (cmd::byEqLogicId($eqLogic->getId(), 'info') as $cmd) {
+		    foreach (array('dashboard', 'mobile') as $version) {
+                $oldTemplate =$cmd->getTemplate($version,'default');			
+				if (in_array($oldTemplate, $toUpdate)) {
+					$cmd->setTemplate($version, 'cozytouch::' . $oldTemplate);
+					log::add('cozytouch','debug','Template ' . $oldTemplate . ' renamed to ' . $cmd->getTemplate($version,'default'););
+				}
+			}
+			$cmd->save();
+		}
+	}
 	$cron = cron::byClassAndFunction('cozytouch', 'refresh');
+	if (is_object($cron)) {
+		$cron->remove();
+	}
+	$cron = cron::byClassAndFunction('cozytouch', 'cozyRefresh');
 	if (!is_object($cron)) {
-		// Define a cron every 15 minutes based on the start of the plugin
+		// Define a cron every 15 minutes based on random value
 		// Very important so that all box do not make calls at the same time 
-		$minute = date("i") % 15;
+		$minute = rand(1, 14);
 		$cron = new cron();
 		$cron->setClass('cozytouch');
-		$cron->setFunction('refresh');
+		$cron->setFunction('cozyRefresh');
 		$cron->setEnable(1);
 		$cron->setDeamon(0);
-		$cron->setSchedule($minute . '/15 * * * *');
+		$cron->setSchedule($minute . '-59/15 * * * *');
 		$cron->setTimeout(5);
 		$cron->save();
 	}
@@ -73,7 +90,7 @@ function cozytouch_update() {
 }
 
 function cozytouch_remove() {
-	$cron = cron::byClassAndFunction('cozytouch', 'refresh');
+	$cron = cron::byClassAndFunction('cozytouch', 'cozyRefresh');
 	if (is_object($cron)) {
 		$cron->remove();
 	}

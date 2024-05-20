@@ -24,166 +24,156 @@
  * _cmd: les détails de votre commande
  */
 /* global jeedom */
+$('#bt_syncWithCozyTouch').on('click', function () {
+	bootbox.confirm('{{Pour se synchroniser correctement le nom utilisateur et le mot de passe doivent être corrects dans la configuration du plugin.}}', function(result) {
+		if (result) {
+			$.ajax({// fonction permettant de faire de l'ajax
+				type: "POST", // methode de transmission des données au fichier php
+                url: "plugins/cozytouch/core/ajax/cozytouch.ajax.php", // url du fichier php
 
-function addCmdToTable(_cmd) {
-    if (!isset(_cmd)) {
-        var _cmd = {configuration: {}};
-    }
-    if (!isset(_cmd.configuration)) {
-        _cmd.configuration = {};
-    }
-    var tr = '<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '">';
-    tr += '<td>';
-    tr += '<span class="cmdAttr" data-l1key="id"></span>';
-    tr += '</td>';
-    tr += '<td>';
-    tr += '<input class="cmdAttr form-control input-sm" data-l1key="name" style="width : 140px;" placeholder="{{Nom}}"></td>';
-    tr += '<td>';
-    tr += '<input class="cmdAttr form-control type input-sm" data-l1key="type" value="info" disabled style="margin-bottom : 5px;" />';
-    tr += '<span class="subType" subType="' + init(_cmd.subType) + '"></span>';
-    tr += '</td>';
-    tr += '<td>';
-    tr += '<span><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isVisible" checked/>{{Afficher}}</label></span> ';
-    tr += '<span><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isHistorized" checked/>{{Historiser}}</label></span> ';
-    tr += '<span><label class="checkbox-inline"><input type="checkbox" class="cmdAttr expertModeVisible" data-l1key="display" data-l2key="invertBinary"/>{{Inverser}}</label></span> ';
-    tr += '</td>';
-    tr += '<td>';
-    if (is_numeric(_cmd.id)) {
-        tr += '<a class="btn btn-default btn-xs cmdAction expertModeVisible" data-action="configure"><i class="fa fa-cogs"></i></a> ';
-        tr += '<a class="btn btn-default btn-xs cmdAction" data-action="test"><i class="fa fa-rss"></i> {{Tester}}</a>';
-    }
-    tr += '<i class="fa fa-minus-circle pull-right cmdAction cursor" data-action="remove"></i></td>';
-    tr += '</tr>';
-    $('#table_cmd tbody').append(tr);
-    $('#table_cmd tbody tr:last').setValues(_cmd, '.cmdAttr');
-    if (isset(_cmd.type)) {
-        $('#table_cmd tbody tr:last .cmdAttr[data-l1key=type]').value(init(_cmd.type));
-    }
-    jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
-}
+                data: {
+                    action: "syncWithCozyTouch",
+                },
 
-/* Fonction appelé pour mettre l'affichage à jour pour la sauvegarde en temps réel
- * _data: les détails des informations à sauvegardé
- */
-function displayEqLogic(_data) {
-    
-}
+                dataType: 'json',
 
-/* Fonction appelé pour mettre l'affichage à jour de la sidebar et du container 
- * en asynchrone, est appelé en début d'affichage de page, au moment de la sauvegarde,
- * de la suppression, de la création
- * _callback: obligatoire, permet d'appeler une fonction en fin de traitement
- */
-function updateDisplayPlugin(_callback) {
-    $.ajax({
-        type: "POST",
-        url: "plugins/cozytouch/core/ajax/cozytouch.ajax.php",
+                error: function (request, status, error) {
+                    handleAjaxError(request, status, error);
+                },
+
+                success: function (data) { // si l'appel a bien fonctionné
+                    if (data.state != 'ok') {
+                        $('#div_alert').showAlert({message: data.result, level: 'danger'});
+                        return;
+    }
+                    $('#div_alert').showAlert({message: '{{Synchronisation effectuée}}', level: 'success'});
+                    location.reload();
+    }
+	        });
+    }
+    });
+ });
+
+ $('#bt_resetCozyTouch').on('click', function () {
+	bootbox.confirm('{{Cette action supprimera tous les appareils. Faites une synchronisation pour les re-créer.}}', function(result) {
+		if (result) {
+			$.ajax({ // fonction permettant de faire de l'ajax
+				type: "POST", // methode de transmission des données au fichier php
+				url: "plugins/cozytouch/core/ajax/cozytouch.ajax.php", // url du fichier php
+
         data: {
-            action: "getAll"
+					action: "resetCozyTouch",
         },
+
         dataType: 'json',
+
         error: function (request, status, error) {
             handleAjaxError(request, status, error);
         },
-        success: function (data) {
-            //console.log(data);
-            if (data.state !== 'ok') {
+
+				success: function (data) { // si l'appel a bien fonctionné
+					if (data.state != 'ok') {
                 $('#div_alert').showAlert({message: data.result, level: 'danger'});
                 return;
             }
-            var htmlSideBar = '';
-            var htmlContainer = '';
-            // Le plus Geant - ne pas supprimer
-            //htmlContainer += '<div class="cursor eqLogicAction" data-action="add" style="background-color : #ffffff; height : 200px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >';
-            //htmlContainer += '<center>';
-            //htmlContainer += '<i class="fa fa-plus-circle" style="font-size : 7em;color:#94ca02;"></i>';
-            //htmlContainer += '</center>';
-            //htmlContainer += '<span style="font-size : 1.1em;position:relative; top : 23px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#94ca02"><center>Ajouter</center></span>';
-            //htmlContainer += '</div>';
-            // la liste des équipements
-            var eqLogics = data.result;
-            for (var i  in eqLogics) {
-                htmlSideBar += '<li class="cursor li_eqLogic" data-eqLogic_id="' + eqLogics[i].id + '"><a>' + eqLogics[i].humanSidebar + '</a></li>';
-                // Définition du format des icones de la page principale - ne pas modifier
-                htmlContainer += '<div class="eqLogicDisplayCard cursor" data-eqLogic_id="' + eqLogics[i].id + '" style="width : auto !important; background-color : #ffffff; height : 200px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >';
-                htmlContainer += "<center>";
-                // lien vers l'image de votre icone
-                htmlContainer += '<img src="plugins/cozytouch/desktop/img/cozytouch_icon.png" height="105" width="95" />';
-                htmlContainer += "</center>";
-                // Nom de votre équipement au format human
-                htmlContainer += '<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;"><center>' + eqLogics[i].humanContainer + '</center></span>';
-                htmlContainer += '</div>';
-            }
-            $('#ul_eqLogicView').empty();
-            $('#ul_eqLogicView').append(htmlSideBar);
-            $('.eqLogicThumbnailContainer').remove();
-            $('.eqLogicThumbnailDisplay legend').after($('<div class="eqLogicThumbnailContainer">').html(htmlContainer));
-            $('.eqLogicThumbnailContainer').packery();
-            $("img.lazy").lazyload({
-                container: $(".eqLogicThumbnailContainer"),
-                event : "sporty",
-                skip_invisible : false
-            });
-            $("img.lazy").trigger("sporty");
-            $("img.lazy").each(function () {
-                var el = $(this);
-                if (el.attr('data-original2') !== undefined) {
-                    $("<img>", {
-                        src: el.attr('data-original'),
-                        error: function () {
-                            $("<img>", {
-                                src: el.attr('data-original2'),
-                                error: function () {
-                                    if (el.attr('data-original3') !== undefined) {
-                                        $("<img>", {
-                                            src: el.attr('data-original3'),
-                                            error: function () {
-                                                el.lazyload({
-                                                    event: "sporty"
-                                                });
-                                                el.trigger("sporty");
-                                            },
-                                            load: function () {
-                                                el.attr("data-original", el.attr('data-original3'));
-                                                el.lazyload({
-                                                    event: "sporty"
-                                                });
-                                                el.trigger("sporty");
-                                            }
-                                        });
-                                    } else {
-                                        el.lazyload({
-                                            event: "sporty"
-                                        });
-                                        el.trigger("sporty");
-                                    }
-                                },
-                                load: function () {
-                                    el.attr("data-original", el.attr('data-original2'));
-                                    el.lazyload({
-                                        event: "sporty"
-                                    });
-                                    el.trigger("sporty");
-                                }
-                            });
-                        },
-                        load: function () {
-                            el.lazyload({
-                                event: "sporty"
-                            });
-                            el.trigger("sporty");
-                        }
-                    });
-                } else {
-                    el.lazyload({
-                        event: "sporty"
-                    });
-                    el.trigger("sporty");
-                }
-            });
-            if(_callback !== undefined)
-                _callback();
-            modifyWithoutSave = false;
+					$('#div_alert').showAlert({message: '{{Suppression effectuée}}', level: 'success'});
+					location.reload();
         }
     });
+		}
+	});
+});
+document.querySelector('.eqLogicAction[data-action=createCommunityPost]')?.addEventListener('click', function(event) {
+	jeedom.plugin.createCommunityPost({
+		type: eqType,
+		error: function(error) {
+			domUtils.hideLoading()
+			jeedomUtils.showAlert({
+			  message: error.message,
+			  level: 'danger'
+			})
+		},
+		success: function(data) {
+			let element = document.createElement('a');
+			element.setAttribute('href', data.url);
+			element.setAttribute('target', '_blank');
+			element.style.display = 'none';
+			document.body.appendChild(element);
+			element.click();
+			document.body.removeChild(element);
+		}
+	});
+	return;
+});
+
+/* Permet la réorganisation des commandes dans l'équipement */
+$("#table_cmd").sortable({
+  axis: "y",
+  cursor: "move",
+  items: ".cmd",
+  placeholder: "ui-state-highlight",
+  tolerance: "intersect",
+  forcePlaceholderSize: true
+})
+
+/* Fonction permettant l'affichage des commandes dans l'équipement */
+function addCmdToTable(_cmd) {
+  if (!isset(_cmd)) {
+    var _cmd = { configuration: {} }
+  }
+  if (!isset(_cmd.configuration)) {
+    _cmd.configuration = {}
+  }
+  var tr = '<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '">'
+  tr += '<td class="hidden-xs">'
+  tr += '<span class="cmdAttr" data-l1key="id"></span>'
+  tr += '</td>'
+  tr += '<td>'
+  tr += '<div class="input-group">'
+  tr += '<input class="cmdAttr form-control input-sm roundedLeft" data-l1key="name" placeholder="{{Nom de la commande}}">'
+  tr += '<span class="input-group-btn"><a class="cmdAction btn btn-sm btn-default" data-l1key="chooseIcon" title="{{Choisir une icône}}"><i class="fas fa-icons"></i></a></span>'
+  tr += '<span class="cmdAttr input-group-addon roundedRight" data-l1key="display" data-l2key="icon" style="font-size:19px;padding:0 5px 0 0!important;"></span>'
+  tr += '</div>'
+  tr += '<select class="cmdAttr form-control input-sm" data-l1key="value" style="display:none;margin-top:5px;" title="{{Commande info liée}}">'
+  tr += '<option value="">{{Aucune}}</option>'
+  tr += '</select>'
+  tr += '</td>'
+  tr += '<td>'
+  tr += '<span class="type" type="' + init(_cmd.type) + '">' + jeedom.cmd.availableType() + '</span>'
+  tr += '<span class="subType" subType="' + init(_cmd.subType) + '"></span>'
+  tr += '</td>'
+  tr += '<td>'
+  tr += '<label class="checkbox-inline"><input type="checkbox" class="cmdAttr" data-l1key="isVisible" checked/>{{Afficher}}</label> '
+  tr += '<label class="checkbox-inline"><input type="checkbox" class="cmdAttr" data-l1key="isHistorized" checked/>{{Historiser}}</label> '
+  tr += '<label class="checkbox-inline"><input type="checkbox" class="cmdAttr" data-l1key="display" data-l2key="invertBinary"/>{{Inverser}}</label> '
+  tr += '<div style="margin-top:7px;">'
+  tr += '<input class="tooltips cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="minValue" placeholder="{{Min}}" title="{{Min}}" style="width:30%;max-width:80px;display:inline-block;margin-right:2px;">'
+  tr += '<input class="tooltips cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="maxValue" placeholder="{{Max}}" title="{{Max}}" style="width:30%;max-width:80px;display:inline-block;margin-right:2px;">'
+  tr += '<input class="tooltips cmdAttr form-control input-sm" data-l1key="unite" placeholder="Unité" title="{{Unité}}" style="width:30%;max-width:80px;display:inline-block;margin-right:2px;">'
+  tr += '</div>'
+  tr += '</td>'
+  tr += '<td>';
+  tr += '<span class="cmdAttr" data-l1key="htmlstate"></span>';
+  tr += '</td>';
+  tr += '<td>'
+  if (is_numeric(_cmd.id)) {
+    tr += '<a class="btn btn-default btn-xs cmdAction" data-action="configure"><i class="fas fa-cogs"></i></a> '
+    tr += '<a class="btn btn-default btn-xs cmdAction" data-action="test"><i class="fas fa-rss"></i> {{Tester}}</a>'
+  }
+  tr += '<i class="fas fa-minus-circle pull-right cmdAction cursor" data-action="remove" title="{{Supprimer la commande}}"></i></td>'
+  tr += '</tr>'
+  $('#table_cmd tbody').append(tr)
+  var tr = $('#table_cmd tbody tr').last()
+  jeedom.eqLogic.buildSelectCmd({
+    id: $('.eqLogicAttr[data-l1key=id]').value(),
+    filter: { type: 'info' },
+    error: function (error) {
+      $('#div_alert').showAlert({ message: error.message, level: 'danger' })
+    },
+    success: function (result) {
+      tr.find('.cmdAttr[data-l1key=value]').append(result)
+      tr.setValues(_cmd, '.cmdAttr')
+      jeedom.cmd.changeType(tr, init(_cmd.subType))
+    }
+  })
 }

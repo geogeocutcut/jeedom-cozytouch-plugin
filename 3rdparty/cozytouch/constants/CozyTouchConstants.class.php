@@ -3,7 +3,7 @@
 class CozyTouchCmdDisplay
 {
 	const DISPLAY_DASH = [
-		'numeric'=>'tilecozy',
+		'numeric'=>'cozytouch::tilecozy',
 		'string'=>'badge',
 		'binaire'=>''
 	];

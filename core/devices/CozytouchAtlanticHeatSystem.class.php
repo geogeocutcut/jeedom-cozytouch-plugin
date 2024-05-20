@@ -27,8 +27,8 @@ class CozytouchAtlanticHeatSystem extends AbstractCozytouchDevice
 		$eqLogic->save();
 
 		$cmd= $eqLogic->getCmd(null, $device->getURL().'_'.CozyTouchStateName::CTSN_TARGETHEATLEVEL);
-		$cmd->setTemplate('dashboard', 'heatmode');
-		$cmd->setTemplate('mobile', 'heatmode');
+		$cmd->setTemplate('dashboard', 'cozytouch::heatmode');
+		$cmd->setTemplate('mobile', 'cozytouch::heatmode');
 		$cmd->save();
 
 		self::orderCommand($eqLogic);

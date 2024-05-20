@@ -89,8 +89,8 @@ class CozytouchAtlanticHotWaterV3 extends AbstractCozytouchDevice
     	$hotWaterCoefficient->setType('info');
     	$hotWaterCoefficient->setSubType('numeric');
         $hotWaterCoefficient->setLogicalId(CozyTouchStateName::EQ_HOTWATERCOEFF);
-    	$hotWaterCoefficient->setTemplate('dashboard', 'hotwater');
-    	$hotWaterCoefficient->setTemplate('mobile', 'hotwater');
+    	$hotWaterCoefficient->setTemplate('dashboard', 'cozytouch::hotwater');
+    	$hotWaterCoefficient->setTemplate('mobile', 'cozytouch::hotwater');
         $hotWaterCoefficient->save();
 		
 		log::add('cozytouch', 'info', 'creation ou update thermostat');
@@ -123,8 +123,8 @@ class CozytouchAtlanticHotWaterV3 extends AbstractCozytouchDevice
     	$thermostat->setSubType('slider');
     	$thermostat->setUnite('°C');
     	$thermostat->setLogicalId(CozyTouchDeviceEqCmds::SET_THERMOSTAT);
-    	$thermostat->setTemplate('dashboard', 'thermhotwater');
-    	$thermostat->setTemplate('mobile', 'thermhotwater');
+    	$thermostat->setTemplate('dashboard', 'cozytouch::thermhotwater');
+    	$thermostat->setTemplate('mobile', 'cozytouch::thermhotwater');
     	$thermostat->setIsVisible(1);
 		$thermostat->setValue($order->getId());
 		$thermostat->setOrder(1);
@@ -154,8 +154,8 @@ class CozytouchAtlanticHotWaterV3 extends AbstractCozytouchDevice
     	$boost_toogle->setName(__('Boost', __FILE__));
     	$boost_toogle->setType('action');
     	$boost_toogle->setSubType('slider');
-    	$boost_toogle->setTemplate('dashboard', 'toggle');
-    	$boost_toogle->setTemplate('mobile', 'toggle');
+    	$boost_toogle->setTemplate('dashboard', 'cozytouch::toggle');
+    	$boost_toogle->setTemplate('mobile', 'cozytouch::toggle');
     	$boost_toogle->setIsVisible(1);
 		$boost_toogle->setValue($boost->getId());
 		$boost_toogle->save();

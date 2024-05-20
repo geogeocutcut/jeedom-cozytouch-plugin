@@ -67,8 +67,8 @@ class CozytouchAtlanticDimmableLight extends AbstractCozytouchDevice
 			$onoff_toogle->setName(__('Light On/Off', __FILE__));
 			$onoff_toogle->setType('action');
 			$onoff_toogle->setSubType('slider');
-			$onoff_toogle->setTemplate('dashboard', 'toggle');
-			$onoff_toogle->setTemplate('mobile', 'toggle');
+			$onoff_toogle->setTemplate('dashboard', 'cozytouch::toggle');
+			$onoff_toogle->setTemplate('mobile', 'cozytouch::toggle');
 			$onoff_toogle->setIsVisible(1);
 			$onoff_toogle->setValue($onoff_state->getId());
 			$onoff_toogle->save();
@@ -87,8 +87,8 @@ class CozytouchAtlanticDimmableLight extends AbstractCozytouchDevice
 			$auto_toogle->setName(__('Auto On/Off', __FILE__));
 			$auto_toogle->setType('action');
 			$auto_toogle->setSubType('slider');
-			$auto_toogle->setTemplate('dashboard', 'toggle');
-			$auto_toogle->setTemplate('mobile', 'toggle');
+			$auto_toogle->setTemplate('dashboard', 'cozytouch::toggle');
+			$auto_toogle->setTemplate('mobile', 'cozytouch::toggle');
 			$auto_toogle->setIsVisible(1);
 			$auto_toogle->setValue($auto_state->getId());
 			$auto_toogle->save();

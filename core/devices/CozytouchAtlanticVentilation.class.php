@@ -100,8 +100,8 @@ class CozytouchAtlanticVentilation extends AbstractCozytouchDevice
     	$vent_mode->setType('info');
     	$vent_mode->setSubType('string');
         $vent_mode->setLogicalId(CozyTouchStateName::EQ_VMCMODE);
-    	$vent_mode->setTemplate('dashboard', 'vmc');
-    	$vent_mode->setTemplate('mobile', 'vmc');
+    	$vent_mode->setTemplate('dashboard', 'cozytouch::vmc');
+    	$vent_mode->setTemplate('mobile', 'cozytouch::vmc');
 		$vent_mode->save();
 
         self::orderCommand($eqLogic);

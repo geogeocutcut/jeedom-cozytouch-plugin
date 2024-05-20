@@ -23,12 +23,12 @@ try {
         require_once dirname(__FILE__) . "/../class/CozyTouchManager.class.php";
     }
     if (!isConnect('admin')) {
-        throw new Exception(__('401 - AccÃšs non autorisÃ©', __FILE__));
+        throw new Exception(__('401 - Accès non autorisé', __FILE__));
     }
     // action qui permet d'obtenir l'ensemble des eqLogic
     if (init('action') == 'getAll') {
         $eqLogics = eqLogic::byType('cozytouch');
-        // la liste des ÃÂ©quipements
+        // la liste des équipements
         foreach ($eqLogics as $eqLogic) {
             $data['id'] = $eqLogic->getId();
             $data['humanSidebar'] = $eqLogic->getHumanName(true, false);
@@ -51,12 +51,9 @@ try {
         CozyTouchManager::resetCozyTouch();
         ajax::success();
     }
-    throw new Exception(__('Aucune methode correspondante Ã Â  : ', __FILE__) . init('action'));
+    throw new Exception(__('Aucune methode correspondante à  : ', __FILE__) . init('action'));
     /*     * *********Catch exeption*************** */
 } 
 catch (Exception $e) {
-    log::add('cozytouch', 'error', 'Error page de configuration : '.$e->getMessage());
-			
-    ajax::error(displayExeption($e), $e->getCode());
+    ajax::error(displayException($e), $e->getCode());
 }
-?>

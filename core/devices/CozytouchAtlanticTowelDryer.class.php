@@ -74,8 +74,8 @@ class CozytouchAtlanticTowelDryer extends AbstractCozytouchDevice
 		$eqLogic->save();
 
 		$cmd= $eqLogic->getCmd(null, $device->getURL().'_'.CozyTouchStateName::CTSN_TARGETHEATLEVEL);
-		$cmd->setTemplate('dashboard', 'heatmode');
-		$cmd->setTemplate('mobile', 'heatmode');
+		$cmd->setTemplate('dashboard', 'cozytouch::heatmode');
+		$cmd->setTemplate('mobile', 'cozytouch::heatmode');
 		$cmd->save();
 
         log::add('cozytouch', 'info', 'creation ou update thermostat');
@@ -108,8 +108,8 @@ class CozytouchAtlanticTowelDryer extends AbstractCozytouchDevice
     	$thermostat->setSubType('slider');
     	$thermostat->setUnite('°C');
     	$thermostat->setLogicalId(CozyTouchDeviceEqCmds::SET_THERMOSTAT);
-    	$thermostat->setTemplate('dashboard', 'thermheatelec');
-    	$thermostat->setTemplate('mobile', 'thermheatelec');
+    	$thermostat->setTemplate('dashboard', 'cozytouch::thermheatelec');
+    	$thermostat->setTemplate('mobile', 'cozytouch::thermheatelec');
     	$thermostat->setIsVisible(1);
 		$thermostat->setValue($order->getId());
 		$thermostat->setOrder(1);
@@ -139,8 +139,8 @@ class CozytouchAtlanticTowelDryer extends AbstractCozytouchDevice
     	$boost_toogle->setName(__('Boost', __FILE__));
     	$boost_toogle->setType('action');
     	$boost_toogle->setSubType('slider');
-    	$boost_toogle->setTemplate('dashboard', 'toggle');
-    	$boost_toogle->setTemplate('mobile', 'toggle');
+    	$boost_toogle->setTemplate('dashboard', 'cozytouch::toggle');
+    	$boost_toogle->setTemplate('mobile', 'cozytouch::toggle');
     	$boost_toogle->setIsVisible(1);
 		$boost_toogle->setValue($boost->getId());
 		$boost_toogle->save();
@@ -169,8 +169,8 @@ class CozytouchAtlanticTowelDryer extends AbstractCozytouchDevice
     	$dry_toogle->setName(__('Séchage', __FILE__));
     	$dry_toogle->setType('action');
     	$dry_toogle->setSubType('slider');
-    	$dry_toogle->setTemplate('dashboard', 'toggle');
-    	$dry_toogle->setTemplate('mobile', 'toggle');
+    	$dry_toogle->setTemplate('dashboard', 'cozytouch::toggle');
+    	$dry_toogle->setTemplate('mobile', 'cozytouch::toggle');
     	$dry_toogle->setIsVisible(1);
 		$dry_toogle->setValue($dry->getId());
 		$dry_toogle->save();

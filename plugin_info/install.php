@@ -54,7 +54,7 @@ function cozytouch_update() {
                 $oldTemplate =$cmd->getTemplate($version,'default');			
 				if (in_array($oldTemplate, $toUpdate)) {
 					$cmd->setTemplate($version, 'cozytouch::' . $oldTemplate);
-					log::add('cozytouch','debug','Template ' . $oldTemplate . ' renamed to ' . $cmd->getTemplate($version,'default'););
+					log::add('cozytouch','debug','Template ' . $oldTemplate . ' renamed to ' . $cmd->getTemplate($version,'default'));
 				}
 			}
 			$cmd->save();

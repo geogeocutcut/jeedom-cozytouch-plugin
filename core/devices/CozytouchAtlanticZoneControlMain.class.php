@@ -50,8 +50,8 @@ class CozytouchAtlanticZoneControlMain extends AbstractCozytouchDevice
     	$cmd->setType('info');
     	$cmd->setSubType('string');
         $cmd->setLogicalId( $device->getURL().'_'.CozyTouchStateName::EQ_ZONECTRLMODE);
-		$cmd->setTemplate('dashboard', 'zonetctlmode');
-		$cmd->setTemplate('mobile', 'zonetctlmode');
+		$cmd->setTemplate('dashboard', 'cozytouch::zonetctlmode');
+		$cmd->setTemplate('mobile', 'cozytouch::zonetctlmode');
 		$cmd->save();
 
         $states = CozyTouchDeviceStateName::EQLOGIC_STATENAME[$device->getVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME)];

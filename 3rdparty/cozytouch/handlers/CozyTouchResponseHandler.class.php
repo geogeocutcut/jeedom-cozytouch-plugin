@@ -38,7 +38,7 @@ class CozyTouchResponseHandler {
 	 * @brief return data as collection objects
 	 * @throw NASDKException
 	 */
-	public function getData($route,$controlableName="") {
+	public function getData($route,$controlableName = '') {
 		if (!is_null($this->decodedBody) && !empty($this->decodedBody)) {
 			switch($route)
 			{

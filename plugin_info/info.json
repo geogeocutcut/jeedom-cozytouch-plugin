@@ -6,7 +6,7 @@
 	"description" : {
 		"fr_FR": "Plugin permettant la communication avec certains équipements connectés avec le bridge Cozytouch"
 	},
-	"require" : "4.0",
+	"require" : "4.2",
 	"category":"wellness",
 	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile"],
 	"issue" : "https://github.com/geogeocutcut/jeedom-cozytouch-plugin/issues",

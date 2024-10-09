@@ -75,8 +75,8 @@ class CozytouchAtlanticHotWaterMBL extends AbstractCozytouchDevice
     	$hotWaterCoefficient->setType('info');
     	$hotWaterCoefficient->setSubType('numeric');
         $hotWaterCoefficient->setLogicalId(CozyTouchStateName::EQ_HOTWATERCOEFF);
-    	$hotWaterCoefficient->setTemplate('dashboard', 'hotwater');
-    	$hotWaterCoefficient->setTemplate('mobile', 'hotwater');
+    	$hotWaterCoefficient->setTemplate('dashboard', 'cozytouch::hotwater');
+    	$hotWaterCoefficient->setTemplate('mobile', 'cozytouch::hotwater');
         $hotWaterCoefficient->save();
 		
 		
@@ -104,8 +104,8 @@ class CozytouchAtlanticHotWaterMBL extends AbstractCozytouchDevice
     	$boost_toogle->setName(__('Boost', __FILE__));
     	$boost_toogle->setType('action');
     	$boost_toogle->setSubType('slider');
-    	$boost_toogle->setTemplate('dashboard', 'toggle');
-    	$boost_toogle->setTemplate('mobile', 'toggle');
+    	$boost_toogle->setTemplate('dashboard', 'cozytouch::toggle');
+    	$boost_toogle->setTemplate('mobile', 'cozytouch::toggle');
     	$boost_toogle->setIsVisible(1);
 		$boost_toogle->setValue($boost->getId());
 		$boost_toogle->save();
@@ -141,8 +141,8 @@ class CozytouchAtlanticHotWaterMBL extends AbstractCozytouchDevice
 			$hotWaterExpShower->setName(__('Nb douche cible', __FILE__));
 			$hotWaterExpShower->setType('action');
 			$hotWaterExpShower->setSubType('slider');
-			$hotWaterExpShower->setTemplate('dashboard', 'numeric');
-			$hotWaterExpShower->setTemplate('mobile', 'numeric');
+			$hotWaterExpShower->setTemplate('dashboard', 'cozytouch::numeric');
+			$hotWaterExpShower->setTemplate('mobile', 'cozytouch::numeric');
 			$hotWaterExpShower->setConfiguration('maxValue', $maxi);
 			$hotWaterExpShower->setConfiguration('minValue', $mini);
 			$hotWaterExpShower->setValue($expectedShower->getId());

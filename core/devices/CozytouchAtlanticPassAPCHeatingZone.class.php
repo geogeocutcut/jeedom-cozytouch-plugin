@@ -64,8 +64,8 @@ class CozytouchAtlanticPassAPCHeatingZone extends AbstractCozytouchDevice
     	$cmd->setType('info');
     	$cmd->setSubType('string');
         $cmd->setLogicalId( $device->getURL().'_'.CozyTouchStateName::EQ_ZONECTRLMODE);
-		$cmd->setTemplate('dashboard', 'zonectlzonemode');
-		$cmd->setTemplate('mobile', 'zonectlzonemode');
+		$cmd->setTemplate('dashboard', 'cozytouch::zonectlzonemode');
+		$cmd->setTemplate('mobile', 'cozytouch::zonectlzonemode');
 		$cmd->save();
 
 		self::refresh($eqLogic,false);

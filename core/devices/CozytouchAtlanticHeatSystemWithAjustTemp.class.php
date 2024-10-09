@@ -86,8 +86,8 @@ class CozytouchAtlanticHeatSystemWithAjustTemp extends AbstractCozytouchDevice
 		$eqLogic->save();
 
 		$cmd= $eqLogic->getCmd(null, $device->getURL().'_'.CozyTouchStateName::CTSN_TARGETHEATLEVEL);
-		$cmd->setTemplate('dashboard', 'heatmode');
-		$cmd->setTemplate('mobile', 'heatmode');
+		$cmd->setTemplate('dashboard', 'cozytouch::heatmode');
+		$cmd->setTemplate('mobile', 'cozytouch::heatmode');
 		$cmd->save();
 
         log::add('cozytouch', 'info', 'creation ou update thermostat');
@@ -120,8 +120,8 @@ class CozytouchAtlanticHeatSystemWithAjustTemp extends AbstractCozytouchDevice
     	$thermostat->setSubType('slider');
     	$thermostat->setUnite('°C');
     	$thermostat->setLogicalId(CozyTouchDeviceEqCmds::SET_THERMOSTAT);
-    	$thermostat->setTemplate('dashboard', 'thermheatelec');
-    	$thermostat->setTemplate('mobile', 'thermheatelec');
+    	$thermostat->setTemplate('dashboard', 'cozytouch::thermheatelec');
+    	$thermostat->setTemplate('mobile', 'cozytouch::thermheatelec');
     	$thermostat->setIsVisible(1);
 		$thermostat->setValue($order->getId());
 		$thermostat->setOrder(1);

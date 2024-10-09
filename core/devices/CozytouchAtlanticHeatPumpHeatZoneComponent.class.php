@@ -29,8 +29,8 @@ class CozytouchAtlanticHeatPumpHeatZoneComponent extends AbstractCozytouchDevice
        	log::add('cozytouch', 'info', 'creation (ou mise à jour) '.$device->getVar(CozyTouchDeviceInfo::CTDI_LABEL));
 		$eqLogic =self::BuildDefaultEqLogic($device);
 		$profil_state = $eqLogic->getCmd(null,$deviceURL.'_'.CozyTouchStateName::CTSN_PASSAPCHEATINGPROFILE);
-		$profil_state->setTemplate('dashboard', 'heatmode');
-		$profil_state->setTemplate('mobile', 'heatmode');
+		$profil_state->setTemplate('dashboard', 'cozytouch::heatmode');
+		$profil_state->setTemplate('mobile', 'cozytouch::heatmode');
 		$profil_state->save();
 		$states = CozyTouchDeviceStateName::EQLOGIC_STATENAME[$device->getVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME)];
         $sensors = array();
@@ -75,8 +75,8 @@ class CozytouchAtlanticHeatPumpHeatZoneComponent extends AbstractCozytouchDevice
 			$onoff_toogle->setName(__('Heat On/Off', __FILE__));
 			$onoff_toogle->setType('action');
 			$onoff_toogle->setSubType('slider');
-			$onoff_toogle->setTemplate('dashboard', 'toggle');
-			$onoff_toogle->setTemplate('mobile', 'toggle');
+			$onoff_toogle->setTemplate('dashboard', 'cozytouch::toggle');
+			$onoff_toogle->setTemplate('mobile', 'cozytouch::toggle');
 			$onoff_toogle->setIsVisible(1);
 			$onoff_toogle->setValue($onoff_state->getId());
 			$onoff_toogle->save();
@@ -94,8 +94,8 @@ class CozytouchAtlanticHeatPumpHeatZoneComponent extends AbstractCozytouchDevice
 			$derog_toogle->setName(__('Derog On/Off', __FILE__));
 			$derog_toogle->setType('action');
 			$derog_toogle->setSubType('slider');
-			$derog_toogle->setTemplate('dashboard', 'toggle');
-			$derog_toogle->setTemplate('mobile', 'toggle');
+			$derog_toogle->setTemplate('dashboard', 'cozytouch::toggle');
+			$derog_toogle->setTemplate('mobile', 'cozytouch::toggle');
 			$derog_toogle->setIsVisible(1);
 			$derog_toogle->setValue($derog_state->getId());
 			$derog_toogle->save();
@@ -187,8 +187,8 @@ class CozytouchAtlanticHeatPumpHeatZoneComponent extends AbstractCozytouchDevice
 			$thermo->setName(__('Derogation time', __FILE__));
 			$thermo->setType('action');
 			$thermo->setSubType('slider');
-			$thermo->setTemplate('dashboard', 'numeric');
-			$thermo->setTemplate('mobile', 'numeric');
+			$thermo->setTemplate('dashboard', 'cozytouch::numeric');
+			$thermo->setTemplate('mobile', 'cozytouch::numeric');
 			$thermo->setConfiguration('maxValue', $maxi);
 			$thermo->setConfiguration('minValue', $mini);
 			$thermo->setValue($targettemp->getId());

@@ -82,41 +82,35 @@ class CozyTouchManager
 {
     private static $_client = null;
 
-    public static function getClient($_force=false) 
-    {
-        if (self::$_client == null || $_force) 
-        {
+    public static function getClient($_force=false)  {
+        if (self::$_client == null || $_force) {
 			
 			self::$_client = new CozyTouchApiClient(array(
 					'userId' => config::byKey('username', 'cozytouch'),
-					'userPassword' => utf8_decode(config::byKey('password', 'cozytouch')),
+					'userPassword' => config::byKey('password', 'cozytouch'),
 					'jsessionId' => config::byKey('jsessionId', 'cozytouch')
 			));
 		}
 		return self::$_client;
 	}
 
-	public static function resetCozyTouch()
-	{
+	public static function resetCozyTouch() {
 		$eqLogics = eqLogic::byType('cozytouch');
-		foreach($eqLogics as $eqLogic)
-		{
+		foreach($eqLogics as $eqLogic) {
 			$eqLogic->remove();
 		}
 	}
 
-	public static function syncWithCozyTouch() 
-	{
+	public static function syncWithCozyTouch() {
+		log::add('cozytouch', 'debug', 'syncWithCozyTouch function'); 
 		$client = self::getClient();
 		$devices = $client->getSetup();
+		if (is_array($devices)) {
 		log::add('cozytouch', 'debug', 'Recupération des données ok '); 
 
-        foreach ($devices as $device) 
-        {
-			
+			foreach ($devices as $device) {	
 			$deviceModel = $device->getVar(CozyTouchDeviceInfo::CTDI_CONTROLLABLENAME);
-			switch ($deviceModel)
-			{
+				switch ($deviceModel) {
 				case CozyTouchDeviceToDisplay::CTDTD_ATLANTICELECTRICHEATER:
 					CozytouchAtlanticHeatSystem::BuildEqLogic($device);
 					break;
@@ -167,18 +161,19 @@ class CozyTouchManager
 					break;
 			}
 		}
-		
 		CozyTouchManager::refresh_all();
+		} else {
+			log::add('cozytouch', 'debug', 'Echec de la synchronisation'); 
+
+		}
 	}
 	
-    public static function refresh_all() 
-	{
+    public static function refresh_all() {
     	try {
     		
     		$clientApi = self::getClient();
     		$devices = $clientApi->getDevices();
-			foreach ($devices as $device)
-			{
+			foreach ($devices as $device) {
 				$device_url = $device->getURL();
 				// state du device
 				foreach ($device->getStates() as $state)
@@ -197,15 +192,12 @@ class CozyTouchManager
 				
 				
 				// Liste des capteurs du device
-				foreach ($device->getSensors() as $sensor)
-				{
+				foreach ($device->getSensors() as $sensor) {
 					$sensor_url=$sensor->getURL();
 					// state du capteur
-					foreach ($sensor->getStates() as $state)
-					{
+					foreach ($sensor->getStates() as $state) {
 						$cmd_array = Cmd::byLogicalId($sensor_url.'_'.$state->name);
-						if(is_array($cmd_array) && $cmd_array!=null)
-						{
+						if(is_array($cmd_array) && $cmd_array!=null) {
 							$cmd=$cmd_array[0];
 							$value = self::get_state_value($state);
 							if (is_object($cmd) && $cmd->execCmd() !== $cmd->formatValue($value)) {
@@ -221,7 +213,7 @@ class CozyTouchManager
 				if (is_object($eqLogicTmp)) {
 					$device_type = $eqLogicTmp->getConfiguration('device_model');
 					$attached_device = $eqLogicTmp->getConfiguration('attached_device');
-					switch($device_type){
+					switch($device_type) {
 						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICTOWELDRYER:
 						case CozyTouchDeviceToDisplay::CTDTD_ATLANTICTOWELDRYERIC3:
 							CozytouchAtlanticTowelDryer::refresh_boost($eqLogicTmp);

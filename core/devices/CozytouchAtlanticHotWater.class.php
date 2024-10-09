@@ -355,7 +355,7 @@ class CozytouchAtlanticHotWater extends AbstractCozytouchDevice
 			{
 				$temp=$valuetmp['temp'];
 			}
-            $hotwatercoeff = 100*($temp-self::cold_water)/($valuetmp['targettemp']-self::cold_water);
+            $hotwatercoeff = 100*(floatval($temp)-self::cold_water)/(floatval($valuetmp['targettemp'])-self::cold_water);
             $cmd->setCollectDate('');
             $cmd->event($hotwatercoeff);
             log::add('cozytouch', 'debug', __('Calcul proportion d eau chaude : ', __FILE__).$hotwatercoeff);

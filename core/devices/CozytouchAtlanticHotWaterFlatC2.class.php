@@ -297,7 +297,7 @@ class CozytouchAtlanticHotWaterFlatC2 extends AbstractCozytouchDevice
         $cmd=Cmd::byEqLogicIdAndLogicalId($eqLogic->getId(),CozyTouchStateName::EQ_HOTWATERCOEFF);
 		if (is_object($cmd)) {
 			$temp=0;
-            $hotwatercoeff = 100*($valuetmp['remainingshower'])/($valuetmp['targetshower']);
+            $hotwatercoeff = 100*floatval($valuetmp['remainingshower'])/floatval($valuetmp['targetshower']);
             $cmd->setCollectDate('');
             $cmd->event($hotwatercoeff);
             log::add('cozytouch', 'debug', __('Calcul proportion d eau chaude : ', __FILE__).$hotwatercoeff);
